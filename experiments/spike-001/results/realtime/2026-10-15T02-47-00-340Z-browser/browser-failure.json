@@ -1,0 +1,126 @@
+{
+  "runId": "2026-10-15T02-47-00-340Z-browser",
+  "command": [
+    "C:\\Users\\jitin81\\AppData\\Local\\JetBrains\\IntelliJIdea2026.2\\acp-agents\\.runtimes\\node\\24.19.0\\node.exe",
+    "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\realtime\\browser-run.mjs",
+    "--core-passed"
+  ],
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "win32",
+    "arch": "x64",
+    "osRelease": "10.0.26200",
+    "cpuModel": "11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz",
+    "logicalProcessors": 16,
+    "totalMemoryBytes": 16866848768,
+    "sourceHashes": {
+      "protocol.mjs": "4fae7dd0a42ae20d4a44a2d8d24d56b36266c8abf6e2acebbc136972869f8d18",
+      "load.mjs": "02d6989233755b26607715f1c9c27d87fce573c791000e178852dd1ae12707a3",
+      "browser-run.mjs": "5b695c5c5c4f7627e94ad7ede51e75e4bd6367246051ddbd5ea6175d8174dbd0",
+      "reconnect.mjs": "ef0f5a2f693b354df916750b165969fa604070e342f333db028a199af4d40ab5",
+      "corruption.mjs": "d75cc82c1be46fd01e93fdf46eaf11718e602c86a49209b49f60141c0cf8ad2e",
+      "audit-validator.mjs": "9c47a0a0341711801b2478bbcde5e120b9289b7b543961b5c5d6ad3f7105ec39",
+      "package-lock.json": "6c71510d7a0f62d76b8eccfcab45b01ec6bc4c4a74bdcd7e2ba6940cb6efffb3",
+      "../src/main/resources/static/client.js": "13d8d140559908ab4db4ea7b149d1b46b8e34bc06b4fe3277605a593c6afc2c2",
+      "../src/main/resources/static/lane-store.js": "87b09d12f4aa67973ce9c03b54c8f894bc9f5ab599492579257ee9b72f3d670a",
+      "../src/main/resources/static/index.html": "5d0316908b75a63a8955e9e073eae8e0df33600da5f74b861e76ec1990a34c05"
+    },
+    "health": {
+      "pid": 41212,
+      "ready": true,
+      "manual": false
+    },
+    "peer": {
+      "manual": true,
+      "ready": true,
+      "pid": 3556
+    },
+    "peerRole": "Second JVM judgment worker manual/idle; SSE outbox poll may still run",
+    "generatorLocation": "Same Windows host as applications and experimental DB"
+  },
+  "fatal": "page.waitForFunction: Timeout 15000ms exceeded.",
+  "errors": [],
+  "clockSamples": [
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424625.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424633,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424640.5,
+      "roundTripMs": 7,
+      "midpointOffsetMs": 1.5,
+      "halfRttUncertaintyMs": 3.5
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424648,
+      "roundTripMs": 4,
+      "midpointOffsetMs": -1,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424653,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424658,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424664,
+      "roundTripMs": 4,
+      "midpointOffsetMs": -1,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424669,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424674,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792032424679,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    }
+  ],
+  "reconnectRuns": [],
+  "expectedFailures": [
+    {
+      "kind": "bid",
+      "key": "53578432-68c4-480f-886b-8f035fd0d793",
+      "message": "Failed to fetch",
+      "expected": true,
+      "injection": "HTTP_RESPONSE_ABORT_AFTER_UPSTREAM_BID_REQUEST"
+    }
+  ],
+  "pass": false
+}

@@ -1,0 +1,51 @@
+{
+  "runId": "20261015T020606Z-71b6b54b",
+  "generatedUtc": "2026-10-15T02:10:02.015290+00:00",
+  "command": [
+    "experiments/spike-001/harness/correctness.py",
+    "--repeats",
+    "100",
+    "--failure-repeats",
+    "10"
+  ],
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 20261015,
+  "serverUrls": [
+    "http://127.0.0.1:18081",
+    "http://127.0.0.1:18082"
+  ],
+  "caseCount": 480,
+  "passed": 477,
+  "failed": 3,
+  "status": "FAIL",
+  "failedCases": [
+    {
+      "name": "E2_known_pending_recovery",
+      "repetition": 8,
+      "error": "Failure: HTTP request completed: observed={'status': 0, 'error': 'OSError: [WinError 10048] 각 소켓 주소(프로토콜/네트워크 주소/포트)는 하나만 사용할 수 있습니다', 'body': None}, expected='2xx'"
+    },
+    {
+      "name": "E2_exception_before_receipt_commit",
+      "repetition": 9,
+      "error": "Failure: HTTP request completed: observed={'status': 0, 'error': 'OSError: [WinError 10048] 각 소켓 주소(프로토콜/네트워크 주소/포트)는 하나만 사용할 수 있습니다', 'body': None}, expected='2xx'"
+    },
+    {
+      "name": "E2_unknown_history_hold",
+      "repetition": 10,
+      "error": "Failure: HTTP request completed: observed={'status': 409, 'error': None, 'body': {'error': 'EngineException', 'message': 'org.postgresql.util.PSQLException: ERROR: deadlock detected\\n  Detail: Process 132 waits for AccessExclusiveLock on relation 16389 of database 16384; blocked by process 133.\\nProcess 133 waits for AccessShareLock on relation 16415 of database 16384; blocked by process 132.\\n  Hint: See server log for query details.'}}, expected='2xx'"
+    }
+  ],
+  "boundaries": {
+    "fixtureClock": "synthetic epoch milliseconds",
+    "httpDuration": "monotonic client clock",
+    "loadOrBrowserPerformance": "NOT_RUN by this correctness command",
+    "processTermination": "NOT_RUN unless separately invoked",
+    "database": "service integration; DB runtime version and durability captured by outer orchestration"
+  },
+  "sourceHashes": {
+    "client.py": "9076266ad4346fd0c2b111c57a3ae5da7e02132c11e2d4de7ba1b136a777b90c",
+    "correctness.py": "565544aee0b880874bd5e199c860f61e0d52719e7c4e5c3c3f8b0f5db589b9c4",
+    "crashes.py": "5f6a662065a5f5958bc9be876c0274528338213b6d50d97584d87c4bb758a571"
+  }
+}

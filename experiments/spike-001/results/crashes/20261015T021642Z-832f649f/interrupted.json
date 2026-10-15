@@ -1,0 +1,8 @@
+{
+  "status": "INCOMPLETE_HARNESS_FAILURE",
+  "completedCases": 0,
+  "reason": "Python subprocess.run(capture_output=True) did not return after PowerShell launched the dedicated Java grandchild. The service startup log and /health confirmed PID 50280 running, while the harness remained waiting for captured-pipe completion.",
+  "lastPersistedObservation": "HTTP trace sequence 18: surviving server observed no committed request or bid after before_receipt_commit halt.",
+  "intervention": "Stopped only the positively identified experiment harness PID 14064. The dedicated restarted JVM was left running.",
+  "correction": "File-backed PowerShell stdout/stderr and DEVNULL stdin replace captured pipes. A fresh run will verify all four points. This interrupted run is not a passing crash experiment."
+}

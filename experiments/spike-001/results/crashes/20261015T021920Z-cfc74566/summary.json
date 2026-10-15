@@ -1,0 +1,38 @@
+{
+  "runId": "20261015T021920Z-cfc74566",
+  "generatedUtc": "2026-10-15T02:22:17.650694+00:00",
+  "command": [
+    "C:\\Python314\\python.exe",
+    "experiments/spike-001/harness/crashes.py",
+    "--repeats",
+    "10"
+  ],
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 20261015,
+  "serverJarAtInvocationSha256": "ab99c28ae622e49e51050ecd1a887129bed5ce28b20b397f2c10a6f9dfa6f652",
+  "serverUrls": [
+    "http://127.0.0.1:18081",
+    "http://127.0.0.1:18082"
+  ],
+  "caseCount": 40,
+  "passed": 40,
+  "failed": 0,
+  "status": "PASS",
+  "failedCases": [],
+  "boundaries": {
+    "fixtureClock": "synthetic epoch milliseconds",
+    "httpDuration": "monotonic client clock",
+    "loadOrBrowserPerformance": "NOT_RUN by this correctness command",
+    "processTermination": "Actual dedicated JVM Runtime.halt; Windows exit code and restart command recorded per case. No database process restart or power loss.",
+    "database": "service integration; DB runtime version and durability captured by outer orchestration"
+  },
+  "sourceHashes": {
+    "client.py": "356daccdb9e11bdd334d6dd06a1b4b0beb390c440421d845e12fe9a011e15560",
+    "correctness.py": "43ae58e658e66c5a42e8d199caf919b771369a7f8b38683853c69025f5825a5a",
+    "crashes.py": "0fe37f7c0f2ec564feaa15d56138476eda78b73068eb39e4cef2dbd9358edb64",
+    "environment_failures.py": "61f4eed6bdbf8ca663e2fdba048b7ecda387ed486c748548f0c3643c4aeb1e87",
+    "regressions.py": "a9873633515726f9cf4801fb845fdf2e65e5e4c224ad6e84f43485f2eb67984d",
+    "verify_evidence.py": "621887015f937321b9a61874df65a13c60e7bf708c43ee7a809e7d3879ebdf12"
+  }
+}

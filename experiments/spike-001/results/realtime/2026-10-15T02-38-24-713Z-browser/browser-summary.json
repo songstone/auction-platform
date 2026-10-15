@@ -1,0 +1,5410 @@
+{
+  "runId": "2026-10-15T02-38-24-713Z-browser",
+  "command": [
+    "C:\\Users\\jitin81\\AppData\\Local\\JetBrains\\IntelliJIdea2026.2\\acp-agents\\.runtimes\\node\\24.19.0\\node.exe",
+    "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\realtime\\browser-run.mjs",
+    "--core-passed",
+    "--samples",
+    "8",
+    "--skip-reconnect"
+  ],
+  "scope": "100_SSE_CONNECTIONS_WITH_5_ACTUAL_BROWSER_DOM_SAMPLES",
+  "browser": "155.0.8059.40",
+  "browserChannel": "chrome",
+  "connections": 100,
+  "actualBrowserConnections": 5,
+  "protocolBackgroundConnections": 95,
+  "roles": {
+    "browserBidders": 2,
+    "browserViewers": 3,
+    "protocolBidRolesIdle": 18,
+    "protocolViewers": 77
+  },
+  "hundredConnectionMetrics": {
+    "streamErrors": 0,
+    "sent": 120,
+    "overflows": 0,
+    "totalConnections": 100,
+    "dropped": 0,
+    "activeConnections": 100,
+    "paused": false,
+    "maxQueue": 1,
+    "workerErrors": 0,
+    "lastWorkerError": "",
+    "heapUsed": 45994960,
+    "processCpuNs": 35234375000,
+    "liveThreads": 111,
+    "serverMs": 1792031910624
+  },
+  "clockSamples": [
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910634,
+      "roundTripMs": 10,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 5
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910645,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 1,
+      "halfRttUncertaintyMs": 3
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910654,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 3
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910662,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 3
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910670,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 3
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910679,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 1,
+      "halfRttUncertaintyMs": 3
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910687.5,
+      "roundTripMs": 7,
+      "midpointOffsetMs": 0.5,
+      "halfRttUncertaintyMs": 3.5
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910695.5,
+      "roundTripMs": 7,
+      "midpointOffsetMs": 0.5,
+      "halfRttUncertaintyMs": 3.5
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910704,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 1,
+      "halfRttUncertaintyMs": 3
+    },
+    {
+      "phase": "begin",
+      "clientWallMs": 1792031910712,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 1,
+      "halfRttUncertaintyMs": 3
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920036.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920043.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920049.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": 0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920056.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920062.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920069,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920075.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920081.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920088.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": -0.5,
+      "halfRttUncertaintyMs": 2.5
+    },
+    {
+      "phase": "end",
+      "clientWallMs": 1792031920094.5,
+      "roundTripMs": 5,
+      "midpointOffsetMs": 0.5,
+      "halfRttUncertaintyMs": 2.5
+    }
+  ],
+  "calibration": {
+    "begin": {
+      "phase": "begin",
+      "clientWallMs": 1792031910645,
+      "roundTripMs": 6,
+      "midpointOffsetMs": 1,
+      "halfRttUncertaintyMs": 3
+    },
+    "end": {
+      "phase": "end",
+      "clientWallMs": 1792031920069,
+      "roundTripMs": 4,
+      "midpointOffsetMs": 0,
+      "halfRttUncertaintyMs": 2
+    }
+  },
+  "clockDriftMs": -1,
+  "clockUncertaintyMs": 4,
+  "commitTimestampResolutionMs": 1,
+  "samples": 8,
+  "scheduledAttemptsPerSecond": 2,
+  "bidClickToDomMs": {
+    "n": 8,
+    "p50": 82.10000000149012,
+    "p95": 113.29999999701977,
+    "p99": 113.29999999701977,
+    "max": 113.29999999701977
+  },
+  "sseReceiveToDomMs": {
+    "n": 58,
+    "p50": 1.6999999955296516,
+    "p95": 10.200000002980232,
+    "p99": 12.099999994039536,
+    "max": 12.099999994039536
+  },
+  "publicSnapshotTimestampToDomProxyMs": {
+    "n": 33,
+    "p50": 59,
+    "p95": 112,
+    "p99": 120,
+    "max": 120
+  },
+  "dbCommitToDomCalibratedMs": {
+    "n": 24,
+    "p50": 36.205322265625,
+    "p95": 50.050048828125,
+    "p99": 50.050048828125,
+    "max": 50.050048828125
+  },
+  "exactDbCommitToOtherDom": "PG_COMMIT_TIMESTAMP_TO_OTHER_VIEWER_CURRENT_DOM: pages2..4 only; earliest observed version>=commit, including snapshot; clock mapping estimated; missing pairs reported",
+  "responseLossRecovery": {
+    "expectedFailures": [
+      {
+        "kind": "bid",
+        "key": "c9eca788-6136-4579-84bd-e22f31cffdc6",
+        "message": "Failed to fetch",
+        "expected": true,
+        "injection": "HTTP_RESPONSE_ABORT_AFTER_UPSTREAM_BID_REQUEST"
+      }
+    ],
+    "recovered": {
+      "lane": 1,
+      "auction": "L1-A1",
+      "key": "c9eca788-6136-4579-84bd-e22f31cffdc6",
+      "outcome": "ACCEPTED",
+      "code": "BID_ACCEPTED",
+      "clickToDomMs": 115.39999999850988,
+      "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+    },
+    "persistedOriginal": {
+      "actor": "browser-c7f321b6-93e8-4f58-ae04-0f1d726f2261",
+      "key": "c9eca788-6136-4579-84bd-e22f31cffdc6",
+      "kind": "BID",
+      "lane": 1,
+      "auction": "L1-A1",
+      "amount": 12000,
+      "reason": null,
+      "stopId": null,
+      "seq": 3,
+      "receivedMs": 1792031919754,
+      "outcome": "ACCEPTED",
+      "code": "BID_ACCEPTED",
+      "decidedMs": 1792031919781,
+      "result": {
+        "outcome": "ACCEPTED",
+        "code": "BID_ACCEPTED",
+        "seq": 3,
+        "receivedMs": 1792031919754,
+        "decidedMs": 1792031919781,
+        "snapshot": {
+          "lane": 1,
+          "auction": "L1-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 5,
+          "highestAmount": 12000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924754,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 13000,
+          "serverMs": 1792031919781
+        }
+      }
+    },
+    "pass": true
+  },
+  "reconnectRuns": [],
+  "browserReconnectReadyToDomMs": {
+    "n": 0,
+    "p50": null,
+    "p95": null,
+    "p99": null,
+    "max": null
+  },
+  "errors": [],
+  "measurements": [
+    {
+      "measurements": {
+        "clientKey": "dom-2026-10-15T02-38-24-713Z-browser-0",
+        "bid": [
+          {
+            "lane": 1,
+            "auction": "L1-A1",
+            "key": "aa425a30-b54d-4abc-b3c3-99f25157230a",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 83.20000000298023,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          },
+          {
+            "lane": 2,
+            "auction": "L2-A1",
+            "key": "b92cd272-6a0b-4bc6-bdbb-6f700a35247f",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 49.30000000447035,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          },
+          {
+            "lane": 3,
+            "auction": "L3-A1",
+            "key": "bbb51d55-6784-4db8-822e-b491a12e101a",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 88.09999999403954,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          },
+          {
+            "lane": 4,
+            "auction": "L4-A1",
+            "key": "f5439f9c-f032-4dfe-aed1-84f2aba99f52",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 75.80000000447035,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          },
+          {
+            "lane": 1,
+            "auction": "L1-A1",
+            "key": "c9eca788-6136-4579-84bd-e22f31cffdc6",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 115.39999999850988,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          }
+        ],
+        "render": [
+          {
+            "lane": 2,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "receiveToDomMs": 1.6999999955296516,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 37,
+            "committedMs": 1792031909785,
+            "clientDomWallMs": 1792031909799,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "receiveToDomMs": 5.899999998509884,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 78,
+            "committedMs": 1792031909753,
+            "clientDomWallMs": 1792031909814,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 90,
+            "committedMs": 1792031909753,
+            "clientDomWallMs": 1792031909828,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 112,
+            "committedMs": 1792031909794,
+            "clientDomWallMs": 1792031909883,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 7,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 37,
+            "committedMs": 1792031916100,
+            "clientDomWallMs": 1792031916120,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.8000000044703484,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 59,
+            "committedMs": 1792031916519,
+            "clientDomWallMs": 1792031916566,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.4000000059604645,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 24,
+            "committedMs": 1792031917059,
+            "clientDomWallMs": 1792031917068,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 10.900000005960464,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 66,
+            "committedMs": 1792031917521,
+            "clientDomWallMs": 1792031917574,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 2.7999999970197678,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 59,
+            "committedMs": 1792031918098,
+            "clientDomWallMs": 1792031918135,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 2.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 71,
+            "committedMs": 1792031918571,
+            "clientDomWallMs": 1792031918620,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 2.2999999970197678,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 48,
+            "committedMs": 1792031919096,
+            "clientDomWallMs": 1792031919126,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 2.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 67,
+            "committedMs": 1792031919547,
+            "clientDomWallMs": 1792031919598,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 5,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 5.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 74,
+            "committedMs": 1792031919797,
+            "clientDomWallMs": 1792031919855,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          }
+        ],
+        "applied": [
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031908894,
+            "clientDomMonoMs": 339.70000000298023,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909799,
+            "clientDomMonoMs": 1245.1000000014901,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909814,
+            "clientDomMonoMs": 1259.6000000014901,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909828,
+            "clientDomMonoMs": 1273.6000000014901,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909883,
+            "clientDomMonoMs": 1328.5,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031913652,
+            "clientDomMonoMs": 5098.10000000149,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916120,
+            "clientDomMonoMs": 7566,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916566,
+            "clientDomMonoMs": 8012.30000000447,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917068,
+            "clientDomMonoMs": 8513.90000000596,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917574,
+            "clientDomMonoMs": 9020.40000000596,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918135,
+            "clientDomMonoMs": 9581.20000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918620,
+            "clientDomMonoMs": 10065.90000000596,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031918668,
+            "clientDomMonoMs": 10113.70000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919126,
+            "clientDomMonoMs": 10571.90000000596,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919598,
+            "clientDomMonoMs": 11043.90000000596,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919855,
+            "clientDomMonoMs": 11301.10000000149,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          }
+        ],
+        "reconnect": [
+          {
+            "elapsedMs": 146.69999999552965,
+            "boundary": "SSE_READY_TO_DOM_SNAPSHOT",
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          }
+        ],
+        "errors": [
+          {
+            "kind": "bid",
+            "key": "c9eca788-6136-4579-84bd-e22f31cffdc6",
+            "message": "Failed to fetch"
+          }
+        ],
+        "sync": [
+          {
+            "reason": "stream-ready",
+            "elapsedMs": 61.100000001490116,
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 19.899999998509884,
+            "versions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 28.600000001490116,
+            "versions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ]
+          }
+        ]
+      },
+      "state": [
+        {
+          "lane": 1,
+          "auction": "L1-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 5,
+          "highestAmount": 12000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924754,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 13000,
+          "serverMs": 1792031919781,
+          "committedMs": 1792031919797,
+          "eventCreatedMs": 1792031919781,
+          "_clientReceivedMono": 11295.60000000149
+        },
+        {
+          "lane": 2,
+          "auction": "L2-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031923523,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031918641
+        },
+        {
+          "lane": 3,
+          "auction": "L3-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924067,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919078,
+          "committedMs": 1792031919096,
+          "eventCreatedMs": 1792031919078,
+          "_clientReceivedMono": 10569.70000000298
+        },
+        {
+          "lane": 4,
+          "auction": "L4-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924518,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919531,
+          "committedMs": 1792031919547,
+          "eventCreatedMs": 1792031919531,
+          "_clientReceivedMono": 11041.40000000596
+        }
+      ],
+      "stats": {
+        "applied": 13,
+        "oldOrDuplicate": 0,
+        "gaps": 0,
+        "overflow": 0,
+        "snapshots": 3
+      }
+    },
+    {
+      "measurements": {
+        "clientKey": "dom-2026-10-15T02-38-24-713Z-browser-1",
+        "bid": [
+          {
+            "lane": 1,
+            "auction": "L1-A1",
+            "key": "5ac61eb8-af3a-41cb-82b1-efd3d93bc7aa",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 82.10000000149012,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          },
+          {
+            "lane": 2,
+            "auction": "L2-A1",
+            "key": "6ba5388a-84e1-4adb-ae3a-940b824cca6f",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 86.29999999701977,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          },
+          {
+            "lane": 3,
+            "auction": "L3-A1",
+            "key": "c8cb8821-0589-4473-8d91-1a64ca2745ad",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 113.29999999701977,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          },
+          {
+            "lane": 4,
+            "auction": "L4-A1",
+            "key": "ab2998d8-5c42-49d5-8c97-795161ec0dc6",
+            "outcome": "ACCEPTED",
+            "code": "BID_ACCEPTED",
+            "clickToDomMs": 61.5,
+            "boundary": "DOM_CLICK_INTENT_BID_FINAL_RENDER"
+          }
+        ],
+        "render": [
+          {
+            "lane": 2,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "receiveToDomMs": 1.7999999970197678,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 37,
+            "committedMs": 1792031909785,
+            "clientDomWallMs": 1792031909799,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "receiveToDomMs": 5.899999998509884,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 78,
+            "committedMs": 1792031909753,
+            "clientDomWallMs": 1792031909814,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 2,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 90,
+            "committedMs": 1792031909753,
+            "clientDomWallMs": 1792031909828,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 10.200000002980232,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 120,
+            "committedMs": 1792031909794,
+            "clientDomWallMs": 1792031909891,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 2,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 32,
+            "committedMs": 1792031916100,
+            "clientDomWallMs": 1792031916115,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 0.8999999985098839,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 59,
+            "committedMs": 1792031916519,
+            "clientDomWallMs": 1792031916566,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.2000000029802322,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 24,
+            "committedMs": 1792031917059,
+            "clientDomWallMs": 1792031917068,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.3000000044703484,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 57,
+            "committedMs": 1792031917521,
+            "clientDomWallMs": 1792031917565,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 12.099999994039536,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 72,
+            "committedMs": 1792031918098,
+            "clientDomWallMs": 1792031918148,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 2.7000000029802322,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 71,
+            "committedMs": 1792031918571,
+            "clientDomWallMs": 1792031918620,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 2.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 67,
+            "committedMs": 1792031919547,
+            "clientDomWallMs": 1792031919598,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 5,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 2.6999999955296516,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 71,
+            "committedMs": 1792031919797,
+            "clientDomWallMs": 1792031919852,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          }
+        ],
+        "applied": [
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031909194,
+            "clientDomMonoMs": 151.89999999850988,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909799,
+            "clientDomMonoMs": 757.2999999970198,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909814,
+            "clientDomMonoMs": 771.8999999985099,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909828,
+            "clientDomMonoMs": 786.6000000014901,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909891,
+            "clientDomMonoMs": 849.6000000014901,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031914132,
+            "clientDomMonoMs": 5089.70000000298,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916115,
+            "clientDomMonoMs": 7073.20000000298,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916566,
+            "clientDomMonoMs": 7523.79999999702,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917068,
+            "clientDomMonoMs": 8026.10000000149,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917565,
+            "clientDomMonoMs": 8523.10000000149,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918148,
+            "clientDomMonoMs": 9106.29999999702,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918620,
+            "clientDomMonoMs": 9578.20000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031919147,
+            "clientDomMonoMs": 10104.89999999851,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919598,
+            "clientDomMonoMs": 10556.10000000149,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919852,
+            "clientDomMonoMs": 10810.39999999851,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          }
+        ],
+        "reconnect": [
+          {
+            "elapsedMs": 46.5,
+            "boundary": "SSE_READY_TO_DOM_SNAPSHOT",
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          }
+        ],
+        "errors": [],
+        "sync": [
+          {
+            "reason": "stream-ready",
+            "elapsedMs": 45.900000005960464,
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 18.30000000447035,
+            "versions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 33.5,
+            "versions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ]
+          }
+        ]
+      },
+      "state": [
+        {
+          "lane": 1,
+          "auction": "L1-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 5,
+          "highestAmount": 12000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924754,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 13000,
+          "serverMs": 1792031919781,
+          "committedMs": 1792031919797,
+          "eventCreatedMs": 1792031919781,
+          "_clientReceivedMono": 10807.70000000298
+        },
+        {
+          "lane": 2,
+          "auction": "L2-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031923523,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919113
+        },
+        {
+          "lane": 3,
+          "auction": "L3-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924067,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919113
+        },
+        {
+          "lane": 4,
+          "auction": "L4-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924518,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919531,
+          "committedMs": 1792031919547,
+          "eventCreatedMs": 1792031919531,
+          "_clientReceivedMono": 10553.70000000298
+        }
+      ],
+      "stats": {
+        "applied": 12,
+        "oldOrDuplicate": 1,
+        "gaps": 0,
+        "overflow": 0,
+        "snapshots": 3
+      }
+    },
+    {
+      "measurements": {
+        "clientKey": "dom-2026-10-15T02-38-24-713Z-browser-2",
+        "bid": [],
+        "render": [
+          {
+            "lane": 2,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "receiveToDomMs": 1.8999999985098839,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 37,
+            "committedMs": 1792031909785,
+            "clientDomWallMs": 1792031909799,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "receiveToDomMs": 5.899999998509884,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 78,
+            "committedMs": 1792031909753,
+            "clientDomWallMs": 1792031909814,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 90,
+            "committedMs": 1792031909753,
+            "clientDomWallMs": 1792031909828,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 10.200000002980232,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 120,
+            "committedMs": 1792031909794,
+            "clientDomWallMs": 1792031909891,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 2,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 32,
+            "committedMs": 1792031916100,
+            "clientDomWallMs": 1792031916115,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 0.8999999985098839,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 59,
+            "committedMs": 1792031916519,
+            "clientDomWallMs": 1792031916566,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.3000000044703484,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 24,
+            "committedMs": 1792031917059,
+            "clientDomWallMs": 1792031917068,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.7000000029802322,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 57,
+            "committedMs": 1792031917521,
+            "clientDomWallMs": 1792031917565,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 58,
+            "committedMs": 1792031918098,
+            "clientDomWallMs": 1792031918134,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.7000000029802322,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 70,
+            "committedMs": 1792031918571,
+            "clientDomWallMs": 1792031918619,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.4000000059604645,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 47,
+            "committedMs": 1792031919096,
+            "clientDomWallMs": 1792031919125,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 1.3999999985098839,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 66,
+            "committedMs": 1792031919547,
+            "clientDomWallMs": 1792031919597,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 5,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 1.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 70,
+            "committedMs": 1792031919797,
+            "clientDomWallMs": 1792031919851,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          }
+        ],
+        "applied": [
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031909451,
+            "clientDomMonoMs": 114.89999999850988,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909799,
+            "clientDomMonoMs": 463.20000000298023,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909814,
+            "clientDomMonoMs": 477.3999999985099,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909828,
+            "clientDomMonoMs": 491.6000000014901,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909891,
+            "clientDomMonoMs": 555.1000000014901,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031914416,
+            "clientDomMonoMs": 5079.89999999851,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916115,
+            "clientDomMonoMs": 6778.80000000447,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916566,
+            "clientDomMonoMs": 7229.39999999851,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917068,
+            "clientDomMonoMs": 7731.70000000298,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917565,
+            "clientDomMonoMs": 8229.20000000298,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918134,
+            "clientDomMonoMs": 8797.70000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918619,
+            "clientDomMonoMs": 9282.80000000447,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919125,
+            "clientDomMonoMs": 9788.70000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031919436,
+            "clientDomMonoMs": 10100.30000000447,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919597,
+            "clientDomMonoMs": 10260.70000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919851,
+            "clientDomMonoMs": 10514.70000000298,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          }
+        ],
+        "reconnect": [
+          {
+            "elapsedMs": 44.600000001490116,
+            "boundary": "SSE_READY_TO_DOM_SNAPSHOT",
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          }
+        ],
+        "errors": [],
+        "sync": [
+          {
+            "reason": "stream-ready",
+            "elapsedMs": 43.899999998509884,
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 18.099999994039536,
+            "versions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 25.700000002980232,
+            "versions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ]
+          }
+        ]
+      },
+      "state": [
+        {
+          "lane": 1,
+          "auction": "L1-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 5,
+          "highestAmount": 12000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924754,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 13000,
+          "serverMs": 1792031919781,
+          "committedMs": 1792031919797,
+          "eventCreatedMs": 1792031919781,
+          "_clientReceivedMono": 10513.20000000298
+        },
+        {
+          "lane": 2,
+          "auction": "L2-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031923523,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919415
+        },
+        {
+          "lane": 3,
+          "auction": "L3-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924067,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919415
+        },
+        {
+          "lane": 4,
+          "auction": "L4-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924518,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919531,
+          "committedMs": 1792031919547,
+          "eventCreatedMs": 1792031919531,
+          "_clientReceivedMono": 10259.30000000447
+        }
+      ],
+      "stats": {
+        "applied": 13,
+        "oldOrDuplicate": 0,
+        "gaps": 0,
+        "overflow": 0,
+        "snapshots": 3
+      }
+    },
+    {
+      "measurements": {
+        "clientKey": "dom-2026-10-15T02-38-24-713Z-browser-3",
+        "bid": [],
+        "render": [
+          {
+            "lane": 2,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 3.100000001490116,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 38,
+            "committedMs": 1792031909785,
+            "clientDomWallMs": 1792031909800,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 2,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.4000000059604645,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 112,
+            "committedMs": 1792031909794,
+            "clientDomWallMs": 1792031909883,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 2.100000001490116,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 32,
+            "committedMs": 1792031916100,
+            "clientDomWallMs": 1792031916115,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.1000000014901161,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 59,
+            "committedMs": 1792031916519,
+            "clientDomWallMs": 1792031916566,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.4000000059604645,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 24,
+            "committedMs": 1792031917059,
+            "clientDomWallMs": 1792031917068,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.6000000014901161,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 57,
+            "committedMs": 1792031917521,
+            "clientDomWallMs": 1792031917565,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.6000000014901161,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 58,
+            "committedMs": 1792031918098,
+            "clientDomWallMs": 1792031918134,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.5,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 70,
+            "committedMs": 1792031918571,
+            "clientDomWallMs": 1792031918619,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.7999999970197678,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 47,
+            "committedMs": 1792031919096,
+            "clientDomWallMs": 1792031919125,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 1.2999999970197678,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 66,
+            "committedMs": 1792031919547,
+            "clientDomWallMs": 1792031919597,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 5,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 1.2999999970197678,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 70,
+            "committedMs": 1792031919797,
+            "clientDomWallMs": 1792031919851,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          }
+        ],
+        "applied": [
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031909756,
+            "clientDomMonoMs": 135.40000000596046,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031909793,
+            "clientDomMonoMs": 172.70000000298023,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909800,
+            "clientDomMonoMs": 179.80000000447035,
+            "laneVersions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031909882,
+            "clientDomMonoMs": 261.90000000596046,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031914701,
+            "clientDomMonoMs": 5080.70000000298,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916115,
+            "clientDomMonoMs": 6494.5,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916566,
+            "clientDomMonoMs": 6945.10000000149,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917068,
+            "clientDomMonoMs": 7447.4000000059605,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917565,
+            "clientDomMonoMs": 7944.5,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918134,
+            "clientDomMonoMs": 8513.40000000596,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918619,
+            "clientDomMonoMs": 8998.40000000596,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919125,
+            "clientDomMonoMs": 9504.70000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919597,
+            "clientDomMonoMs": 9976.20000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031919706,
+            "clientDomMonoMs": 10085.20000000298,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919851,
+            "clientDomMonoMs": 10230.10000000149,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          }
+        ],
+        "reconnect": [
+          {
+            "elapsedMs": 51.600000001490116,
+            "boundary": "SSE_READY_TO_DOM_SNAPSHOT",
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          }
+        ],
+        "errors": [],
+        "sync": [
+          {
+            "reason": "stream-ready",
+            "elapsedMs": 50.70000000298023,
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ]
+          },
+          {
+            "reason": "stream-ready",
+            "elapsedMs": 36.899999998509884,
+            "versions": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 17.69999999552965,
+            "versions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 22.899999998509884,
+            "versions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ]
+          }
+        ]
+      },
+      "state": [
+        {
+          "lane": 1,
+          "auction": "L1-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 5,
+          "highestAmount": 12000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924754,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 13000,
+          "serverMs": 1792031919781,
+          "committedMs": 1792031919797,
+          "eventCreatedMs": 1792031919781,
+          "_clientReceivedMono": 10228.80000000447
+        },
+        {
+          "lane": 2,
+          "auction": "L2-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031923523,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919688
+        },
+        {
+          "lane": 3,
+          "auction": "L3-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924067,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919688
+        },
+        {
+          "lane": 4,
+          "auction": "L4-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924518,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031919688
+        }
+      ],
+      "stats": {
+        "applied": 11,
+        "oldOrDuplicate": 2,
+        "gaps": 1,
+        "overflow": 0,
+        "snapshots": 4
+      }
+    },
+    {
+      "measurements": {
+        "clientKey": "dom-2026-10-15T02-38-24-713Z-browser-4",
+        "bid": [],
+        "render": [
+          {
+            "lane": 1,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 2.3000000044703484,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 32,
+            "committedMs": 1792031916100,
+            "clientDomWallMs": 1792031916115,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.1000000014901161,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 59,
+            "committedMs": 1792031916519,
+            "clientDomWallMs": 1792031916566,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "receiveToDomMs": 1.4000000059604645,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 24,
+            "committedMs": 1792031917059,
+            "clientDomWallMs": 1792031917068,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 3,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.6000000014901161,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 57,
+            "committedMs": 1792031917521,
+            "clientDomWallMs": 1792031917565,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 2,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 59,
+            "committedMs": 1792031918098,
+            "clientDomWallMs": 1792031918135,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 2,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.5999999940395355,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 70,
+            "committedMs": 1792031918571,
+            "clientDomWallMs": 1792031918619,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 3,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "receiveToDomMs": 1.3999999985098839,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 47,
+            "committedMs": 1792031919096,
+            "clientDomWallMs": 1792031919125,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 4,
+            "version": 4,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 1.4000000059604645,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 66,
+            "committedMs": 1792031919547,
+            "clientDomWallMs": 1792031919597,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          },
+          {
+            "lane": 1,
+            "version": 5,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "receiveToDomMs": 1.3999999985098839,
+            "boundary": "SSE_RECEIVE_TO_DOM",
+            "serverTimestampToDomProxyMs": 70,
+            "committedMs": 1792031919797,
+            "clientDomWallMs": 1792031919851,
+            "proxyBoundary": "PUBLIC_EVENT_TIMESTAMP_TO_DOM"
+          }
+        ],
+        "applied": [
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031910078,
+            "clientDomMonoMs": 118.80000000447035,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031915057,
+            "clientDomMonoMs": 5096.80000000447,
+            "laneVersions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916115,
+            "clientDomMonoMs": 6155.60000000149,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031916566,
+            "clientDomMonoMs": 6606,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917068,
+            "clientDomMonoMs": 7108.20000000298,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031917565,
+            "clientDomMonoMs": 7605.5,
+            "laneVersions": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918134,
+            "clientDomMonoMs": 8174.80000000447,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031918619,
+            "clientDomMonoMs": 8659.39999999851,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919125,
+            "clientDomMonoMs": 9165.5,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919597,
+            "clientDomMonoMs": 9637.30000000447,
+            "laneVersions": [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "event",
+            "clientDomWallMs": 1792031919851,
+            "clientDomMonoMs": 9891.10000000149,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          },
+          {
+            "kind": "snapshot",
+            "clientDomWallMs": 1792031920051,
+            "clientDomMonoMs": 10091.20000000298,
+            "laneVersions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ],
+            "boundary": "DOM_MUTATION_PLUS_RAF_CALLBACK_NOT_PIXEL_PAINT"
+          }
+        ],
+        "reconnect": [
+          {
+            "elapsedMs": 48.399999998509884,
+            "boundary": "SSE_READY_TO_DOM_SNAPSHOT",
+            "versions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          }
+        ],
+        "errors": [],
+        "sync": [
+          {
+            "reason": "stream-ready",
+            "elapsedMs": 47.20000000298023,
+            "versions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 26.80000000447035,
+            "versions": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                3,
+                2
+              ],
+              [
+                4,
+                2
+              ]
+            ]
+          },
+          {
+            "reason": "periodic-silent-loss-check",
+            "elapsedMs": 20.200000002980232,
+            "versions": [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                4
+              ]
+            ]
+          }
+        ]
+      },
+      "state": [
+        {
+          "lane": 1,
+          "auction": "L1-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 5,
+          "highestAmount": 12000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924754,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 13000,
+          "serverMs": 1792031920034
+        },
+        {
+          "lane": 2,
+          "auction": "L2-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031923523,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031920034
+        },
+        {
+          "lane": 3,
+          "auction": "L3-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924067,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031920034
+        },
+        {
+          "lane": 4,
+          "auction": "L4-A1",
+          "ordinal": 1,
+          "stage": "FOLLOWUP",
+          "version": 4,
+          "highestAmount": 11000,
+          "hasBid": true,
+          "reserveMet": true,
+          "openMs": 1792031909736,
+          "windowStartMs": 1792031909736,
+          "deadlineMs": 1792031924518,
+          "manualStopped": false,
+          "held": false,
+          "holdReason": null,
+          "stopId": null,
+          "recoveryConfirmed": false,
+          "historyComplete": true,
+          "result": null,
+          "lastResult": null,
+          "nextAmount": 12000,
+          "serverMs": 1792031920034
+        }
+      ],
+      "stats": {
+        "applied": 9,
+        "oldOrDuplicate": 0,
+        "gaps": 0,
+        "overflow": 0,
+        "snapshots": 3
+      }
+    }
+  ],
+  "screenshot": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\realtime\\2026-10-15T02-38-24-713Z-browser\\four-lanes.png",
+  "pass": true,
+  "dbCommitToDomP95EstimateWithClockAllowanceMs": 55.050048828125,
+  "clockAssumption": "Linear begin/end offset interpolation; RTT midpoint and observed drift are estimates/allowances, not rigorous delay bounds",
+  "domBoundary": "DOM mutation plus requestAnimationFrame callback; actual pixel paint is not measured",
+  "expectedCommitCoverage": {
+    "expectedCommitViewerPairs": 24,
+    "observed": [
+      {
+        "viewer": 2,
+        "lane": 1,
+        "version": 3,
+        "committedMs": 1792031916100,
+        "createdMs": 1792031916083,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031916115,
+        "via": "event",
+        "lagMs": 15.419677734375
+      },
+      {
+        "viewer": 2,
+        "lane": 1,
+        "version": 4,
+        "committedMs": 1792031918098,
+        "createdMs": 1792031918076,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031918134,
+        "via": "event",
+        "lagMs": 36.205322265625
+      },
+      {
+        "viewer": 2,
+        "lane": 2,
+        "version": 3,
+        "committedMs": 1792031916519,
+        "createdMs": 1792031916507,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031916566,
+        "via": "event",
+        "lagMs": 47.371826171875
+      },
+      {
+        "viewer": 2,
+        "lane": 2,
+        "version": 4,
+        "committedMs": 1792031918571,
+        "createdMs": 1792031918549,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031918619,
+        "via": "event",
+        "lagMs": 48.15380859375
+      },
+      {
+        "viewer": 2,
+        "lane": 3,
+        "version": 3,
+        "committedMs": 1792031917059,
+        "createdMs": 1792031917044,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031917068,
+        "via": "event",
+        "lagMs": 9.318359375
+      },
+      {
+        "viewer": 2,
+        "lane": 3,
+        "version": 4,
+        "committedMs": 1792031919096,
+        "createdMs": 1792031919078,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031919125,
+        "via": "event",
+        "lagMs": 29.10009765625
+      },
+      {
+        "viewer": 2,
+        "lane": 4,
+        "version": 3,
+        "committedMs": 1792031917521,
+        "createdMs": 1792031917508,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031917565,
+        "via": "event",
+        "lagMs": 44.265625
+      },
+      {
+        "viewer": 2,
+        "lane": 4,
+        "version": 4,
+        "committedMs": 1792031919547,
+        "createdMs": 1792031919531,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031919597,
+        "via": "event",
+        "lagMs": 50.050048828125
+      },
+      {
+        "viewer": 3,
+        "lane": 1,
+        "version": 3,
+        "committedMs": 1792031916100,
+        "createdMs": 1792031916083,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031916115,
+        "via": "event",
+        "lagMs": 15.419677734375
+      },
+      {
+        "viewer": 3,
+        "lane": 1,
+        "version": 4,
+        "committedMs": 1792031918098,
+        "createdMs": 1792031918076,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031918134,
+        "via": "event",
+        "lagMs": 36.205322265625
+      },
+      {
+        "viewer": 3,
+        "lane": 2,
+        "version": 3,
+        "committedMs": 1792031916519,
+        "createdMs": 1792031916507,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031916566,
+        "via": "event",
+        "lagMs": 47.371826171875
+      },
+      {
+        "viewer": 3,
+        "lane": 2,
+        "version": 4,
+        "committedMs": 1792031918571,
+        "createdMs": 1792031918549,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031918619,
+        "via": "event",
+        "lagMs": 48.15380859375
+      },
+      {
+        "viewer": 3,
+        "lane": 3,
+        "version": 3,
+        "committedMs": 1792031917059,
+        "createdMs": 1792031917044,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031917068,
+        "via": "event",
+        "lagMs": 9.318359375
+      },
+      {
+        "viewer": 3,
+        "lane": 3,
+        "version": 4,
+        "committedMs": 1792031919096,
+        "createdMs": 1792031919078,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031919125,
+        "via": "event",
+        "lagMs": 29.10009765625
+      },
+      {
+        "viewer": 3,
+        "lane": 4,
+        "version": 3,
+        "committedMs": 1792031917521,
+        "createdMs": 1792031917508,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031917565,
+        "via": "event",
+        "lagMs": 44.265625
+      },
+      {
+        "viewer": 3,
+        "lane": 4,
+        "version": 4,
+        "committedMs": 1792031919547,
+        "createdMs": 1792031919531,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031919597,
+        "via": "event",
+        "lagMs": 50.050048828125
+      },
+      {
+        "viewer": 4,
+        "lane": 1,
+        "version": 3,
+        "committedMs": 1792031916100,
+        "createdMs": 1792031916083,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031916115,
+        "via": "event",
+        "lagMs": 15.419677734375
+      },
+      {
+        "viewer": 4,
+        "lane": 1,
+        "version": 4,
+        "committedMs": 1792031918098,
+        "createdMs": 1792031918076,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031918134,
+        "via": "event",
+        "lagMs": 36.205322265625
+      },
+      {
+        "viewer": 4,
+        "lane": 2,
+        "version": 3,
+        "committedMs": 1792031916519,
+        "createdMs": 1792031916507,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031916566,
+        "via": "event",
+        "lagMs": 47.371826171875
+      },
+      {
+        "viewer": 4,
+        "lane": 2,
+        "version": 4,
+        "committedMs": 1792031918571,
+        "createdMs": 1792031918549,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031918619,
+        "via": "event",
+        "lagMs": 48.15380859375
+      },
+      {
+        "viewer": 4,
+        "lane": 3,
+        "version": 3,
+        "committedMs": 1792031917059,
+        "createdMs": 1792031917044,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031917068,
+        "via": "event",
+        "lagMs": 9.318359375
+      },
+      {
+        "viewer": 4,
+        "lane": 3,
+        "version": 4,
+        "committedMs": 1792031919096,
+        "createdMs": 1792031919078,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031919125,
+        "via": "event",
+        "lagMs": 29.10009765625
+      },
+      {
+        "viewer": 4,
+        "lane": 4,
+        "version": 3,
+        "committedMs": 1792031917521,
+        "createdMs": 1792031917508,
+        "observedVersion": 3,
+        "clientDomWallMs": 1792031917565,
+        "via": "event",
+        "lagMs": 44.265625
+      },
+      {
+        "viewer": 4,
+        "lane": 4,
+        "version": 4,
+        "committedMs": 1792031919547,
+        "createdMs": 1792031919531,
+        "observedVersion": 4,
+        "clientDomWallMs": 1792031919597,
+        "via": "event",
+        "lagMs": 50.050048828125
+      }
+    ],
+    "missing": [],
+    "missingCommitTimestamp": []
+  },
+  "measurementBaseline": {
+    "serverMs": 1792031915956,
+    "lanes": [
+      {
+        "lane": 1,
+        "auction": "L1-A1",
+        "ordinal": 1,
+        "stage": "INITIAL",
+        "version": 2,
+        "highestAmount": null,
+        "hasBid": false,
+        "reserveMet": false,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031919736,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 10000,
+        "serverMs": 1792031915945
+      },
+      {
+        "lane": 2,
+        "auction": "L2-A1",
+        "ordinal": 1,
+        "stage": "INITIAL",
+        "version": 2,
+        "highestAmount": null,
+        "hasBid": false,
+        "reserveMet": false,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031919736,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 10000,
+        "serverMs": 1792031915945
+      },
+      {
+        "lane": 3,
+        "auction": "L3-A1",
+        "ordinal": 1,
+        "stage": "INITIAL",
+        "version": 2,
+        "highestAmount": null,
+        "hasBid": false,
+        "reserveMet": false,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031919736,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 10000,
+        "serverMs": 1792031915945
+      },
+      {
+        "lane": 4,
+        "auction": "L4-A1",
+        "ordinal": 1,
+        "stage": "INITIAL",
+        "version": 2,
+        "highestAmount": null,
+        "hasBid": false,
+        "reserveMet": false,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031919736,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 10000,
+        "serverMs": 1792031915945
+      }
+    ]
+  },
+  "measurementEnd": {
+    "serverMs": 1792031919610,
+    "lanes": [
+      {
+        "lane": 1,
+        "auction": "L1-A1",
+        "ordinal": 1,
+        "stage": "FOLLOWUP",
+        "version": 4,
+        "highestAmount": 11000,
+        "hasBid": true,
+        "reserveMet": true,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031923066,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 12000,
+        "serverMs": 1792031919594
+      },
+      {
+        "lane": 2,
+        "auction": "L2-A1",
+        "ordinal": 1,
+        "stage": "FOLLOWUP",
+        "version": 4,
+        "highestAmount": 11000,
+        "hasBid": true,
+        "reserveMet": true,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031923523,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 12000,
+        "serverMs": 1792031919594
+      },
+      {
+        "lane": 3,
+        "auction": "L3-A1",
+        "ordinal": 1,
+        "stage": "FOLLOWUP",
+        "version": 4,
+        "highestAmount": 11000,
+        "hasBid": true,
+        "reserveMet": true,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031924067,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 12000,
+        "serverMs": 1792031919594
+      },
+      {
+        "lane": 4,
+        "auction": "L4-A1",
+        "ordinal": 1,
+        "stage": "FOLLOWUP",
+        "version": 4,
+        "highestAmount": 11000,
+        "hasBid": true,
+        "reserveMet": true,
+        "openMs": 1792031909736,
+        "windowStartMs": 1792031909736,
+        "deadlineMs": 1792031924518,
+        "manualStopped": false,
+        "held": false,
+        "holdReason": null,
+        "stopId": null,
+        "recoveryConfirmed": false,
+        "historyComplete": true,
+        "result": null,
+        "lastResult": null,
+        "nextAmount": 12000,
+        "serverMs": 1792031919594
+      }
+    ]
+  },
+  "serverConnectionSamples": [
+    {
+      "sample": 0,
+      "metrics": {
+        "streamErrors": 0,
+        "sent": 1220,
+        "overflows": 0,
+        "totalConnections": 100,
+        "dropped": 0,
+        "activeConnections": 100,
+        "paused": false,
+        "maxQueue": 1,
+        "workerErrors": 0,
+        "lastWorkerError": "",
+        "heapUsed": 75355088,
+        "processCpuNs": 36531250000,
+        "liveThreads": 120,
+        "serverMs": 1792031915989
+      },
+      "connectedBackgroundClients": 95
+    }
+  ],
+  "longDurationAllBrowserPerformance": "NOT_RUN: actual DOM sample under100 mixed connections, not5minx3 all-browser test",
+  "thresholds": {
+    "clickToFinalDom": {
+      "targetMs": 1000,
+      "p95Ms": 113.29999999701977,
+      "met": true
+    },
+    "commitToOtherViewerDom": {
+      "targetMs": 1000,
+      "p95EstimateMs": 50.050048828125,
+      "estimateWithClockAllowanceMs": 55.050048828125,
+      "expectedPairs": 24,
+      "observedPairs": 24,
+      "missingPairs": 0,
+      "met": true
+    },
+    "reconnectReadyToDom": {
+      "targetMs": 3000,
+      "p95Ms": null,
+      "met": null
+    }
+  },
+  "environment": {
+    "node": "v24.19.0",
+    "platform": "win32",
+    "arch": "x64",
+    "osRelease": "10.0.26200",
+    "cpuModel": "11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz",
+    "logicalProcessors": 16,
+    "totalMemoryBytes": 16866848768,
+    "sourceHashes": {
+      "protocol.mjs": "4fae7dd0a42ae20d4a44a2d8d24d56b36266c8abf6e2acebbc136972869f8d18",
+      "load.mjs": "e8ee87b44bc5d3dc8efe30bfea81a534b376e001a24099da02a3ea0d1e3fe8af",
+      "browser-run.mjs": "04db4a221eaa9265f187f11989610c70745fd1975327a0fb148a409267c5e005",
+      "reconnect.mjs": "851b7b5316b18e21c85c012c3f2107ac2dcff1fff9f07c58bf8653f2c43206ea",
+      "corruption.mjs": "c1347ebbbd18968f815581c4e2fc328aab3cc9fc91487852cf667612f404497d",
+      "audit-validator.mjs": "9c47a0a0341711801b2478bbcde5e120b9289b7b543961b5c5d6ad3f7105ec39",
+      "package-lock.json": "6c71510d7a0f62d76b8eccfcab45b01ec6bc4c4a74bdcd7e2ba6940cb6efffb3",
+      "../src/main/resources/static/client.js": "13d8d140559908ab4db4ea7b149d1b46b8e34bc06b4fe3277605a593c6afc2c2",
+      "../src/main/resources/static/lane-store.js": "87b09d12f4aa67973ce9c03b54c8f894bc9f5ab599492579257ee9b72f3d670a",
+      "../src/main/resources/static/index.html": "5d0316908b75a63a8955e9e073eae8e0df33600da5f74b861e76ec1990a34c05"
+    },
+    "health": {
+      "pid": 41212,
+      "ready": true,
+      "manual": false
+    },
+    "peer": {
+      "manual": true,
+      "ready": true,
+      "pid": 3556
+    },
+    "peerRole": "Second JVM judgment worker manual/idle; SSE outbox poll may still run",
+    "generatorLocation": "Same Windows host as applications and experimental DB"
+  }
+}

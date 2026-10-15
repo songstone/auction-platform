@@ -1,0 +1,19 @@
+{
+  "runId": "20261015T022428Z",
+  "command": [
+    "python",
+    "harness/resource_monitor.py",
+    "--samples",
+    "1"
+  ],
+  "intervalSeconds": 15,
+  "scope": "READ_ONLY_COARSE_SAMPLING_NOT_EXHAUSTIVE_LOCK_OR_QUEUE_MAXIMA",
+  "samplingOverhead": "two HTTP metrics reads plus psql and docker stats per interval; same host as load generator",
+  "poolWaiting": "NOT_MEASURED",
+  "samples": 1,
+  "errors": 0,
+  "maxPendingObserved": 0,
+  "maxOldestPendingObservedMs": 0,
+  "maxLockWaitersObserved": 0,
+  "finishedUtc": "2026-10-15T02:24:30.201411+00:00"
+}

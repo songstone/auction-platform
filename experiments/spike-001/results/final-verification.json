@@ -1,0 +1,24 @@
+{
+  "verifiedUtc": "2026-10-15T04:00:33.149721+00:00",
+  "scope": "FINAL_ARTIFACT_AND_CLEANUP_CHECK_ONLY_NOT_ADDITIONAL_RUNTIME_TESTS",
+  "markdownDocumentsChecked": 7,
+  "localLinkCount": 99,
+  "missingLocalLinks": [],
+  "sourceHashMismatchesAgainstFinalEnvironment": [],
+  "jarSha256": "CABCAB27254E0011B08C88D601142DC56FA6F2495C3CA42AD12583E932E62247",
+  "jarMatchesFinalEnvironment": true,
+  "compilationRelease": "25",
+  "credentialScanFileCount": 195,
+  "configuredCredentialMatchCount": 0,
+  "finalSuiteExitCodes": {
+    "load-baseline-exit.json": 0,
+    "load-concentrated-exit.json": 0,
+    "reconnect-final-exit.json": 0,
+    "browser-local-final-exit.json": 0,
+    "browser-rtt-final-exit.json": 0
+  },
+  "gitDiffCheckExitCode": 0,
+  "trackedChangedFiles": [],
+  "cleanupVerified": true,
+  "pass": true
+}

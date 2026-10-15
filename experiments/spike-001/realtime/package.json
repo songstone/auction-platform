@@ -1,0 +1,16 @@
+{
+  "name": "spike-001-realtime-experiment",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated protocol load and browser evidence harness; not product code",
+  "scripts": {
+    "model-test": "node model-test.mjs",
+    "load": "node load.mjs",
+    "reconnect": "node reconnect.mjs"
+  },
+  "devDependencies": {
+    "@playwright/cli": "0.1.22",
+    "playwright": "1.58.2"
+  }
+}

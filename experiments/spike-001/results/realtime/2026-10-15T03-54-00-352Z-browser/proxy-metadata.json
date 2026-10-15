@@ -1,0 +1,13 @@
+{
+  "loopback": true,
+  "upstream": "http://127.0.0.1:18081",
+  "configuredAddedRttMs": 100,
+  "halfDelayMs": 50,
+  "metrics": {
+    "requests": 917,
+    "streaming": 110,
+    "errors": 110,
+    "maxDelayedChunks": 12
+  },
+  "limitation": "Timer-injected HTTP delay on same host, not an external network simulation"
+}

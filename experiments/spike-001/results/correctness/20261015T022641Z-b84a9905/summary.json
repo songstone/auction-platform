@@ -1,0 +1,43 @@
+{
+  "runId": "20261015T022641Z-b84a9905",
+  "generatedUtc": "2026-10-15T02:27:01.501188+00:00",
+  "command": [
+    "C:\\Python314\\python.exe",
+    "experiments/spike-001/harness/correctness.py",
+    "--repeats",
+    "0",
+    "--failure-repeats",
+    "10",
+    "--only",
+    "E2_(recovery_hold|resume_identity|known_pending_recovery|unknown_history_hold|clock_regression_hold|bid_before_actual_resume)|E1_bid_STOP"
+  ],
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 20261015,
+  "serverJarAtInvocationSha256": "9c51035bcea9ef79981b9fd98bea5edd71d0b37d857774c15794905adda52aab",
+  "serverUrls": [
+    "http://127.0.0.1:18081",
+    "http://127.0.0.1:18082"
+  ],
+  "caseCount": 80,
+  "passed": 80,
+  "failed": 0,
+  "status": "PASS",
+  "failedCases": [],
+  "boundaries": {
+    "fixtureClock": "synthetic epoch milliseconds",
+    "httpDuration": "monotonic client clock",
+    "loadOrBrowserPerformance": "NOT_RUN by this correctness command",
+    "processTermination": "NOT_RUN by this command",
+    "database": "service integration; DB runtime version and durability captured by outer orchestration"
+  },
+  "sourceHashes": {
+    "client.py": "356daccdb9e11bdd334d6dd06a1b4b0beb390c440421d845e12fe9a011e15560",
+    "correctness.py": "43ae58e658e66c5a42e8d199caf919b771369a7f8b38683853c69025f5825a5a",
+    "crashes.py": "0fe37f7c0f2ec564feaa15d56138476eda78b73068eb39e4cef2dbd9358edb64",
+    "environment_failures.py": "61f4eed6bdbf8ca663e2fdba048b7ecda387ed486c748548f0c3643c4aeb1e87",
+    "regressions.py": "2c71c772878aec365410716de0498136465d5920b2af730ccb1d7387f790c5f7",
+    "resource_monitor.py": "69dc264d1b5d4d3e4e6ff7ae61598fbe281010e28e76c08e1e21a9f00552c77f",
+    "verify_evidence.py": "621887015f937321b9a61874df65a13c60e7bf708c43ee7a809e7d3879ebdf12"
+  }
+}

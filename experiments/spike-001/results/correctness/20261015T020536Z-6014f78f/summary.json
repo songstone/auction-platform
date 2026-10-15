@@ -1,0 +1,35 @@
+{
+  "runId": "20261015T020536Z-6014f78f",
+  "generatedUtc": "2026-10-15T02:05:48.832469+00:00",
+  "command": [
+    "experiments/spike-001/harness/correctness.py",
+    "--repeats",
+    "1",
+    "--failure-repeats",
+    "1"
+  ],
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 20261015,
+  "serverUrls": [
+    "http://127.0.0.1:18081",
+    "http://127.0.0.1:18082"
+  ],
+  "caseCount": 30,
+  "passed": 30,
+  "failed": 0,
+  "status": "PASS",
+  "failedCases": [],
+  "boundaries": {
+    "fixtureClock": "synthetic epoch milliseconds",
+    "httpDuration": "monotonic client clock",
+    "loadOrBrowserPerformance": "NOT_RUN by this correctness command",
+    "processTermination": "NOT_RUN unless separately invoked",
+    "database": "service integration; DB runtime version and durability captured by outer orchestration"
+  },
+  "sourceHashes": {
+    "client.py": "9076266ad4346fd0c2b111c57a3ae5da7e02132c11e2d4de7ba1b136a777b90c",
+    "correctness.py": "565544aee0b880874bd5e199c860f61e0d52719e7c4e5c3c3f8b0f5db589b9c4",
+    "crashes.py": "5f6a662065a5f5958bc9be876c0274528338213b6d50d97584d87c4bb758a571"
+  }
+}

@@ -1,0 +1,867 @@
+{
+  "generatedUtc": "2026-10-15T03:10:40.457413+00:00",
+  "mode": "OFFLINE_FILES_ONLY",
+  "resourceSource": {
+    "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\resources\\20261015T023741Z\\samples.jsonl",
+    "bytes": 203113,
+    "sha256": "c53cd1378160bc91208dc7ece9c175328bbd260476529fb400b4cbc2e09b1b52"
+  },
+  "limitations": [
+    "No live service, database or container access",
+    "Existing JS policy results are reported, not rerun; Python independently cross-checks durable original responses and accepted bid effect counts",
+    "Protocol p95 reference target is separate from the load harness correctness/condition PASS",
+    "Resource observations are coarse samples and cannot establish true maximum queues, lock waits or CPU peaks",
+    "Window timestamps are estimated from existing server/elapsed samples; resources near boundaries may be assigned to an adjacent phase"
+  ],
+  "runs": [
+    {
+      "runId": "2026-10-15T03-03-04-292Z-base-100",
+      "scenario": "base",
+      "connections": 100,
+      "warmupMs": 60000,
+      "measureMs": 300000,
+      "requestedRepetitions": 3,
+      "finished": null,
+      "command": [
+        "C:\\Users\\jitin81\\AppData\\Local\\JetBrains\\IntelliJIdea2026.2\\acp-agents\\.runtimes\\node\\24.19.0\\node.exe",
+        "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\realtime\\load.mjs",
+        "--scenario",
+        "base",
+        "--connections",
+        "100",
+        "--core-passed"
+      ],
+      "scope": "PROTOCOL_INTENT_TO_FINAL_RESPONSE; excludes DOM/render latency and ack completion; no production capacity conclusion",
+      "sources": [
+        {
+          "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\realtime\\2026-10-15T03-03-04-292Z-base-100\\summary.json",
+          "bytes": 197264,
+          "sha256": "a23bdedb7866760c2861f8a3f718c0e7bbd99d3fc7ed1ae49d1b0c1ba1adcfc4"
+        },
+        {
+          "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\realtime\\2026-10-15T03-03-04-292Z-base-100\\requests.jsonl",
+          "bytes": 308858,
+          "sha256": "36d0075eb7852fed1d6705aab8ddc1b7d01dab6c383dd9a1f62ae1a3eeda0afb"
+        }
+      ],
+      "repeats": [
+        {
+          "repeat": 1,
+          "conditions": {
+            "passed": true,
+            "expectedTotalAttempts": 720,
+            "actualTotalAttempts": 720,
+            "expectedMeasuredAttempts": 600,
+            "measuredAttempts": 600,
+            "completed": 600,
+            "failures": 0,
+            "skippedScheduleSlots": 0,
+            "lateBeyondOneScheduleSlot": 0,
+            "minimumContinuousClientConnections": 100,
+            "minimumSampledServerConnections": 100,
+            "workerMode": {
+              "pid": 41212,
+              "ready": true,
+              "manual": false
+            },
+            "postMeasurementWorkerFrozenForExactAudit": true,
+            "protocolResponseReferenceTarget": {
+              "targetMs": 1000,
+              "p95Ms": 95.59739999996964,
+              "met": true,
+              "boundary": "PROTOCOL_INTENT_TO_FINAL_RESPONSE_PROXY_NOT_DOM_R49"
+            },
+            "conditionLimit": "500ms scheduled slot fidelity, not an operational performance target",
+            "extraMonitoringOverhead": "One /metrics request every15s plus socket state checks each500ms; root separately samples2HTTP+SQL+dockerstats every15s"
+          },
+          "allPhases": {
+            "attempts": 720,
+            "completed": 720,
+            "accepted": 716,
+            "rejected": 4,
+            "failures": 0,
+            "outcomes": {
+              "REJECTED": 4,
+              "ACCEPTED": 716
+            },
+            "codes": {
+              "NOT_OPEN": 4,
+              "BID_ACCEPTED": 716
+            },
+            "completedProtocolLatencyMs": {
+              "status": "MEASURED",
+              "n": 720,
+              "p50": 66.19250000000466,
+              "p95": 95.81549999999697,
+              "p99": 137.53729999999632,
+              "max": 376.33930000002147
+            },
+            "receiptToDecisionMs": {
+              "status": "MEASURED",
+              "n": 720,
+              "p50": 10.0,
+              "p95": 23.0,
+              "p99": 39.0,
+              "max": 84.0,
+              "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+              "missingTimestampCount": 0,
+              "missingTimestamps": [],
+              "negativeDurationCount": 0,
+              "negativeDurations": [],
+              "negativeValuesRetainedInDistribution": true
+            },
+            "launchDelayMs": {
+              "status": "MEASURED",
+              "n": 720,
+              "p50": 35.39500000001863,
+              "p95": 45.24399999999878,
+              "p99": 52.42370000001392,
+              "max": 60.82520000000022
+            }
+          },
+          "measurement": {
+            "attempts": 600,
+            "completed": 600,
+            "accepted": 600,
+            "rejected": 0,
+            "failures": 0,
+            "outcomes": {
+              "ACCEPTED": 600
+            },
+            "codes": {
+              "BID_ACCEPTED": 600
+            },
+            "completedProtocolLatencyMs": {
+              "status": "MEASURED",
+              "n": 600,
+              "p50": 65.84739999999874,
+              "p95": 95.59739999996964,
+              "p99": 141.13300000003073,
+              "max": 376.33930000002147
+            },
+            "receiptToDecisionMs": {
+              "status": "MEASURED",
+              "n": 600,
+              "p50": 10.0,
+              "p95": 23.0,
+              "p99": 41.0,
+              "max": 84.0,
+              "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+              "missingTimestampCount": 0,
+              "missingTimestamps": [],
+              "negativeDurationCount": 0,
+              "negativeDurations": [],
+              "negativeValuesRetainedInDistribution": true
+            },
+            "launchDelayMs": {
+              "status": "MEASURED",
+              "n": 600,
+              "p50": 35.039600000018254,
+              "p95": 44.26350000000093,
+              "p99": 52.01720000000205,
+              "max": 60.39040000003297
+            }
+          },
+          "perLaneMeasurement": {
+            "1": {
+              "attempts": 150,
+              "completed": 150,
+              "accepted": 150,
+              "rejected": 0,
+              "failures": 0,
+              "outcomes": {
+                "ACCEPTED": 150
+              },
+              "codes": {
+                "BID_ACCEPTED": 150
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 65.56969999999274,
+                "p95": 109.83830000000307,
+                "p99": 157.3643999999622,
+                "max": 376.33930000002147
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 9.0,
+                "p95": 23.0,
+                "p99": 59.0,
+                "max": 84.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 35.34549999999581,
+                "p95": 45.10469999999623,
+                "p99": 59.62359999999171,
+                "max": 60.39040000003297
+              }
+            },
+            "2": {
+              "attempts": 150,
+              "completed": 150,
+              "accepted": 150,
+              "rejected": 0,
+              "failures": 0,
+              "outcomes": {
+                "ACCEPTED": 150
+              },
+              "codes": {
+                "BID_ACCEPTED": 150
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 65.26799999998184,
+                "p95": 84.1414999999979,
+                "p99": 109.62589999998454,
+                "max": 110.55779999999504
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 10.0,
+                "p95": 22.0,
+                "p99": 41.0,
+                "max": 60.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 33.87249999999767,
+                "p95": 43.54399999999441,
+                "p99": 49.04570000001695,
+                "max": 49.3583000000217
+              }
+            },
+            "3": {
+              "attempts": 150,
+              "completed": 150,
+              "accepted": 150,
+              "rejected": 0,
+              "failures": 0,
+              "outcomes": {
+                "ACCEPTED": 150
+              },
+              "codes": {
+                "BID_ACCEPTED": 150
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 65.78139999997802,
+                "p95": 94.8239000000176,
+                "p99": 141.13300000003073,
+                "max": 169.95240000000922
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 10.0,
+                "p95": 22.0,
+                "p99": 34.0,
+                "max": 41.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 36.21549999999115,
+                "p95": 45.24320000002626,
+                "p99": 51.356199999994715,
+                "max": 52.59780000000319
+              }
+            },
+            "4": {
+              "attempts": 150,
+              "completed": 150,
+              "accepted": 150,
+              "rejected": 0,
+              "failures": 0,
+              "outcomes": {
+                "ACCEPTED": 150
+              },
+              "codes": {
+                "BID_ACCEPTED": 150
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 67.05049999999756,
+                "p95": 108.11190000001807,
+                "p99": 171.5275000000256,
+                "max": 222.73320000001695
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 11.0,
+                "p95": 24.0,
+                "p99": 27.0,
+                "max": 44.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 150,
+                "p50": 35.578200000018114,
+                "p95": 45.312200000014855,
+                "p99": 52.42370000001392,
+                "max": 53.88490000000456
+              }
+            }
+          },
+          "policyValidationRecordedByLoad": [
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 1,
+              "requests": 180,
+              "bids": 179,
+              "originalResponsesChecked": 180,
+              "errors": [],
+              "pass": true
+            },
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 2,
+              "requests": 180,
+              "bids": 179,
+              "originalResponsesChecked": 180,
+              "errors": [],
+              "pass": true
+            },
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 3,
+              "requests": 180,
+              "bids": 179,
+              "originalResponsesChecked": 180,
+              "errors": [],
+              "pass": true
+            },
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 4,
+              "requests": 180,
+              "bids": 179,
+              "originalResponsesChecked": 180,
+              "errors": [],
+              "pass": true
+            }
+          ],
+          "windowMapping": {
+            "mapping": "ESTIMATED: first serverConnectionSample.metrics.serverMs - its pre-request elapsedMs; includes unmeasured metrics request transport delay. Later estimate spread is diagnostic, not a rigorous clock error bound.",
+            "estimateCount": 24,
+            "startEstimateSpreadMs": 16.912353515625,
+            "warmupAndMeasurement": {
+              "startMs": 1792033387375.694,
+              "endMs": 1792033747375.694,
+              "startUtc": "2026-10-15T03:03:07.375694+00:00",
+              "endUtc": "2026-10-15T03:09:07.375694+00:00"
+            },
+            "measurement": {
+              "startMs": 1792033447375.694,
+              "endMs": 1792033747375.694,
+              "startUtc": "2026-10-15T03:04:07.375694+00:00",
+              "endUtc": "2026-10-15T03:09:07.375694+00:00"
+            },
+            "observedReceiptExtent": {
+              "startMs": 1792033387459,
+              "endMs": 1792033746912,
+              "startUtc": "2026-10-15T03:03:07.459000+00:00",
+              "endUtc": "2026-10-15T03:09:06.912000+00:00"
+            },
+            "observedMeasuredReceiptExtent": {
+              "startMs": 1792033447441,
+              "endMs": 1792033746912,
+              "startUtc": "2026-10-15T03:04:07.441000+00:00",
+              "endUtc": "2026-10-15T03:09:06.912000+00:00"
+            }
+          },
+          "resourcesMeasurement": {
+            "scope": "COARSE_OBSERVED_SAMPLES_ONLY_NOT_CONTINUOUS_PEAKS",
+            "interval": "[startMs,endMs)",
+            "window": {
+              "startMs": 1792033447375.694,
+              "endMs": 1792033747375.694,
+              "startUtc": "2026-10-15T03:04:07.375694+00:00",
+              "endUtc": "2026-10-15T03:09:07.375694+00:00"
+            },
+            "jvm": {
+              "18081": {
+                "samples": 20,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 20,
+                  "p50": 91404768.0,
+                  "p95": 114887544.0,
+                  "p99": 120226032.0,
+                  "max": 120226032.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 20,
+                  "p50": 145.0,
+                  "p95": 146.0,
+                  "p99": 146.0,
+                  "max": 146.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 20,
+                  "p50": 100.0,
+                  "p95": 100.0,
+                  "p99": 100.0,
+                  "max": 100.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 19,
+                  "p50": 24.451455017646666,
+                  "p95": 29.895833333333332,
+                  "p99": 29.895833333333332,
+                  "max": 29.895833333333332
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "streamErrors": 0,
+                  "sent": 104400,
+                  "overflows": 0,
+                  "totalConnections": 100,
+                  "dropped": 0,
+                  "activeConnections": 100,
+                  "paused": false,
+                  "maxQueue": 2,
+                  "workerErrors": 0,
+                  "lastWorkerError": "",
+                  "heapUsed": 111435184,
+                  "processCpuNs": 469375000000,
+                  "liveThreads": 145,
+                  "serverMs": 1792033736195
+                },
+                "firstServerMs": 1792033451170,
+                "lastServerMs": 1792033736195
+              },
+              "18082": {
+                "samples": 20,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 20,
+                  "p50": 57851544.0,
+                  "p95": 90314120.0,
+                  "p99": 92454552.0,
+                  "max": 92454552.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 20,
+                  "p50": 35.0,
+                  "p95": 35.0,
+                  "p99": 36.0,
+                  "max": 36.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 20,
+                  "p50": 0.0,
+                  "p95": 0.0,
+                  "p99": 0.0,
+                  "max": 0.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 19,
+                  "p50": 3.433379944067119,
+                  "p95": 4.795503069121964,
+                  "p99": 4.795503069121964,
+                  "max": 4.795503069121964
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "sent": 0,
+                  "streamErrors": 0,
+                  "maxQueue": 0,
+                  "paused": false,
+                  "activeConnections": 0,
+                  "dropped": 0,
+                  "totalConnections": 0,
+                  "overflows": 0,
+                  "workerErrors": 0,
+                  "lastWorkerError": "",
+                  "heapUsed": 22070240,
+                  "processCpuNs": 78218750000,
+                  "liveThreads": 35,
+                  "serverMs": 1792033736199
+                },
+                "firstServerMs": 1792033451174,
+                "lastServerMs": 1792033736199
+              }
+            },
+            "postgres": {
+              "samples": 20,
+              "lockWaiters": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "activeSessions": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 0.0,
+                "p95": 3.0,
+                "p99": 4.0,
+                "max": 4.0
+              },
+              "pendingRequests": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 1.0,
+                "max": 1.0
+              },
+              "oldestPendingMs": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 24.0,
+                "max": 24.0
+              },
+              "unmarkedOutboxRows": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "counterDeltasFirstToLastRetainedSample": {
+                "xact_commit": 286613,
+                "xact_rollback": 0,
+                "deadlocks": 0,
+                "blks_read": 0,
+                "blks_hit": 2048621,
+                "temp_bytes": 0
+              }
+            },
+            "container": {
+              "samples": 20,
+              "cpuPercent": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 39.24,
+                "p95": 45.08,
+                "p99": 46.42,
+                "max": 46.42
+              },
+              "lastObservation": {
+                "BlockIO": "0B / 62.2MB",
+                "CPUPerc": "39.24%",
+                "Container": "auction-spike-001-db",
+                "ID": "492dcca90427",
+                "MemPerc": "9.59%",
+                "MemUsage": "98.19MiB / 1GiB",
+                "Name": "auction-spike-001-db",
+                "NetIO": "970MB / 1.01GB",
+                "PIDs": "30"
+              },
+              "mapping": "Collector UTC at sample start, not exact docker observation timestamp; HTTP/SQL/docker reads are sequential",
+              "collectorElapsedMs": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 2464.875400000892,
+                "p95": 2708.7460000038845,
+                "p99": 2723.4889999963343,
+                "max": 2723.4889999963343
+              }
+            }
+          },
+          "resourcesWarmupAndMeasurement": {
+            "scope": "COARSE_OBSERVED_SAMPLES_ONLY_NOT_CONTINUOUS_PEAKS",
+            "interval": "[startMs,endMs)",
+            "window": {
+              "startMs": 1792033387375.694,
+              "endMs": 1792033747375.694,
+              "startUtc": "2026-10-15T03:03:07.375694+00:00",
+              "endUtc": "2026-10-15T03:09:07.375694+00:00"
+            },
+            "jvm": {
+              "18081": {
+                "samples": 24,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 24,
+                  "p50": 88004688.0,
+                  "p95": 114887544.0,
+                  "p99": 120226032.0,
+                  "max": 120226032.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 24,
+                  "p50": 145.0,
+                  "p95": 146.0,
+                  "p99": 146.0,
+                  "max": 146.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 24,
+                  "p50": 100.0,
+                  "p95": 100.0,
+                  "p99": 100.0,
+                  "max": 100.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 23,
+                  "p50": 24.685854276381576,
+                  "p95": 30.939562637509166,
+                  "p99": 32.703972803626186,
+                  "max": 32.703972803626186
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "streamErrors": 0,
+                  "sent": 104400,
+                  "overflows": 0,
+                  "totalConnections": 100,
+                  "dropped": 0,
+                  "activeConnections": 100,
+                  "paused": false,
+                  "maxQueue": 2,
+                  "workerErrors": 0,
+                  "lastWorkerError": "",
+                  "heapUsed": 111435184,
+                  "processCpuNs": 469375000000,
+                  "liveThreads": 145,
+                  "serverMs": 1792033736195
+                },
+                "firstServerMs": 1792033391169,
+                "lastServerMs": 1792033736195
+              },
+              "18082": {
+                "samples": 24,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 24,
+                  "p50": 63094424.0,
+                  "p95": 90314120.0,
+                  "p99": 92454552.0,
+                  "max": 92454552.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 24,
+                  "p50": 35.0,
+                  "p95": 35.0,
+                  "p99": 36.0,
+                  "max": 36.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 24,
+                  "p50": 0.0,
+                  "p95": 0.0,
+                  "p99": 0.0,
+                  "max": 0.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 23,
+                  "p50": 3.4375000000000004,
+                  "p95": 4.795503069121964,
+                  "p99": 4.894854362460841,
+                  "max": 4.894854362460841
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "sent": 0,
+                  "streamErrors": 0,
+                  "maxQueue": 0,
+                  "paused": false,
+                  "activeConnections": 0,
+                  "dropped": 0,
+                  "totalConnections": 0,
+                  "overflows": 0,
+                  "workerErrors": 0,
+                  "lastWorkerError": "",
+                  "heapUsed": 22070240,
+                  "processCpuNs": 78218750000,
+                  "liveThreads": 35,
+                  "serverMs": 1792033736199
+                },
+                "firstServerMs": 1792033391174,
+                "lastServerMs": 1792033736199
+              }
+            },
+            "postgres": {
+              "samples": 24,
+              "lockWaiters": {
+                "status": "MEASURED",
+                "n": 24,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "activeSessions": {
+                "status": "MEASURED",
+                "n": 24,
+                "p50": 0.0,
+                "p95": 3.0,
+                "p99": 4.0,
+                "max": 4.0
+              },
+              "pendingRequests": {
+                "status": "MEASURED",
+                "n": 24,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 1.0,
+                "max": 1.0
+              },
+              "oldestPendingMs": {
+                "status": "MEASURED",
+                "n": 24,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 24.0,
+                "max": 24.0
+              },
+              "unmarkedOutboxRows": {
+                "status": "MEASURED",
+                "n": 24,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "counterDeltasFirstToLastRetainedSample": {
+                "xact_commit": 345708,
+                "xact_rollback": 0,
+                "deadlocks": 0,
+                "blks_read": 0,
+                "blks_hit": 2627076,
+                "temp_bytes": 0
+              }
+            },
+            "container": {
+              "samples": 24,
+              "cpuPercent": {
+                "status": "MEASURED",
+                "n": 24,
+                "p50": 39.96,
+                "p95": 46.42,
+                "p99": 49.37,
+                "max": 49.37
+              },
+              "lastObservation": {
+                "BlockIO": "0B / 62.2MB",
+                "CPUPerc": "39.24%",
+                "Container": "auction-spike-001-db",
+                "ID": "492dcca90427",
+                "MemPerc": "9.59%",
+                "MemUsage": "98.19MiB / 1GiB",
+                "Name": "auction-spike-001-db",
+                "NetIO": "970MB / 1.01GB",
+                "PIDs": "30"
+              },
+              "mapping": "Collector UTC at sample start, not exact docker observation timestamp; HTTP/SQL/docker reads are sequential",
+              "collectorElapsedMs": {
+                "status": "MEASURED",
+                "n": 24,
+                "p50": 2464.875400000892,
+                "p95": 2708.7460000038845,
+                "p99": 2723.4889999963343,
+                "max": 2723.4889999963343
+              }
+            }
+          },
+          "summaryCountAgreement": true,
+          "recordedErrorCounts": {
+            "allPhaseFailures": 0,
+            "finalStateBehindTarget": 0,
+            "publicErrors": 0,
+            "streamErrors": 0
+          },
+          "auditSource": {
+            "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\realtime\\2026-10-15T03-03-04-292Z-base-100\\audit-1.json",
+            "bytes": 3399358,
+            "sha256": "93dec0fd54c2d4cca3a24aef9162e438e4704697789fa8092ad65a8248f24b9c"
+          },
+          "rawAuditCrosscheck": {
+            "scope": "OFFLINE_ORIGINAL_RESPONSE_AND_BID_EFFECT_CROSSCHECK_ONLY",
+            "lanes": [
+              {
+                "lane": 1,
+                "requests": 180,
+                "bids": 179,
+                "outboxRows": 181,
+                "passed": true,
+                "errors": []
+              },
+              {
+                "lane": 2,
+                "requests": 180,
+                "bids": 179,
+                "outboxRows": 181,
+                "passed": true,
+                "errors": []
+              },
+              {
+                "lane": 3,
+                "requests": 180,
+                "bids": 179,
+                "outboxRows": 181,
+                "passed": true,
+                "errors": []
+              },
+              {
+                "lane": 4,
+                "requests": 180,
+                "bids": 179,
+                "outboxRows": 181,
+                "passed": true,
+                "errors": []
+              }
+            ],
+            "passed": true
+          }
+        }
+      ],
+      "recordedLoadConditionsAllPassed": true,
+      "offlineCrosschecksAllPassed": true,
+      "allRequestedRepeatsFinished": false
+    }
+  ]
+}

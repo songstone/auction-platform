@@ -1,0 +1,89 @@
+{
+  "runId": "20261015T022350Z-2fda2c53",
+  "generatedUtc": "2026-10-15T02:24:16.341405+00:00",
+  "command": [
+    "C:\\Python314\\python.exe",
+    "experiments/spike-001/harness/regressions.py",
+    "--repeats",
+    "10"
+  ],
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 20261015,
+  "serverJarAtInvocationSha256": "9c51035bcea9ef79981b9fd98bea5edd71d0b37d857774c15794905adda52aab",
+  "serverUrls": [
+    "http://127.0.0.1:18081",
+    "http://127.0.0.1:18082"
+  ],
+  "caseCount": 100,
+  "passed": 90,
+  "failed": 10,
+  "status": "FAIL",
+  "failedCases": [
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 1,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-39023e9f-c2a6-4dce-931c-19f1e2919075', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031031930}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 2,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-aa951dab-8854-43f2-a973-00e6e544a542', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031034813}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 3,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-dbb7dc24-c57c-4349-a807-9fa5b550d445', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031037473}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 4,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-f9a22d90-aee1-4a1a-b819-8dccd62d3559', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031040271}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 5,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-2e6ca257-caa9-4376-8e47-6a7b3f568a6c', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031043420}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 6,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-f61fdf17-2324-4308-b958-b5a677242044', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031045934}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 7,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-beaf085d-4a87-4216-9a56-7b72a3a983f3', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031048129}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 8,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-04676b3e-2b4d-4494-b0e2-bba6b6f2db8f', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031050663}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 9,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-3526c041-2480-4b5d-ac63-96d74e9cae02', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031053070}, expected=None"
+    },
+    {
+      "name": "E2_processing_clock_regression",
+      "repetition": 10,
+      "error": "Failure: regressed decision clock cannot resume or backdate live window: observed={'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 4, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 0, 'deadlineMs': 10000, 'manualStopped': True, 'held': True, 'holdReason': 'CLOCK_REGRESSION_DECISION', 'stopId': 'fault-208fdab1-ed65-44da-a68c-245f384cf0c3', 'recoveryConfirmed': False, 'historyComplete': False, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1792031055206}, expected=None"
+    }
+  ],
+  "boundaries": {
+    "fixtureClock": "synthetic epoch milliseconds",
+    "httpDuration": "monotonic client clock",
+    "loadOrBrowserPerformance": "NOT_RUN by this correctness command",
+    "processTermination": "NOT_RUN by this command",
+    "database": "service integration; DB runtime version and durability captured by outer orchestration"
+  },
+  "sourceHashes": {
+    "client.py": "356daccdb9e11bdd334d6dd06a1b4b0beb390c440421d845e12fe9a011e15560",
+    "correctness.py": "43ae58e658e66c5a42e8d199caf919b771369a7f8b38683853c69025f5825a5a",
+    "crashes.py": "0fe37f7c0f2ec564feaa15d56138476eda78b73068eb39e4cef2dbd9358edb64",
+    "environment_failures.py": "61f4eed6bdbf8ca663e2fdba048b7ecda387ed486c748548f0c3643c4aeb1e87",
+    "regressions.py": "a9873633515726f9cf4801fb845fdf2e65e5e4c224ad6e84f43485f2eb67984d",
+    "verify_evidence.py": "621887015f937321b9a61874df65a13c60e7bf708c43ee7a809e7d3879ebdf12"
+  }
+}

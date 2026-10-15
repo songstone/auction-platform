@@ -1,0 +1,1958 @@
+{
+  "generatedUtc": "2026-10-15T03:42:51.213947+00:00",
+  "mode": "OFFLINE_FILES_ONLY",
+  "resourceSource": {
+    "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\resources\\20261015T023741Z\\samples.jsonl",
+    "bytes": 404454,
+    "sha256": "998acf4358cb5130d582280eba2f1638e9a47e9b9436cd8796599d66bf7b52fc"
+  },
+  "limitations": [
+    "No live service, database or container access",
+    "Existing JS policy results are reported, not rerun; Python independently cross-checks durable original responses and accepted bid effect counts",
+    "Protocol p95 reference target is separate from the load harness correctness/condition PASS",
+    "Resource observations are coarse samples and cannot establish true maximum queues, lock waits or CPU peaks",
+    "Window timestamps are estimated from existing server/elapsed samples; resources near boundaries may be assigned to an adjacent phase"
+  ],
+  "runs": [
+    {
+      "runId": "2026-10-15T03-40-20-964Z-concentrated-200",
+      "scenario": "concentrated",
+      "connections": 200,
+      "warmupMs": 10000,
+      "measureMs": 60000,
+      "requestedRepetitions": 1,
+      "finished": "2026-10-15T03:41:44.160Z",
+      "command": [
+        "C:\\Users\\jitin81\\AppData\\Local\\JetBrains\\IntelliJIdea2026.2\\acp-agents\\.runtimes\\node\\24.19.0\\node.exe",
+        "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\realtime\\load.mjs",
+        "--scenario",
+        "concentrated",
+        "--connections",
+        "200",
+        "--warmup-seconds",
+        "10",
+        "--measure-seconds",
+        "60",
+        "--repetitions",
+        "1",
+        "--core-passed",
+        "--core-and-base-passed"
+      ],
+      "scope": "PROTOCOL_INTENT_TO_FINAL_RESPONSE; excludes DOM/render latency and ack completion; no production capacity conclusion",
+      "sources": [
+        {
+          "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\realtime\\2026-10-15T03-40-20-964Z-concentrated-200\\summary.json",
+          "bytes": 238881,
+          "sha256": "9b38ba48b6c592ed0de59c4d0dcfa558e785a048dc7486b1f3d86da7ebe2a153"
+        },
+        {
+          "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\realtime\\2026-10-15T03-40-20-964Z-concentrated-200\\requests.jsonl",
+          "bytes": 133549,
+          "sha256": "439adb227d16cb2fe9b81916f048c2ff2f3fc5429882479b7bd982a66c337dea"
+        }
+      ],
+      "repeats": [
+        {
+          "repeat": 1,
+          "conditions": {
+            "passed": false,
+            "expectedTotalAttempts": 350,
+            "actualTotalAttempts": 350,
+            "expectedMeasuredAttempts": 300,
+            "measuredAttempts": 300,
+            "completed": 146,
+            "failures": 154,
+            "skippedScheduleSlots": 0,
+            "lateBeyondOneScheduleSlot": 57,
+            "minimumContinuousClientConnections": 200,
+            "minimumSampledServerConnections": 200,
+            "workerMode": {
+              "pid": 41212,
+              "ready": true,
+              "manual": true
+            },
+            "postMeasurementWorkerFrozenForExactAudit": true,
+            "protocolResponseReferenceTarget": {
+              "targetMs": 1000,
+              "p95Ms": 6500.351999999999,
+              "met": false,
+              "boundary": "PROTOCOL_INTENT_TO_FINAL_RESPONSE_PROXY_NOT_DOM_R49"
+            },
+            "conditionLimit": "500ms scheduled slot fidelity, not an operational performance target",
+            "extraMonitoringOverhead": "One /metrics request every15s plus socket state checks each500ms; root separately samples2HTTP+SQL+dockerstats every15s"
+          },
+          "allPhases": {
+            "attempts": 350,
+            "completed": 196,
+            "accepted": 39,
+            "rejected": 157,
+            "failures": 154,
+            "outcomes": {
+              "REJECTED": 157,
+              "ACCEPTED": 39,
+              "SYSTEM_ERROR": 100,
+              "TIMEOUT": 54
+            },
+            "codes": {
+              "NOT_OPEN": 22,
+              "BID_ACCEPTED": 39,
+              "PRICE_MISMATCH": 94,
+              "ALREADY_HIGHEST": 1,
+              "TARGET_NOT_CURRENT": 40,
+              "NONE": 154
+            },
+            "completedProtocolLatencyMs": {
+              "status": "MEASURED",
+              "n": 196,
+              "p50": 397.2416999999987,
+              "p95": 6486.6492,
+              "p99": 6895.880799999999,
+              "max": 6969.686600000001
+            },
+            "receiptToDecisionMs": {
+              "status": "MEASURED",
+              "n": 196,
+              "p50": 219.0,
+              "p95": 4110.0,
+              "p99": 4310.0,
+              "max": 4336.0,
+              "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+              "missingTimestampCount": 0,
+              "missingTimestamps": [],
+              "negativeDurationCount": 0,
+              "negativeDurations": [],
+              "negativeValuesRetainedInDistribution": true
+            },
+            "launchDelayMs": {
+              "status": "MEASURED",
+              "n": 350,
+              "p50": 68.33290000000125,
+              "p95": 2468.566899999998,
+              "p99": 2470.172400000003,
+              "max": 4379.061900000001
+            }
+          },
+          "measurement": {
+            "attempts": 300,
+            "completed": 146,
+            "accepted": 30,
+            "rejected": 116,
+            "failures": 154,
+            "outcomes": {
+              "REJECTED": 116,
+              "ACCEPTED": 30,
+              "SYSTEM_ERROR": 100,
+              "TIMEOUT": 54
+            },
+            "codes": {
+              "ALREADY_HIGHEST": 1,
+              "BID_ACCEPTED": 30,
+              "PRICE_MISMATCH": 75,
+              "TARGET_NOT_CURRENT": 40,
+              "NONE": 154
+            },
+            "completedProtocolLatencyMs": {
+              "status": "MEASURED",
+              "n": 146,
+              "p50": 605.8548999999985,
+              "p95": 6500.351999999999,
+              "p99": 6895.880799999999,
+              "max": 6969.686600000001
+            },
+            "receiptToDecisionMs": {
+              "status": "MEASURED",
+              "n": 146,
+              "p50": 349.0,
+              "p95": 4127.0,
+              "p99": 4310.0,
+              "max": 4336.0,
+              "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+              "missingTimestampCount": 0,
+              "missingTimestamps": [],
+              "negativeDurationCount": 0,
+              "negativeDurations": [],
+              "negativeValuesRetainedInDistribution": true
+            },
+            "launchDelayMs": {
+              "status": "MEASURED",
+              "n": 300,
+              "p50": 120.15539999999964,
+              "p95": 2469.0031000000017,
+              "p99": 2470.172400000003,
+              "max": 4379.061900000001
+            }
+          },
+          "perLaneMeasurement": {
+            "1": {
+              "attempts": 240,
+              "completed": 120,
+              "accepted": 4,
+              "rejected": 116,
+              "failures": 120,
+              "outcomes": {
+                "REJECTED": 116,
+                "ACCEPTED": 4,
+                "SYSTEM_ERROR": 100,
+                "TIMEOUT": 20
+              },
+              "codes": {
+                "ALREADY_HIGHEST": 1,
+                "BID_ACCEPTED": 4,
+                "PRICE_MISMATCH": 75,
+                "TARGET_NOT_CURRENT": 40,
+                "NONE": 120
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 120,
+                "p50": 908.0230999999985,
+                "p95": 6546.117600000005,
+                "p99": 6895.880799999999,
+                "max": 6969.686600000001
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 120,
+                "p50": 577.0,
+                "p95": 4147.0,
+                "p99": 4310.0,
+                "max": 4336.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 240,
+                "p50": 121.52119999999923,
+                "p95": 2468.6684999999998,
+                "p99": 2469.920100000003,
+                "max": 2470.0820999999996
+              }
+            },
+            "2": {
+              "attempts": 20,
+              "completed": 8,
+              "accepted": 8,
+              "rejected": 0,
+              "failures": 12,
+              "outcomes": {
+                "ACCEPTED": 8,
+                "TIMEOUT": 12
+              },
+              "codes": {
+                "BID_ACCEPTED": 8,
+                "NONE": 12
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 8,
+                "p50": 130.34859999999935,
+                "p95": 551.0037999999986,
+                "p99": 551.0037999999986,
+                "max": 551.0037999999986
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 8,
+                "p50": 28.0,
+                "p95": 344.0,
+                "p99": 344.0,
+                "max": 344.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 65.49920000000566,
+                "p95": 994.2863999999972,
+                "p99": 3382.109900000003,
+                "max": 3382.109900000003
+              }
+            },
+            "3": {
+              "attempts": 20,
+              "completed": 9,
+              "accepted": 9,
+              "rejected": 0,
+              "failures": 11,
+              "outcomes": {
+                "ACCEPTED": 9,
+                "TIMEOUT": 11
+              },
+              "codes": {
+                "BID_ACCEPTED": 9,
+                "NONE": 11
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 9,
+                "p50": 130.72449999999662,
+                "p95": 324.320499999998,
+                "p99": 324.320499999998,
+                "max": 324.320499999998
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 9,
+                "p50": 20.0,
+                "p95": 78.0,
+                "p99": 78.0,
+                "max": 78.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 48.84569999999803,
+                "p95": 2470.172400000003,
+                "p99": 4379.061900000001,
+                "max": 4379.061900000001
+              }
+            },
+            "4": {
+              "attempts": 20,
+              "completed": 9,
+              "accepted": 9,
+              "rejected": 0,
+              "failures": 11,
+              "outcomes": {
+                "ACCEPTED": 9,
+                "TIMEOUT": 11
+              },
+              "codes": {
+                "BID_ACCEPTED": 9,
+                "NONE": 11
+              },
+              "completedProtocolLatencyMs": {
+                "status": "MEASURED",
+                "n": 9,
+                "p50": 174.02490000000034,
+                "p95": 1733.8438000000024,
+                "p99": 1733.8438000000024,
+                "max": 1733.8438000000024
+              },
+              "receiptToDecisionMs": {
+                "status": "MEASURED",
+                "n": 9,
+                "p50": 48.0,
+                "p95": 160.0,
+                "p99": 160.0,
+                "max": 160.0,
+                "boundary": "DB_RECORDED_decidedMs_MINUS_receivedMs; includes queue/decision wait to recorded decision time, excludes physical decision commit and client response/DOM",
+                "missingTimestampCount": 0,
+                "missingTimestamps": [],
+                "negativeDurationCount": 0,
+                "negativeDurations": [],
+                "negativeValuesRetainedInDistribution": true
+              },
+              "launchDelayMs": {
+                "status": "MEASURED",
+                "n": 20,
+                "p50": 84.49799999999959,
+                "p95": 1648.9576000000015,
+                "p99": 4238.1443,
+                "max": 4238.1443
+              }
+            }
+          },
+          "policyValidationRecordedByLoad": [
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 1,
+              "requests": 180,
+              "bids": 5,
+              "originalResponsesChecked": 280,
+              "errors": [
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "b6c6783e-4d97-4074-b8dd-172fddf0f6d6"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "a2823f03-8095-4cac-9a16-0d13ac9aa1f5"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "92f5780f-3261-4917-a9fb-f82650984cfd"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "3768ce65-1722-47de-8180-e97793c5f595"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "3af3bfa7-e491-4bc5-8469-fed3e112c6d4"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "d133d0b5-6e75-432a-a576-33c4aa2e9b97"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "204a230b-508c-4aa9-bfb1-02976d8b8fce"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "61c9185d-ccb8-473a-a1b6-bf75d380995c"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "674bfdda-15fb-4094-8e48-901a70792d5b"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "d6c9da91-cb73-4d57-b4c0-16a4a54245c2"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "368073d8-1fd1-4033-af4c-493953be517d"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "edc0765b-7fe0-4f88-82ce-cb39f7030994"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "57e6bd2d-cd8f-428f-927c-bb1813884f0b"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "a60092cb-6cd4-4d17-b018-3d99e0d4e2f9"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "700a7836-a142-4d54-813b-4a7f5bb3bdb5"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "5437f546-e39a-4e5c-841d-7f66ad7355a3"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "931f1ad0-927c-4d2a-85ca-49a9e6b606e5"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "a1e63925-4a3b-48da-8c66-a13110a59b7d"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "e27c50fe-ca46-4294-b997-d47493f07790"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "f8262808-7286-4dc0-8b3a-17507937a4d1"
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "b6c6783e-4d97-4074-b8dd-172fddf0f6d6",
+                  "auction": "L1-A3",
+                  "seq": 161,
+                  "receivedMs": 1792035666784,
+                  "deadline": 1792035674535,
+                  "expected": "ACCEPTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "a2823f03-8095-4cac-9a16-0d13ac9aa1f5",
+                  "auction": "L1-A3",
+                  "seq": 162,
+                  "receivedMs": 1792035666797,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "92f5780f-3261-4917-a9fb-f82650984cfd",
+                  "auction": "L1-A3",
+                  "seq": 163,
+                  "receivedMs": 1792035666812,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "3768ce65-1722-47de-8180-e97793c5f595",
+                  "auction": "L1-A3",
+                  "seq": 164,
+                  "receivedMs": 1792035666825,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "3af3bfa7-e491-4bc5-8469-fed3e112c6d4",
+                  "auction": "L1-A3",
+                  "seq": 165,
+                  "receivedMs": 1792035666839,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "d133d0b5-6e75-432a-a576-33c4aa2e9b97",
+                  "auction": "L1-A3",
+                  "seq": 166,
+                  "receivedMs": 1792035666853,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "204a230b-508c-4aa9-bfb1-02976d8b8fce",
+                  "auction": "L1-A3",
+                  "seq": 167,
+                  "receivedMs": 1792035666879,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "61c9185d-ccb8-473a-a1b6-bf75d380995c",
+                  "auction": "L1-A3",
+                  "seq": 168,
+                  "receivedMs": 1792035666894,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "674bfdda-15fb-4094-8e48-901a70792d5b",
+                  "auction": "L1-A3",
+                  "seq": 169,
+                  "receivedMs": 1792035666909,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "d6c9da91-cb73-4d57-b4c0-16a4a54245c2",
+                  "auction": "L1-A3",
+                  "seq": 170,
+                  "receivedMs": 1792035666925,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "368073d8-1fd1-4033-af4c-493953be517d",
+                  "auction": "L1-A3",
+                  "seq": 171,
+                  "receivedMs": 1792035666944,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "edc0765b-7fe0-4f88-82ce-cb39f7030994",
+                  "auction": "L1-A3",
+                  "seq": 172,
+                  "receivedMs": 1792035666968,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "57e6bd2d-cd8f-428f-927c-bb1813884f0b",
+                  "auction": "L1-A3",
+                  "seq": 173,
+                  "receivedMs": 1792035667003,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "a60092cb-6cd4-4d17-b018-3d99e0d4e2f9",
+                  "auction": "L1-A3",
+                  "seq": 174,
+                  "receivedMs": 1792035667040,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "700a7836-a142-4d54-813b-4a7f5bb3bdb5",
+                  "auction": "L1-A3",
+                  "seq": 175,
+                  "receivedMs": 1792035667079,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "5437f546-e39a-4e5c-841d-7f66ad7355a3",
+                  "auction": "L1-A3",
+                  "seq": 176,
+                  "receivedMs": 1792035667107,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "931f1ad0-927c-4d2a-85ca-49a9e6b606e5",
+                  "auction": "L1-A3",
+                  "seq": 177,
+                  "receivedMs": 1792035667135,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "a1e63925-4a3b-48da-8c66-a13110a59b7d",
+                  "auction": "L1-A3",
+                  "seq": 178,
+                  "receivedMs": 1792035667147,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "e27c50fe-ca46-4294-b997-d47493f07790",
+                  "auction": "L1-A3",
+                  "seq": 179,
+                  "receivedMs": 1792035667160,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "f8262808-7286-4dc0-8b3a-17507937a4d1",
+                  "auction": "L1-A3",
+                  "seq": 180,
+                  "receivedMs": 1792035667172,
+                  "deadline": 1792035671784,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "HIGHEST_NOT_POLICY_REPLAY",
+                  "auction": "L1-A3",
+                  "expectedHigh": 10000,
+                  "actualHigh": null
+                },
+                {
+                  "code": "DEADLINE_NOT_RECEIPT_PLUS_WINDOW",
+                  "auction": "L1-A3",
+                  "expected": 1792035671784,
+                  "actual": 1792035674535
+                }
+              ],
+              "pass": false
+            },
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 2,
+              "requests": 24,
+              "bids": 11,
+              "originalResponsesChecked": 24,
+              "errors": [
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "1ccd102b-035d-4929-b908-6f39027e5f64"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "e72ecb6d-94c9-477a-afe4-11359dc756e7"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "0afda81e-a92b-4eb6-8496-374c2bebeb7a"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "3eff7647-21f1-4460-b57b-312e3612c932"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "b58319aa-bc55-440a-a5cc-8ae2a37b1d20"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "a4c39042-63f3-4c52-a02c-d7aa9ba40f9c"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "52d908b3-0fa7-49e6-a3b4-77e86cce47df"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "fa12a560-7112-4f70-ad30-1088b3466240"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "fc5b73a3-2e82-4c81-af7a-db653a87b8dd"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "3803173d-ad1b-4ec8-b333-713b749ef3e1"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "c5f2e8e3-72bc-4d7c-97f2-17b0393b2776"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "1370fd04-4e93-4d25-ac70-413d8f482b3f"
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "1ccd102b-035d-4929-b908-6f39027e5f64",
+                  "auction": "L2-A1",
+                  "seq": 13,
+                  "receivedMs": 1792035664574,
+                  "deadline": 1792035662351,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "e72ecb6d-94c9-477a-afe4-11359dc756e7",
+                  "auction": "L2-A2",
+                  "seq": 14,
+                  "receivedMs": 1792035666667,
+                  "deadline": 1792035677475,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "0afda81e-a92b-4eb6-8496-374c2bebeb7a",
+                  "auction": "L2-A2",
+                  "seq": 15,
+                  "receivedMs": 1792035667118,
+                  "deadline": 1792035677475,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "3eff7647-21f1-4460-b57b-312e3612c932",
+                  "auction": "L2-A2",
+                  "seq": 16,
+                  "receivedMs": 1792035669380,
+                  "deadline": 1792035677475,
+                  "expected": "ACCEPTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "b58319aa-bc55-440a-a5cc-8ae2a37b1d20",
+                  "auction": "L2-A2",
+                  "seq": 17,
+                  "receivedMs": 1792035672363,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "a4c39042-63f3-4c52-a02c-d7aa9ba40f9c",
+                  "auction": "L2-A2",
+                  "seq": 18,
+                  "receivedMs": 1792035675756,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "52d908b3-0fa7-49e6-a3b4-77e86cce47df",
+                  "auction": "L2-A2",
+                  "seq": 19,
+                  "receivedMs": 1792035678341,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "fa12a560-7112-4f70-ad30-1088b3466240",
+                  "auction": "L2-A2",
+                  "seq": 20,
+                  "receivedMs": 1792035681364,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "fc5b73a3-2e82-4c81-af7a-db653a87b8dd",
+                  "auction": "L2-A2",
+                  "seq": 21,
+                  "receivedMs": 1792035684500,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "3803173d-ad1b-4ec8-b333-713b749ef3e1",
+                  "auction": "L2-A2",
+                  "seq": 22,
+                  "receivedMs": 1792035687384,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "c5f2e8e3-72bc-4d7c-97f2-17b0393b2776",
+                  "auction": "L2-A2",
+                  "seq": 23,
+                  "receivedMs": 1792035690374,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "1370fd04-4e93-4d25-ac70-413d8f482b3f",
+                  "auction": "L2-A2",
+                  "seq": 24,
+                  "receivedMs": 1792035693318,
+                  "deadline": 1792035674380,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "HIGHEST_NOT_POLICY_REPLAY",
+                  "auction": "L2-A2",
+                  "expectedHigh": 10000,
+                  "actualHigh": null
+                },
+                {
+                  "code": "DEADLINE_NOT_RECEIPT_PLUS_WINDOW",
+                  "auction": "L2-A2",
+                  "expected": 1792035674380,
+                  "actual": 1792035677475
+                }
+              ],
+              "pass": false
+            },
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 3,
+              "requests": 23,
+              "bids": 11,
+              "originalResponsesChecked": 23,
+              "errors": [
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "1b210b40-f053-434f-8bce-c0b2a91cf0d2"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "6defcfa3-9ae5-4b5c-b7df-53f9c87fd067"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "7b0e7dc4-f741-4a16-9509-0fdc64c0f7b4"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "6e4ea51f-2f70-4998-966f-0f1eae662bc0"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "8a530c3b-cc0a-4395-a54a-e423f3bd1dc8"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "40f7ff6a-eae0-44fc-9a14-1284c65596a6"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "384c2859-5db3-42cf-b7d8-24b008850444"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "5e6d7f18-9e1a-49e1-9011-9bc17aca5740"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "998cba62-80cf-4f6b-bd55-b6567b6b3a2a"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "f19edbda-a779-457c-b146-0b0c23971dcc"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "f4bb75f8-d818-4b55-a34f-c481e491bb16"
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "1b210b40-f053-434f-8bce-c0b2a91cf0d2",
+                  "auction": "L3-A1",
+                  "seq": 13,
+                  "receivedMs": 1792035666409,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "6defcfa3-9ae5-4b5c-b7df-53f9c87fd067",
+                  "auction": "L3-A1",
+                  "seq": 14,
+                  "receivedMs": 1792035666817,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "7b0e7dc4-f741-4a16-9509-0fdc64c0f7b4",
+                  "auction": "L3-A1",
+                  "seq": 15,
+                  "receivedMs": 1792035667348,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "6e4ea51f-2f70-4998-966f-0f1eae662bc0",
+                  "auction": "L3-A1",
+                  "seq": 16,
+                  "receivedMs": 1792035670352,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "8a530c3b-cc0a-4395-a54a-e423f3bd1dc8",
+                  "auction": "L3-A1",
+                  "seq": 17,
+                  "receivedMs": 1792035673442,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "40f7ff6a-eae0-44fc-9a14-1284c65596a6",
+                  "auction": "L3-A1",
+                  "seq": 18,
+                  "receivedMs": 1792035676464,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "384c2859-5db3-42cf-b7d8-24b008850444",
+                  "auction": "L3-A1",
+                  "seq": 19,
+                  "receivedMs": 1792035679349,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "5e6d7f18-9e1a-49e1-9011-9bc17aca5740",
+                  "auction": "L3-A1",
+                  "seq": 20,
+                  "receivedMs": 1792035682324,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "998cba62-80cf-4f6b-bd55-b6567b6b3a2a",
+                  "auction": "L3-A1",
+                  "seq": 21,
+                  "receivedMs": 1792035685323,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "f19edbda-a779-457c-b146-0b0c23971dcc",
+                  "auction": "L3-A1",
+                  "seq": 22,
+                  "receivedMs": 1792035688346,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "f4bb75f8-d818-4b55-a34f-c481e491bb16",
+                  "auction": "L3-A1",
+                  "seq": 23,
+                  "receivedMs": 1792035691452,
+                  "deadline": 1792035663804,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                }
+              ],
+              "pass": false
+            },
+            {
+              "scope": "INDEPENDENT_BID_ONLY_FIXTURE_POLICY_REPLAY",
+              "lane": 4,
+              "requests": 23,
+              "bids": 12,
+              "originalResponsesChecked": 23,
+              "errors": [
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "7fbbeb93-bce2-49af-8d9d-3583fe3fbf03"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "3943086f-645f-4eb5-b84d-9b47071e48b3"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "3f2fbcff-78d1-40df-a473-385b313841fd"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "db7af602-ddee-44d6-990f-f39c394f07a6"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "664215b4-9aef-4b95-86e6-0cefcc4f2233"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "3a7c7ee7-1379-457b-b96b-b7dc8c4ec480"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "cb9e1f1d-1ee3-490c-a07a-a5fdafd7dc6a"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "f30ed232-2ef2-45b2-aebc-f899896e39b2"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "73a4f6c5-53e3-498d-97a5-3e12ba4865d1"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "6d4c8f22-b18d-47d2-aed5-d490468ffbbd"
+                },
+                {
+                  "code": "UNDECIDED_AFTER_LOAD_DRAIN",
+                  "key": "c685614f-00f1-4f61-a856-36a46269c99c"
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "7fbbeb93-bce2-49af-8d9d-3583fe3fbf03",
+                  "auction": "L4-A1",
+                  "seq": 13,
+                  "receivedMs": 1792035666567,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "3943086f-645f-4eb5-b84d-9b47071e48b3",
+                  "auction": "L4-A1",
+                  "seq": 14,
+                  "receivedMs": 1792035666957,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "3f2fbcff-78d1-40df-a473-385b313841fd",
+                  "auction": "L4-A1",
+                  "seq": 15,
+                  "receivedMs": 1792035668330,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "db7af602-ddee-44d6-990f-f39c394f07a6",
+                  "auction": "L4-A1",
+                  "seq": 16,
+                  "receivedMs": 1792035671378,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "664215b4-9aef-4b95-86e6-0cefcc4f2233",
+                  "auction": "L4-A1",
+                  "seq": 17,
+                  "receivedMs": 1792035674693,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "3a7c7ee7-1379-457b-b96b-b7dc8c4ec480",
+                  "auction": "L4-A1",
+                  "seq": 18,
+                  "receivedMs": 1792035677346,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "cb9e1f1d-1ee3-490c-a07a-a5fdafd7dc6a",
+                  "auction": "L4-A1",
+                  "seq": 19,
+                  "receivedMs": 1792035680346,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "f30ed232-2ef2-45b2-aebc-f899896e39b2",
+                  "auction": "L4-A1",
+                  "seq": 20,
+                  "receivedMs": 1792035683361,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "73a4f6c5-53e3-498d-97a5-3e12ba4865d1",
+                  "auction": "L4-A1",
+                  "seq": 21,
+                  "receivedMs": 1792035686370,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "6d4c8f22-b18d-47d2-aed5-d490468ffbbd",
+                  "auction": "L4-A1",
+                  "seq": 22,
+                  "receivedMs": 1792035689903,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                },
+                {
+                  "code": "POLICY_DECISION_MISMATCH",
+                  "key": "c685614f-00f1-4f61-a856-36a46269c99c",
+                  "auction": "L4-A1",
+                  "seq": 23,
+                  "receivedMs": 1792035692527,
+                  "deadline": 1792035666013,
+                  "expected": "REJECTED",
+                  "actual": "PENDING",
+                  "actualCode": null
+                }
+              ],
+              "pass": false
+            }
+          ],
+          "windowMapping": {
+            "mapping": "ESTIMATED: first serverConnectionSample.metrics.serverMs - its pre-request elapsedMs; includes unmeasured metrics request transport delay. Later estimate spread is diagnostic, not a rigorous clock error bound.",
+            "estimateCount": 5,
+            "startEstimateSpreadMs": 29.203857421875,
+            "warmupAndMeasurement": {
+              "startMs": 1792035624273.2468,
+              "endMs": 1792035694273.2468,
+              "startUtc": "2026-10-15T03:40:24.273247+00:00",
+              "endUtc": "2026-10-15T03:41:34.273247+00:00"
+            },
+            "measurement": {
+              "startMs": 1792035634273.2468,
+              "endMs": 1792035694273.2468,
+              "startUtc": "2026-10-15T03:40:34.273247+00:00",
+              "endUtc": "2026-10-15T03:41:34.273247+00:00"
+            },
+            "observedReceiptExtent": {
+              "startMs": 1792035624343,
+              "endMs": 1792035663632,
+              "startUtc": "2026-10-15T03:40:24.343000+00:00",
+              "endUtc": "2026-10-15T03:41:03.632000+00:00"
+            },
+            "observedMeasuredReceiptExtent": {
+              "startMs": 1792035634326,
+              "endMs": 1792035663632,
+              "startUtc": "2026-10-15T03:40:34.326000+00:00",
+              "endUtc": "2026-10-15T03:41:03.632000+00:00"
+            }
+          },
+          "resourcesMeasurement": {
+            "scope": "COARSE_OBSERVED_SAMPLES_ONLY_NOT_CONTINUOUS_PEAKS",
+            "interval": "[startMs,endMs)",
+            "window": {
+              "startMs": 1792035634273.2468,
+              "endMs": 1792035694273.2468,
+              "startUtc": "2026-10-15T03:40:34.273247+00:00",
+              "endUtc": "2026-10-15T03:41:34.273247+00:00"
+            },
+            "jvm": {
+              "18081": {
+                "samples": 4,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 85858864.0,
+                  "p95": 118417184.0,
+                  "p99": 118417184.0,
+                  "max": 118417184.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 146.0,
+                  "p95": 146.0,
+                  "p99": 146.0,
+                  "max": 146.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 200.0,
+                  "p95": 200.0,
+                  "p99": 200.0,
+                  "max": 200.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 3,
+                  "p50": 46.2037962037962,
+                  "p95": 47.853973443651164,
+                  "p99": 47.853973443651164,
+                  "max": 47.853973443651164
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "streamErrors": 1,
+                  "sent": 26800,
+                  "overflows": 0,
+                  "totalConnections": 200,
+                  "dropped": 0,
+                  "activeConnections": 200,
+                  "paused": false,
+                  "maxQueue": 1,
+                  "workerErrors": 1,
+                  "lastWorkerError": "EngineException: java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 3018ms (total=16, active=16, idle=0, waiting=88)",
+                  "heapUsed": 115126208,
+                  "processCpuNs": 972265625000,
+                  "liveThreads": 146,
+                  "serverMs": 1792035686239
+                },
+                "firstServerMs": 1792035641231,
+                "lastServerMs": 1792035686239
+              },
+              "18082": {
+                "samples": 4,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 22284424.0,
+                  "p95": 27527304.0,
+                  "p99": 27527304.0,
+                  "max": 27527304.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 35.0,
+                  "p95": 35.0,
+                  "p99": 35.0,
+                  "max": 35.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 0.0,
+                  "p95": 0.0,
+                  "p99": 0.0,
+                  "max": 0.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 3,
+                  "p50": 3.964676816239316,
+                  "p95": 4.055740432612312,
+                  "p99": 4.055740432612312,
+                  "max": 4.055740432612312
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "sent": 0,
+                  "streamErrors": 0,
+                  "maxQueue": 0,
+                  "paused": false,
+                  "activeConnections": 0,
+                  "dropped": 0,
+                  "totalConnections": 0,
+                  "overflows": 0,
+                  "workerErrors": 0,
+                  "lastWorkerError": "",
+                  "heapUsed": 27527304,
+                  "processCpuNs": 135015625000,
+                  "liveThreads": 35,
+                  "serverMs": 1792035686252
+                },
+                "firstServerMs": 1792035641235,
+                "lastServerMs": 1792035686252
+              }
+            },
+            "postgres": {
+              "samples": 4,
+              "lockWaiters": {
+                "status": "MEASURED",
+                "n": 4,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "activeSessions": {
+                "status": "MEASURED",
+                "n": 4,
+                "p50": 0.0,
+                "p95": 1.0,
+                "p99": 1.0,
+                "max": 1.0
+              },
+              "pendingRequests": {
+                "status": "MEASURED",
+                "n": 4,
+                "p50": 1.0,
+                "p95": 47.0,
+                "p99": 47.0,
+                "max": 47.0
+              },
+              "oldestPendingMs": {
+                "status": "MEASURED",
+                "n": 4,
+                "p50": 31.0,
+                "p95": 21926.0,
+                "p99": 21926.0,
+                "max": 21926.0
+              },
+              "unmarkedOutboxRows": {
+                "status": "MEASURED",
+                "n": 4,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "counterDeltasFirstToLastRetainedSample": {
+                "xact_commit": 39883,
+                "xact_rollback": 80,
+                "deadlocks": 0,
+                "blks_read": 0,
+                "blks_hit": 304061,
+                "temp_bytes": 0
+              }
+            },
+            "container": {
+              "samples": 4,
+              "cpuPercent": {
+                "status": "MEASURED",
+                "n": 4,
+                "p50": 42.8,
+                "p95": 65.2,
+                "p99": 65.2,
+                "max": 65.2
+              },
+              "lastObservation": {
+                "BlockIO": "0B / 106MB",
+                "CPUPerc": "26.79%",
+                "Container": "auction-spike-001-db",
+                "ID": "492dcca90427",
+                "MemPerc": "10.22%",
+                "MemUsage": "104.7MiB / 1GiB",
+                "Name": "auction-spike-001-db",
+                "NetIO": "2.01GB / 2.15GB",
+                "PIDs": "30"
+              },
+              "mapping": "Collector UTC at sample start, not exact docker observation timestamp; HTTP/SQL/docker reads are sequential",
+              "collectorElapsedMs": {
+                "status": "MEASURED",
+                "n": 4,
+                "p50": 1943.1021999989753,
+                "p95": 2653.9933000021847,
+                "p99": 2653.9933000021847,
+                "max": 2653.9933000021847
+              }
+            }
+          },
+          "resourcesWarmupAndMeasurement": {
+            "scope": "COARSE_OBSERVED_SAMPLES_ONLY_NOT_CONTINUOUS_PEAKS",
+            "interval": "[startMs,endMs)",
+            "window": {
+              "startMs": 1792035624273.2468,
+              "endMs": 1792035694273.2468,
+              "startUtc": "2026-10-15T03:40:24.273247+00:00",
+              "endUtc": "2026-10-15T03:41:34.273247+00:00"
+            },
+            "jvm": {
+              "18081": {
+                "samples": 5,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 5,
+                  "p50": 85858864.0,
+                  "p95": 118417184.0,
+                  "p99": 118417184.0,
+                  "max": 118417184.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 5,
+                  "p50": 146.0,
+                  "p95": 146.0,
+                  "p99": 146.0,
+                  "max": 146.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 5,
+                  "p50": 200.0,
+                  "p95": 200.0,
+                  "p99": 200.0,
+                  "max": 200.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 26.031254165000668,
+                  "p95": 47.853973443651164,
+                  "p99": 47.853973443651164,
+                  "max": 47.853973443651164
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "streamErrors": 1,
+                  "sent": 26800,
+                  "overflows": 0,
+                  "totalConnections": 200,
+                  "dropped": 0,
+                  "activeConnections": 200,
+                  "paused": false,
+                  "maxQueue": 1,
+                  "workerErrors": 1,
+                  "lastWorkerError": "EngineException: java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 3018ms (total=16, active=16, idle=0, waiting=88)",
+                  "heapUsed": 115126208,
+                  "processCpuNs": 972265625000,
+                  "liveThreads": 146,
+                  "serverMs": 1792035686239
+                },
+                "firstServerMs": 1792035626232,
+                "lastServerMs": 1792035686239
+              },
+              "18082": {
+                "samples": 5,
+                "heapUsedBytes": {
+                  "status": "MEASURED",
+                  "n": 5,
+                  "p50": 24381576.0,
+                  "p95": 92455368.0,
+                  "p99": 92455368.0,
+                  "max": 92455368.0
+                },
+                "liveThreads": {
+                  "status": "MEASURED",
+                  "n": 5,
+                  "p50": 35.0,
+                  "p95": 35.0,
+                  "p99": 35.0,
+                  "max": 35.0
+                },
+                "activeSseConnections": {
+                  "status": "MEASURED",
+                  "n": 5,
+                  "p50": 0.0,
+                  "p95": 0.0,
+                  "p99": 0.0,
+                  "max": 0.0
+                },
+                "cpuPercentOneLogicalCore": {
+                  "status": "MEASURED",
+                  "n": 4,
+                  "p50": 2.913558870538093,
+                  "p95": 4.055740432612312,
+                  "p99": 4.055740432612312,
+                  "max": 4.055740432612312
+                },
+                "cpuScope": "Delta process CPU time between retained samples; 100% means one logical core, not whole machine",
+                "lastMetrics": {
+                  "sent": 0,
+                  "streamErrors": 0,
+                  "maxQueue": 0,
+                  "paused": false,
+                  "activeConnections": 0,
+                  "dropped": 0,
+                  "totalConnections": 0,
+                  "overflows": 0,
+                  "workerErrors": 0,
+                  "lastWorkerError": "",
+                  "heapUsed": 27527304,
+                  "processCpuNs": 135015625000,
+                  "liveThreads": 35,
+                  "serverMs": 1792035686252
+                },
+                "firstServerMs": 1792035626238,
+                "lastServerMs": 1792035686252
+              }
+            },
+            "postgres": {
+              "samples": 5,
+              "lockWaiters": {
+                "status": "MEASURED",
+                "n": 5,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "activeSessions": {
+                "status": "MEASURED",
+                "n": 5,
+                "p50": 0.0,
+                "p95": 1.0,
+                "p99": 1.0,
+                "max": 1.0
+              },
+              "pendingRequests": {
+                "status": "MEASURED",
+                "n": 5,
+                "p50": 1.0,
+                "p95": 47.0,
+                "p99": 47.0,
+                "max": 47.0
+              },
+              "oldestPendingMs": {
+                "status": "MEASURED",
+                "n": 5,
+                "p50": 31.0,
+                "p95": 21926.0,
+                "p99": 21926.0,
+                "max": 21926.0
+              },
+              "unmarkedOutboxRows": {
+                "status": "MEASURED",
+                "n": 5,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+              },
+              "counterDeltasFirstToLastRetainedSample": {
+                "xact_commit": 55942,
+                "xact_rollback": 80,
+                "deadlocks": 0,
+                "blks_read": 2,
+                "blks_hit": 511902,
+                "temp_bytes": 0
+              }
+            },
+            "container": {
+              "samples": 5,
+              "cpuPercent": {
+                "status": "MEASURED",
+                "n": 5,
+                "p50": 42.8,
+                "p95": 65.2,
+                "p99": 65.2,
+                "max": 65.2
+              },
+              "lastObservation": {
+                "BlockIO": "0B / 106MB",
+                "CPUPerc": "26.79%",
+                "Container": "auction-spike-001-db",
+                "ID": "492dcca90427",
+                "MemPerc": "10.22%",
+                "MemUsage": "104.7MiB / 1GiB",
+                "Name": "auction-spike-001-db",
+                "NetIO": "2.01GB / 2.15GB",
+                "PIDs": "30"
+              },
+              "mapping": "Collector UTC at sample start, not exact docker observation timestamp; HTTP/SQL/docker reads are sequential",
+              "collectorElapsedMs": {
+                "status": "MEASURED",
+                "n": 5,
+                "p50": 1943.1021999989753,
+                "p95": 2653.9933000021847,
+                "p99": 2653.9933000021847,
+                "max": 2653.9933000021847
+              }
+            }
+          },
+          "summaryCountAgreement": true,
+          "recordedErrorCounts": {
+            "allPhaseFailures": 154,
+            "finalStateBehindTarget": 0,
+            "publicErrors": 0,
+            "streamErrors": 14
+          },
+          "auditSource": {
+            "path": "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\results\\realtime\\2026-10-15T03-40-20-964Z-concentrated-200\\audit-1.json",
+            "bytes": 2345226,
+            "sha256": "47b29d18b2869efa9223969bb94f819e95cd2de77192f91070e973190acfd2a1"
+          },
+          "rawAuditCrosscheck": {
+            "scope": "OFFLINE_ORIGINAL_RESPONSE_AND_BID_EFFECT_CROSSCHECK_ONLY",
+            "lanes": [
+              {
+                "lane": 1,
+                "requests": 180,
+                "bids": 5,
+                "outboxRows": 11,
+                "passed": false,
+                "errors": [
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "b6c6783e-4d97-4074-b8dd-172fddf0f6d6"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "a2823f03-8095-4cac-9a16-0d13ac9aa1f5"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "92f5780f-3261-4917-a9fb-f82650984cfd"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "3768ce65-1722-47de-8180-e97793c5f595"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "3af3bfa7-e491-4bc5-8469-fed3e112c6d4"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "d133d0b5-6e75-432a-a576-33c4aa2e9b97"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "204a230b-508c-4aa9-bfb1-02976d8b8fce"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "61c9185d-ccb8-473a-a1b6-bf75d380995c"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "674bfdda-15fb-4094-8e48-901a70792d5b"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "d6c9da91-cb73-4d57-b4c0-16a4a54245c2"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "368073d8-1fd1-4033-af4c-493953be517d"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "edc0765b-7fe0-4f88-82ce-cb39f7030994"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "57e6bd2d-cd8f-428f-927c-bb1813884f0b"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "a60092cb-6cd4-4d17-b018-3d99e0d4e2f9"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "700a7836-a142-4d54-813b-4a7f5bb3bdb5"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "5437f546-e39a-4e5c-841d-7f66ad7355a3"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "931f1ad0-927c-4d2a-85ca-49a9e6b606e5"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "a1e63925-4a3b-48da-8c66-a13110a59b7d"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "e27c50fe-ca46-4294-b997-d47493f07790"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "f8262808-7286-4dc0-8b3a-17507937a4d1"
+                  }
+                ]
+              },
+              {
+                "lane": 2,
+                "requests": 24,
+                "bids": 11,
+                "outboxRows": 15,
+                "passed": false,
+                "errors": [
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "1ccd102b-035d-4929-b908-6f39027e5f64"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "e72ecb6d-94c9-477a-afe4-11359dc756e7"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "0afda81e-a92b-4eb6-8496-374c2bebeb7a"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "3eff7647-21f1-4460-b57b-312e3612c932"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "b58319aa-bc55-440a-a5cc-8ae2a37b1d20"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "a4c39042-63f3-4c52-a02c-d7aa9ba40f9c"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "52d908b3-0fa7-49e6-a3b4-77e86cce47df"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "fa12a560-7112-4f70-ad30-1088b3466240"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "fc5b73a3-2e82-4c81-af7a-db653a87b8dd"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "3803173d-ad1b-4ec8-b333-713b749ef3e1"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "c5f2e8e3-72bc-4d7c-97f2-17b0393b2776"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "1370fd04-4e93-4d25-ac70-413d8f482b3f"
+                  }
+                ]
+              },
+              {
+                "lane": 3,
+                "requests": 23,
+                "bids": 11,
+                "outboxRows": 14,
+                "passed": false,
+                "errors": [
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "1b210b40-f053-434f-8bce-c0b2a91cf0d2"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "6defcfa3-9ae5-4b5c-b7df-53f9c87fd067"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "7b0e7dc4-f741-4a16-9509-0fdc64c0f7b4"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "6e4ea51f-2f70-4998-966f-0f1eae662bc0"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "8a530c3b-cc0a-4395-a54a-e423f3bd1dc8"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "40f7ff6a-eae0-44fc-9a14-1284c65596a6"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "384c2859-5db3-42cf-b7d8-24b008850444"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "5e6d7f18-9e1a-49e1-9011-9bc17aca5740"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "998cba62-80cf-4f6b-bd55-b6567b6b3a2a"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "f19edbda-a779-457c-b146-0b0c23971dcc"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "f4bb75f8-d818-4b55-a34f-c481e491bb16"
+                  }
+                ]
+              },
+              {
+                "lane": 4,
+                "requests": 23,
+                "bids": 12,
+                "outboxRows": 15,
+                "passed": false,
+                "errors": [
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "7fbbeb93-bce2-49af-8d9d-3583fe3fbf03"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "3943086f-645f-4eb5-b84d-9b47071e48b3"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "3f2fbcff-78d1-40df-a473-385b313841fd"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "db7af602-ddee-44d6-990f-f39c394f07a6"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "664215b4-9aef-4b95-86e6-0cefcc4f2233"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "3a7c7ee7-1379-457b-b96b-b7dc8c4ec480"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "cb9e1f1d-1ee3-490c-a07a-a5fdafd7dc6a"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "f30ed232-2ef2-45b2-aebc-f899896e39b2"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "73a4f6c5-53e3-498d-97a5-3e12ba4865d1"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "6d4c8f22-b18d-47d2-aed5-d490468ffbbd"
+                  },
+                  {
+                    "code": "PENDING_ORIGINAL",
+                    "key": "c685614f-00f1-4f61-a856-36a46269c99c"
+                  }
+                ]
+              }
+            ],
+            "passed": false
+          }
+        }
+      ],
+      "recordedLoadConditionsAllPassed": false,
+      "offlineCrosschecksAllPassed": false,
+      "allRequestedRepeatsFinished": true
+    }
+  ]
+}

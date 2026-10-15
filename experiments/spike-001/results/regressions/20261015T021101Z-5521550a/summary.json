@@ -1,0 +1,42 @@
+{
+  "runId": "20261015T021101Z-5521550a",
+  "generatedUtc": "2026-10-15T02:11:02.184098+00:00",
+  "command": [
+    "experiments/spike-001/harness/regressions.py",
+    "--repeats",
+    "1",
+    "--only",
+    "stop_occurrence"
+  ],
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 20261015,
+  "serverUrls": [
+    "http://127.0.0.1:18081",
+    "http://127.0.0.1:18082"
+  ],
+  "caseCount": 1,
+  "passed": 0,
+  "failed": 1,
+  "status": "FAIL",
+  "failedCases": [
+    {
+      "name": "E2_stop_occurrence_delimiter_collision",
+      "repetition": 1,
+      "error": "Failure: distinct stop occurrences remain distinct for delimiter-bearing identities: observed={'firstStopId': 'a:b:c', 'secondStopId': 'a:b:c', 'staleResumeOutcome': {'actor': 'operator', 'key': 'never-received-old-resume', 'kind': 'RESUME', 'lane': 1, 'auction': 'L1-A1', 'amount': None, 'reason': 'synthetic experiment', 'stopId': 'a:b:c', 'seq': 4, 'receivedMs': 1000, 'outcome': 'ACCEPTED', 'code': 'RESUMED', 'decidedMs': 1000, 'result': {'outcome': 'ACCEPTED', 'code': 'RESUMED', 'seq': 4, 'receivedMs': 1000, 'decidedMs': 1000, 'snapshot': {'lane': 1, 'auction': 'L1-A1', 'ordinal': 1, 'stage': 'INITIAL', 'version': 6, 'highestAmount': None, 'hasBid': False, 'reserveMet': False, 'openMs': 0, 'windowStartMs': 1000, 'deadlineMs': 11000, 'manualStopped': False, 'held': False, 'holdReason': None, 'stopId': None, 'recoveryConfirmed': False, 'historyComplete': True, 'result': None, 'lastResult': None, 'nextAmount': 10000, 'serverMs': 1000}}}}, expected=None"
+    }
+  ],
+  "boundaries": {
+    "fixtureClock": "synthetic epoch milliseconds",
+    "httpDuration": "monotonic client clock",
+    "loadOrBrowserPerformance": "NOT_RUN by this correctness command",
+    "processTermination": "NOT_RUN unless separately invoked",
+    "database": "service integration; DB runtime version and durability captured by outer orchestration"
+  },
+  "sourceHashes": {
+    "client.py": "9076266ad4346fd0c2b111c57a3ae5da7e02132c11e2d4de7ba1b136a777b90c",
+    "correctness.py": "565544aee0b880874bd5e199c860f61e0d52719e7c4e5c3c3f8b0f5db589b9c4",
+    "crashes.py": "5f6a662065a5f5958bc9be876c0274528338213b6d50d97584d87c4bb758a571",
+    "regressions.py": "8f6a8cf007c9da81be09fb6b77ea2db2fc8fa15144281584ffb0698e64f9978b"
+  }
+}

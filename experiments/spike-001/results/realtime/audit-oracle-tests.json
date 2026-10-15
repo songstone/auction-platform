@@ -1,0 +1,14 @@
+{
+  "scope": "AUDIT_VALIDATOR_SYNTHETIC_ORACLE_ONLY",
+  "validFixture": "PASS",
+  "detectedCorruptions": [
+    "wrong approval",
+    "missing committed bid effect",
+    "highest price regression",
+    "incorrect first-bid deadline max",
+    "changed original decision",
+    "wrong final result",
+    "outbox lost committed version"
+  ],
+  "passed": 8
+}

@@ -1,0 +1,38 @@
+{
+  "scope": "PURE_CLIENT_MODEL_ONLY",
+  "cases": [
+    {
+      "name": "subscribe-before-snapshot buffers concurrent changes and removes duplicates",
+      "result": "PASS"
+    },
+    {
+      "name": "old event cannot restore previous auction or price",
+      "result": "PASS"
+    },
+    {
+      "name": "gap and reorder pause application until authoritative resnapshot",
+      "result": "PASS"
+    },
+    {
+      "name": "snapshot racing newer applied state cannot regress it",
+      "result": "PASS"
+    },
+    {
+      "name": "silent last event loss detected by authoritative version heartbeat",
+      "result": "PASS"
+    },
+    {
+      "name": "bounded buffer overflow forces another snapshot",
+      "result": "PASS"
+    },
+    {
+      "name": "four lane versions advance independently",
+      "result": "PASS"
+    },
+    {
+      "name": "resnapshot after reconnect merges events during request",
+      "result": "PASS"
+    }
+  ],
+  "passed": 8
+}

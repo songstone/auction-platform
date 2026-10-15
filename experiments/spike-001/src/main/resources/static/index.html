@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPIKE-001 · 네 레인 실험 화면</title><link rel="icon" href="data:,">
+<style>
+body{font:16px/1.5 system-ui,sans-serif;background:#f0f3f7;color:#182335;margin:0}main{max-width:1200px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}.lead{color:#576376}header{margin-bottom:24px}.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}input,button{font:inherit;padding:9px 12px;border:1px solid #b5becb;border-radius:6px}button{background:#17648d;color:white;border:0;cursor:pointer}button:disabled{background:#89939e;cursor:wait}.lanes{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card{background:white;border:1px solid #d8e0e9;border-radius:12px;padding:20px}.card h2{margin:0;font-size:21px}.price{font-size:28px;font-weight:700;margin:10px 0}.details{color:#576376}.outcome{min-height:50px;padding:12px;background:#f4f7fa;border-radius:6px;margin-top:14px}.status{font-weight:600}footer{margin-top:20px;color:#576376}.error{color:#a92f35}@media(max-width:700px){.lanes{grid-template-columns:1fr}}#test-report{white-space:pre-wrap;font:12px monospace}
+</style></head><body><main>
+<header><h1>네 레인 실시간 경매 · 실험 화면</h1><div class="lead">격리된 SPIKE-001 fixture를 표시합니다. 본인 입찰의 승인과 현재 최고입찰 상태를 구분합니다.</div></header>
+<div class="toolbar"><label>실험 회원 <input id="actor" autocomplete="off"></label><span id="connection" role="status">연결 준비 중</span><button id="refresh">현재 상태 다시 받기</button><button id="disconnect">연결 끊기</button></div>
+<section class="lanes" id="lanes" aria-label="경매 레인"></section>
+<section aria-label="본인 원요청 판정"><h2>본인 원요청 판정</h2><ul id="request-history"></ul></section>
+<footer>연결 복구 시 권위 snapshot으로 상태를 동기화합니다. 공개 화면에 판매자·최고입찰자·낙찰자 식별정보와 최저낙찰가를 표시하지 않습니다.</footer>
+<details><summary>실험 계측</summary><pre id="test-report"></pre></details>
+</main><script type="module" src="/client.js"></script></body></html>

@@ -1,0 +1,41 @@
+{
+  "runId": "20261015T023341Z-65be92ac",
+  "generatedUtc": "2026-10-15T02:35:33.608181+00:00",
+  "command": [
+    "C:\\Python314\\python.exe",
+    "experiments/spike-001/harness/stream_crashes.py",
+    "--repeats",
+    "10"
+  ],
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "seed": 20261015,
+  "seedUsage": "Scenario label only: fixtures are deterministic; OS thread scheduling and network arrival order are not seeded.",
+  "serverJarAtInvocationSha256": "88ee58ccc4deed6ff061e02859f9ca3976263a885cd2fa3c77e654c9fbae6284",
+  "serverUrls": [
+    "http://127.0.0.1:18081",
+    "http://127.0.0.1:18082"
+  ],
+  "caseCount": 20,
+  "passed": 20,
+  "failed": 0,
+  "status": "PASS",
+  "failedCases": [],
+  "boundaries": {
+    "fixtureClock": "synthetic epoch milliseconds",
+    "httpDuration": "monotonic client clock",
+    "loadOrBrowserPerformance": "NOT_RUN by this correctness command",
+    "processTermination": "Actual dedicated JVM TerminateProcess after observed durable outbox/SSE boundary; PID file and /health must agree; Windows exit code recorded. No DB restart or power-loss simulation.",
+    "database": "service integration; DB runtime version and durability captured by outer orchestration"
+  },
+  "sourceHashes": {
+    "client.py": "356daccdb9e11bdd334d6dd06a1b4b0beb390c440421d845e12fe9a011e15560",
+    "correctness.py": "94766958897a07e69a27496540f629e13f786b3e8b8172e247b9a263c9989e41",
+    "crashes.py": "0fe37f7c0f2ec564feaa15d56138476eda78b73068eb39e4cef2dbd9358edb64",
+    "environment_failures.py": "a61c4fe3c061f504bf6d249fd2b1819920a8f984495994b77417cfee006c214d",
+    "regressions.py": "2c71c772878aec365410716de0498136465d5920b2af730ccb1d7387f790c5f7",
+    "resource_monitor.py": "69dc264d1b5d4d3e4e6ff7ae61598fbe281010e28e76c08e1e21a9f00552c77f",
+    "stream_crashes.py": "a7114fccc19cb67545be689262fdab9e614ac55b3342c8bc47e94f5625ed3c5f",
+    "verify_evidence.py": "621887015f937321b9a61874df65a13c60e7bf708c43ee7a809e7d3879ebdf12"
+  }
+}

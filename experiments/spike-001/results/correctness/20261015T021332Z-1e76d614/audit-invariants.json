@@ -1,0 +1,11 @@
+{
+  "type": "OFFLINE_AUDIT_INVARIANT_VERIFICATION",
+  "generatedUtc": "2026-10-15T02:16:22.981426+00:00",
+  "sourceRun": "20261015T021332Z-1e76d614",
+  "status": "PASS",
+  "auditObservations": 430,
+  "requestRowsAcrossObservations": 2510,
+  "bidRowsAcrossObservations": 410,
+  "failures": [],
+  "countBoundary": "row counts include repeated observations; not unique requests or new service executions"
+}

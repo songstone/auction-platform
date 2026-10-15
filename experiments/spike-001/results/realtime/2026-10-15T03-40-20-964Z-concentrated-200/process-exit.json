@@ -1,0 +1,21 @@
+{
+  "command": [
+    "C:\\Users\\jitin81\\AppData\\Local\\JetBrains\\IntelliJIdea2026.2\\acp-agents\\.runtimes\\node\\24.19.0\\node.exe",
+    "C:\\Users\\jitin81\\Documents\\dev\\private\\auction-platform\\experiments\\spike-001\\realtime\\load.mjs",
+    "--scenario",
+    "concentrated",
+    "--connections",
+    "200",
+    "--warmup-seconds",
+    "10",
+    "--measure-seconds",
+    "60",
+    "--repetitions",
+    "1",
+    "--core-passed",
+    "--core-and-base-passed"
+  ],
+  "exitCode": 1,
+  "source": "Observed process completion from execution tool",
+  "recordedUtc": "2026-10-15T03:49:46.490656+00:00"
+}

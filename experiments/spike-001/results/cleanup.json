@@ -1,0 +1,16 @@
+{
+  "verifiedUtc": "2026-10-15T04:00:09.8823404Z",
+  "command": "& ./experiments/spike-001/stop.ps1 -Database",
+  "observedExitCode": 0,
+  "ownedJvmPids": [
+    41212,
+    3556
+  ],
+  "ownedDelayProxyPid": 18360,
+  "remainingOwnedProcesses": [],
+  "databaseContainer": "auction-spike-001-db",
+  "databaseStatus": "exited",
+  "resourceMonitorFinishedUtc": "2026-10-15T03:56:26.287689+00:00",
+  "dataDeleted": false,
+  "dockerDesktopStopped": false
+}
