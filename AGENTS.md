@@ -7,6 +7,15 @@
 - Current stack: Amazon Corretto 25, Spring Boot 4.1.1, Gradle Wrapper 9.8.1, Spring MVC/JDBC, PostgreSQL, React/TypeScript. Logical module rules are in `backend/MODULE-BOUNDARIES.md`.
 - Keep existing uncommitted work. Do not copy SPIKE code or experimental guarantees into the application without checking its evidence and the approved design.
 
+## Branch workflow
+
+- `dev` is the integration branch for implementation work. `main` and `dev` are long-lived branches and must not be deleted.
+- Start each task branch (`feat/`, `fix/`, `chore/`, or `docs/`) from the latest `origin/dev`. Do not implement directly on `main` or `dev`.
+- Run the checks appropriate to the change, confirm required CI passes, then merge the task branch into the latest `dev` and push `dev`. Preserve commits with a fast-forward or regular merge; verify any merge-resolution changes before completing integration.
+- After the remote `dev` contains the finished task, delete its remote and local task branches and leave the checkout on `dev`. Fetch first and verify both task tips are ancestors of `origin/dev`; preserve any unmerged commits or branches used by another worktree. Do not force-delete branches merely because a task is described as finished.
+- The user periodically merges `dev` into `main`. Do not merge or push implementation work to `main` unless the user explicitly requests that promotion. Ordinary task completion authorizes integration into `dev`, not promotion to `main`.
+- Report the tested commit, integrated `dev` commit, CI result, and branch cleanup. Historical verification reports retain the branch names used at the time; they do not override this current workflow.
+
 ## Shared files and data
 
 - One owner coordinates `backend/build.gradle.kts`, dependency locks, security/bootstrap configuration, `db/migration`, `scripts/**`, and `.github/**` during parallel work.

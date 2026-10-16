@@ -15,6 +15,21 @@
 | [공개 회차 조회 검증](docs/implementation/PUBLIC-ROUND-VERIFICATION.md) | DB·API·브라우저·장애/복구와 CI 실행 증거 |
 | [공통 구현 지침](AGENTS.md) | 공유 파일 소유권·마이그레이션·계약·검증 규칙 |
 
+## 브랜치 운영
+
+| 브랜치 | 역할 |
+| --- | --- |
+| `main` | 사용자가 주기적으로 `dev`를 병합하는 기준 브랜치 |
+| `dev` | 검증된 작업을 모으는 개발 통합 브랜치 |
+| `feat/*`, `fix/*`, `chore/*`, `docs/*` | 최신 `dev`에서 분기하는 작업 브랜치. 통합 완료 후 삭제 |
+
+1. 최신 `origin/dev`에서 작업 브랜치를 만든다.
+2. 변경에 필요한 검사와 CI를 통과시킨 뒤 `dev`에 병합·푸시한다. 병합 충돌을 해결하며 코드가 바뀌면 관련 검사를 다시 수행한다.
+3. 원격 `dev`에 로컬·원격 작업 브랜치의 커밋이 모두 포함됐는지 확인한 후 두 작업 브랜치를 삭제하고 `dev`로 돌아온다. 미병합 커밋이나 다른 worktree에서 사용 중인 브랜치는 보존한다.
+4. `main` 반영은 사용자가 원하는 시점에 수행한다. 에이전트의 일반 작업 완료 범위는 `dev` 통합과 작업 브랜치 정리까지다.
+
+`main`과 `dev`는 계속 유지한다. 최초 `dev`는 기존 `main`의 `003a28f`에서 생성했다. 과거 검증 보고서에 기록된 `main` 병합 이력은 당시 실행 기록이며 현재 작업 규칙은 [AGENTS.md](AGENTS.md)를 따른다. 기존 CI는 모든 push/PR에 실행되므로 `dev`도 검사한다.
+
 ## 로컬 실행
 
 Amazon Corretto 25, Node/npm([frontend/package.json](frontend/package.json)의 engines), Python 3.12 이상과 PowerShell 7을 사용한다. 백엔드는 Spring Boot 4.1.1이며 Gradle 9.8.1을 저장소 Wrapper로 고정한다. Docker는 로컬 DB·메일을 사용할 때 필요하다. 전역 `java`가 다른 버전이면 `AUCTION_JAVA_HOME` 또는 `-JavaHome`으로 Corretto 25 설치 위치를 지정한다. 현재 전환의 선택 이유·호환 범위·실행 결과는 [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)을 따른다.
