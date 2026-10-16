@@ -3,6 +3,7 @@
 - 관리 책임: Engineering Lead. 구현자는 결과를 제출하고 리드만 상태를 갱신한다.
 - 확인일: 2026-10-16. 이 문서는 실행 현황과 작업 승인 상태를 관리한다. 제품·설계·계약의 원본을 대체하지 않는다.
 - 최초 조사 기준: `e5ebde892395c02bae9f4e604b610a4bf7088ee0` (`dev = origin/dev`, fetch 확인, clean). `main = origin/main = 003a28fb9f2836f80ce21ed4e64f855977632eb8`.
+- 이번 작업 분해 문서의 검토 범위·명령·미실행: [M-01 문서 검토 기록](implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md).
 
 ## 확인된 현재 범위
 
