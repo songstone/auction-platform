@@ -6,6 +6,8 @@ spring:
     exclude: []
   flyway:
     enabled: true
+    # Keep the history location stable after V1 creates a schema matching the DB user.
+    default-schema: public
     locations: classpath:db/migration
     clean-disabled: true
   datasource:

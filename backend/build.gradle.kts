@@ -1,4 +1,6 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import org.springframework.boot.gradle.tasks.run.BootRun
+import java.util.Properties
 
 plugins {
     java
@@ -72,6 +74,38 @@ tasks.register<Test>("integrationTest") {
 
 springBoot {
     mainClass = "com.auctionplatform.bootstrap.AuctionPlatformApplication"
+}
+
+val prepareLocalInfrastructure = tasks.register<Exec>("prepareLocalInfrastructure") {
+    description = "Starts the dedicated development Compose services and discovers their local ports."
+    group = "application"
+    workingDir(layout.projectDirectory.dir(".."))
+    commandLine("pwsh", "-NoProfile", "-File", "infra/up.ps1")
+}
+
+tasks.register<BootRun>("bootRunLocal") {
+    description = "Runs the backend with local PostgreSQL and Mailpit; Docker and PowerShell 7 are required."
+    group = "application"
+    dependsOn(prepareLocalInfrastructure)
+    mainClass = springBoot.mainClass
+    classpath = sourceSets.main.get().runtimeClasspath
+    val runtimeDirectory = layout.projectDirectory.dir("../infra/.runtime")
+    doFirst {
+        val settings = Properties().apply {
+            runtimeDirectory.file("backend.properties").asFile.reader(Charsets.UTF_8).use { load(it) }
+        }
+        settings.stringPropertyNames().forEach { environment(it, settings.getProperty(it)) }
+        val password = runtimeDirectory.file("db-password").asFile.readText().trim()
+        environment("DB_PASSWORD", password)
+        // Direct Spring overrides must not redirect this dedicated local launch or its migrations.
+        environment("SPRING_DATASOURCE_URL", settings.getProperty("DB_URL"))
+        environment("SPRING_DATASOURCE_USERNAME", settings.getProperty("DB_USER"))
+        environment("SPRING_DATASOURCE_PASSWORD", password)
+        environment("SPRING_FLYWAY_URL", settings.getProperty("DB_URL"))
+        environment("SPRING_FLYWAY_USER", settings.getProperty("DB_USER"))
+        environment("SPRING_FLYWAY_PASSWORD", password)
+        environment("SPRING_PROFILES_ACTIVE", "local-infra")
+    }
 }
 
 // The launcher has one deployable JAR to select; do not emit a second plain JAR.

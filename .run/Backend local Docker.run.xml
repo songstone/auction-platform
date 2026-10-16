@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Backend (local Docker)" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="taskNames">
+        <list>
+          <option value="bootRunLocal" />
+        </list>
+      </option>
+    </ExternalSystemSettings>
+    <option name="debugServerProcess" value="false" />
+    <option name="debugAllEnabled" value="false" />
+    <option name="runAsTest" value="false" />
+    <method v="2" />
+  </configuration>
+</component>
