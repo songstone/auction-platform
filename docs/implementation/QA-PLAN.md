@@ -4,14 +4,14 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.4 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.5 |
 | 입력 | D-095, SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, 공통 계약 0.1.0 |
 | 현재 범위 | 공통 골격과 공개 회차 조회의 DB·HTTP·브라우저·DB 연결 단절/복구 검사. 후속 기능·정합성·복구 인수 사례는 계획으로 유지 |
 | 새 실행 상태 | 공개 회차 조회 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md) 참조. [Boot 전환](BOOT4-MIGRATION-VERIFICATION.md)은 이전 실행 이력이며 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
-| 관련 작업 카드 | [IMPLEMENTATION-PLAN](IMPLEMENTATION-PLAN.md) |
+| 관련 작업 카드 | [IMPLEMENTATION-PLAN](IMPLEMENTATION-PLAN.md), [M-01 DRAFT 작업지시서](../tasks/README.md), 리드 관리 [STATE](../STATE.md) |
 | 초기 골격의 실행 이력 원본 | [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md). 당시 Maven으로 수행한 실제 명령·관측·결과를 보존 |
 | Gradle 전환의 실행 이력 원본 | [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md). Spring Boot 3.5.16에서 수행한 실제 명령·관측·결과를 보존 |
-| 현재 Spring Boot 4 전환의 결과 원본 | [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md). 현재 조합의 실제 명령·관측·결과를 별도로 기록 |
+| Spring Boot 4 전환 이력 원본 | [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md). 당시 조합의 실제 명령·관측·결과를 보존 |
 | 승인 경계 | 남은 OPEN·CR-04~10·SEC-01~04 제안값은 미승인. 정의된 계약과 승인 정책을 다시 미정으로 만들지 않음 |
 
 기능 기대값의 원본은 [MVP-PRD](../product/MVP-PRD.md)의 AC이며, 불변식·도메인 사례·기술 주장은 [DOMAIN-MODEL](../architecture/DOMAIN-MODEL.md)의 INV/TS/TV다. API 스키마는 [OpenAPI](../../contracts/openapi.yaml), 전달·복구 의미는 [auction-events](../../contracts/auction-events.md), 현재 미정의 공식 원본은 [DECISION-LOG](../decisions/DECISION-LOG.md)다. 여기서 새 정책이나 성공 응답 스키마를 정의하지 않는다.
@@ -40,7 +40,7 @@
 
 ## 3. 이번 골격의 초기 검증 범위
 
-다음 `FND-*`는 이 QA 계획의 실행 항목 ID이며 제품 AC를 추가하지 않는다. 현재 Spring Boot 4 전환의 실행·관측·미실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)을 따른다. 초기 Maven 골격 실행은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md), Spring Boot 3.5.16의 Gradle 전환은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 실제 파일명·명령·산출물은 생성한 모듈의 실행 안내와 통합 스크립트에서 가져온다.
+다음 `FND-*`는 이 QA 계획의 실행 항목 ID이며 제품 AC를 추가하지 않는다. 현재 공개 회차 상세의 실행·관측·미실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)을 따른다. Spring Boot 4 전환은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 초기 Maven 골격 실행은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md), Spring Boot 3.5.16의 Gradle 전환은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 실제 파일명·명령·산출물은 생성한 모듈의 실행 안내와 통합 스크립트에서 가져온다.
 
 | 항목 | 실행·관측 | 기대값과 증거 | 제외 범위 |
 | --- | --- | --- | --- |
@@ -165,6 +165,6 @@ R-48/49의 목표는 기존 승인 그대로다. 기본 구성은 4레인·동�
 
 일반 구현 작업의 완료 기준은 검증된 변경의 `dev` 통합과 완료 작업 브랜치 정리다. `main` 반영은 사용자가 주기적으로 수행하는 별도 단계이며, 과거 보고서의 `main` 병합 기록은 소급 변경하지 않는다.
 
-현재 Spring Boot 4 전환의 수행 여부·정확 명령·증거·검사 수·미실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에 기록하며, 초기 Maven 실행과 Spring Boot 3.5.16의 Gradle 전환은 각각 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)·[GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 여기에는 별도의 현재 상태 표나 결과 숫자를 복제하지 않는다. 골격의 실제 DB 연결 관측은 제품 트랜잭션·인증 세션 검증과 구별하고, 개발 fixture의 브라우저 관측도 실제 경매 연동·재접속·장애·성능 인수와 구별한다. 기존 승인 문서/계약 정적 검사와 SPIKE는 기존 범위의 증거이며 새 제품 QA 통과로 합산하지 않는다.
+현재 공개 회차 상세의 수행 여부·정확 명령·증거·검사 수·미실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)에 기록하며, Boot 전환은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에, 초기 Maven 실행과 Spring Boot 3.5.16의 Gradle 전환은 각각 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)·[GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 여기에는 별도의 현재 상태 표나 결과 숫자를 복제하지 않는다. 골격의 실제 DB 연결 관측은 제품 트랜잭션·인증 세션 검증과 구별하고, 개발 fixture의 브라우저 관측도 실제 경매 연동·재접속·장애·성능 인수와 구별한다. 기존 승인 문서/계약 정적 검사와 SPIKE는 기존 범위의 증거이며 새 제품 QA 통과로 합산하지 않는다.
 
-현재 범위 완료는 FND 실행 결과와 남은 미실행을 구분해 기록하는 것이다. 제품 전체 완료는 구현된 기능별 AC·불변식·경합/복구·권한·브라우저·성능 증거와 미정/제외 범위를 별도로 대조해야 한다. 계약 불일치는 구현에서만 보정하지 않고 [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md)의 변경 절차로 인계한다.
+현재 상태와 다음 M-01의 승인·실행 게이트는 리드 관리 [STATE](../STATE.md)와 [작업지시서](../tasks/README.md)를 따른다. 새 작업은 별도 증거가 생기기 전 DRAFT / NOT_RUN이며, 현재 문서 변경을 새 기능 완료로 기록하지 않는다. 제품 전체 완료는 구현된 기능별 AC·불변식·경합/복구·권한·브라우저·성능 증거와 미정/제외 범위를 별도로 대조해야 한다. 계약 불일치는 구현에서만 보정하지 않고 [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md)의 변경 절차로 인계한다.
