@@ -1,0 +1,523 @@
+{
+  "status": "DRAFT_REVIEW_CANDIDATE",
+  "createdAtUtc": "2026-10-15T08:41:37.256160+00:00",
+  "contractVersion": "0.1.0-draft.2",
+  "userApproval": null,
+  "purpose": "Identify current review candidate files and approved product decision references only. Entire architecture/shared contract approval is not recorded.",
+  "gitHead": "cc48c4bb9abd42eabd605e321784d3a1d650c5e3",
+  "workingTreeHasUncommittedDrafts": true,
+  "decisionRequest": "docs/decisions/CONTRACT-REVIEW-001.md",
+  "pendingFirstPolicyQuestions": [],
+  "sources": [
+    {
+      "path": "docs/product/MVP-PRD.md",
+      "sha256": "771745418c8aaca1432ecd56590ad0f4e8ab2b03acd91d305c529fbeddf91578"
+    },
+    {
+      "path": "docs/product/AUCTION-RULES.md",
+      "sha256": "ab00ed1389339bdef38e70b407c41dda4e839e6aa25c37c93cd108326ed8f5b5"
+    },
+    {
+      "path": "docs/architecture/DOMAIN-MODEL.md",
+      "sha256": "be81742a04efcf7371182af25fc67f9064638f1d5c02bf70b3701c888b0c3922"
+    },
+    {
+      "path": "docs/spikes/SPIKE-001.md",
+      "sha256": "4bb990cdb73a601e0d7a28869ebd7538272af8ca2207e1d6b1cbdc2f417a28a8"
+    },
+    {
+      "path": "docs/decisions/DECISION-LOG.md",
+      "sha256": "62613b2d64546483cb5761204c42dae9b946042d7fded56515a944e2010cfc15"
+    }
+  ],
+  "candidateFiles": [
+    {
+      "path": "docs/architecture/SYSTEM-DESIGN.md",
+      "sha256": "3972a960729cd1a6f01236dc66a363fb2a79606f1a16f47a133eb56510b85b0e"
+    },
+    {
+      "path": "docs/decisions/CONTRACT-REVIEW-001.md",
+      "sha256": "afc52f496c537248098fb0f43812e25095944c0b6f3f114d5ac8912f108f61b3"
+    },
+    {
+      "path": "contracts/openapi.yaml",
+      "sha256": "2dbeb7b699884cf1e33669a9f97f13e3d8cefb117a6f2b5b63548e66ce90c547"
+    },
+    {
+      "path": "contracts/auction-events.md",
+      "sha256": "16568b6c4f18ae19fcf959a64aa6aa4a59e908e884ce3350d9fe4267787af3b4"
+    },
+    {
+      "path": "contracts/README.md",
+      "sha256": "6c48249ce1d27fa17759e805ed71689626e12ade3a5cf65570d06950cc753ac2"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-001-TRANSITION-TIME.md",
+      "sha256": "ea496820c68f7d31c386b62eedb93a041410340a3637455e403d5700c4a572a4"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-002-DURABLE-RECEIPT-AND-ORDERING.md",
+      "sha256": "4049b3f6d1ae2a040a9931526bdbcc1f16c6d5037f34fdafd6abf8603cb11408"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-003-FAILURE-AUTHORITY-AND-RECOVERY.md",
+      "sha256": "65c9cf8d52518348798ea170616b4cfc27582c2694d7d2dd9baa529cceab63b9"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-004-MVP-STRUCTURE.md",
+      "sha256": "c9db2f7ab1c6d87f43b43bd058cc7cef0f4ed23be0442dc90374e6a3a3a0d70a"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-005-CONTRACT-BASELINE.md",
+      "sha256": "705af85cda4d69009f8b2bbe1b2aa3dc90c34fc5e3e60c9e7cbfe10a733aba97"
+    }
+  ],
+  "staticEvidenceFiles": [
+    {
+      "path": "contracts/validate_contracts.py",
+      "sha256": "6628b08c928564caa61b83dcdc251da1cb0924f95334e32084faba84bdaaa47e"
+    },
+    {
+      "path": "contracts/requirements-validation.txt",
+      "sha256": "74caff813759a4e51ce945174e2c76d861403c4bfd8410409c7ea85aa1bfbbeb"
+    },
+    {
+      "path": "contracts/validation-report.json",
+      "sha256": "fcd1dbd0005117d2b2519019f403b027f9993412886ef6cdbe9dd0d8e5c0b455"
+    }
+  ],
+  "openApiMatchesExistingStaticReport": true,
+  "operationInventory": [
+    {
+      "operationId": "getCsrfToken",
+      "method": "GET",
+      "path": "/auth/csrf",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "getSession",
+      "method": "GET",
+      "path": "/auth/session",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "logout",
+      "method": "DELETE",
+      "path": "/auth/session",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "registerMember",
+      "method": "POST",
+      "path": "/auth/registrations",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "verifyEmail",
+      "method": "POST",
+      "path": "/auth/email-verifications",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "login",
+      "method": "POST",
+      "path": "/auth/sessions",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "requestPasswordReset",
+      "method": "POST",
+      "path": "/auth/password-reset-requests",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "completePasswordReset",
+      "method": "POST",
+      "path": "/auth/password-resets",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06"
+      ]
+    },
+    {
+      "operationId": "listPublicRounds",
+      "method": "GET",
+      "path": "/rounds",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getPublicRound",
+      "method": "GET",
+      "path": "/rounds/{roundId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "listPublishedLots",
+      "method": "GET",
+      "path": "/rounds/{roundId}/lots",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getPublishedLot",
+      "method": "GET",
+      "path": "/lots/{lotId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getPublishedPhoto",
+      "method": "GET",
+      "path": "/lots/{lotId}/photos/{photoId}",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-05"
+      ]
+    },
+    {
+      "operationId": "getPublicAuction",
+      "method": "GET",
+      "path": "/auctions/{auctionId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getAuctionSnapshot",
+      "method": "GET",
+      "path": "/rounds/{roundId}/snapshot",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "subscribeAuctionEvents",
+      "method": "GET",
+      "path": "/rounds/{roundId}/events",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getListingContext",
+      "method": "GET",
+      "path": "/me/listing-context",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-01"
+      ]
+    },
+    {
+      "operationId": "listMyLots",
+      "method": "GET",
+      "path": "/me/lots",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "createLot",
+      "method": "POST",
+      "path": "/me/lots",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-05",
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "getMyLot",
+      "method": "GET",
+      "path": "/me/lots/{lotId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "updateLot",
+      "method": "PUT",
+      "path": "/me/lots/{lotId}",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-05",
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "listMyParticipations",
+      "method": "GET",
+      "path": "/me/participations",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "uploadPhoto",
+      "method": "POST",
+      "path": "/me/photos",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-05"
+      ]
+    },
+    {
+      "operationId": "getOwnedPhoto",
+      "method": "GET",
+      "path": "/me/photos/{photoId}",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-05",
+        "OPEN-12"
+      ]
+    },
+    {
+      "operationId": "cancelOwnLot",
+      "method": "POST",
+      "path": "/me/lots/{lotId}/cancellations",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "getMyActionRequest",
+      "method": "GET",
+      "path": "/me/action-requests/{requestId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "registerBidIntent",
+      "method": "PUT",
+      "path": "/me/bid-intents/{requestId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getCurrentBidIntent",
+      "method": "GET",
+      "path": "/me/bid-intents",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "submitBid",
+      "method": "POST",
+      "path": "/auctions/{auctionId}/bid-requests",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getBidRequest",
+      "method": "GET",
+      "path": "/me/bid-requests/{requestId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "acknowledgeBidOutcome",
+      "method": "POST",
+      "path": "/me/bid-requests/{requestId}/acknowledgements",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "getTradeContact",
+      "method": "GET",
+      "path": "/auctions/{auctionId}/contact",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-06",
+        "OPEN-12"
+      ]
+    },
+    {
+      "operationId": "listOperatorRounds",
+      "method": "GET",
+      "path": "/operator/rounds",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "createRound",
+      "method": "POST",
+      "path": "/operator/rounds",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-01",
+        "OPEN-05",
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "getOperatorRound",
+      "method": "GET",
+      "path": "/operator/rounds/{roundId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "updateRoundSchedule",
+      "method": "PUT",
+      "path": "/operator/rounds/{roundId}/schedule",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-01",
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "updateRoundLanes",
+      "method": "PUT",
+      "path": "/operator/rounds/{roundId}/lane-configuration",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "updateRoundTiming",
+      "method": "PUT",
+      "path": "/operator/rounds/{roundId}/timing",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-05",
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "cancelRound",
+      "method": "POST",
+      "path": "/operator/rounds/{roundId}/cancellations",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "getOperatorLane",
+      "method": "GET",
+      "path": "/operator/rounds/{roundId}/lanes/{laneId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    },
+    {
+      "operationId": "pauseLane",
+      "method": "POST",
+      "path": "/operator/rounds/{roundId}/lanes/{laneId}/pauses",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "resumeLane",
+      "method": "POST",
+      "path": "/operator/rounds/{roundId}/lanes/{laneId}/resumes",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-09",
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "confirmRecovery",
+      "method": "POST",
+      "path": "/operator/rounds/{roundId}/lanes/{laneId}/recovery-confirmations",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-09",
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "cancelCurrentAuction",
+      "method": "POST",
+      "path": "/operator/auctions/{auctionId}/cancellations",
+      "draftStatus": "draft-with-open-policy",
+      "openDecisions": [
+        "OPEN-10"
+      ]
+    },
+    {
+      "operationId": "getOperatorCommand",
+      "method": "GET",
+      "path": "/operator/commands/{requestId}",
+      "draftStatus": "draft-complete",
+      "openDecisions": []
+    }
+  ],
+  "runtimeVerification": "NOT_RUN",
+  "notes": [
+    "Inventory and hashes are a snapshot, not a second normative API source.",
+    "Any listed file change requires a new review snapshot before approval.",
+    "Only explicit user decisions may close OPEN items or establish an approved baseline."
+  ],
+  "reviewChecks": {
+    "scope": "DOCUMENT_STRUCTURE_ONLY",
+    "markdownFiles": 17,
+    "localLinks": 218,
+    "anchorsOrJsonPointers": 33,
+    "tables": 158,
+    "canonicalIds": {
+      "AC": 136,
+      "D": 94,
+      "R": 52,
+      "INV": 51,
+      "TS": 83,
+      "TV": 10
+    },
+    "uniqueOperationsMapped": 45,
+    "status": "PASS",
+    "independentDocumentReview": "PASS",
+    "openApiMatchesCurrentStaticReport": true
+  },
+  "userApprovalScope": "Entire architecture/shared contract; product decisions are separately referenced.",
+  "approvedProductDecisionReferences": [
+    {
+      "reviewId": "CR-01",
+      "decisionId": "D-092",
+      "source": "docs/decisions/DECISION-LOG.md",
+      "approvedOn": "2026-10-15"
+    },
+    {
+      "reviewId": "CR-02",
+      "decisionId": "D-093",
+      "source": "docs/decisions/DECISION-LOG.md",
+      "approvedOn": "2026-10-15"
+    },
+    {
+      "reviewId": "CR-03",
+      "decisionId": "D-094",
+      "source": "docs/decisions/DECISION-LOG.md",
+      "approvedOn": "2026-10-15"
+    }
+  ],
+  "remainingUnapprovedProposals": [
+    "CR-04 through CR-10",
+    "SEC-01 through SEC-04",
+    "T-01 through T-06",
+    "entire architecture/shared contract"
+  ],
+  "previousCandidate": {
+    "contractVersion": "0.1.0-draft.1",
+    "openapiSha256": "1702709d1b444d2939e0fa1747cf016780f9ab89afd84558c54c59ce2cf35c24"
+  }
+}

@@ -1,0 +1,5086 @@
+openapi: 3.1.1
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+info:
+  title: 4레인 실시간 경매 공통 계약
+  version: 0.1.0
+  description: USER_APPROVED / D-095의 범위로 구현 기준선 승인. 제품 1.6과 SYSTEM-DESIGN 1.0에 기반한 HTTP 및 이벤트 payload 원본. 정의된 경로·wire·처리/복구 의미를 채택하고 남은 OPEN·deferred·미검증 위험은 유지한다. 기능
+    구현/성능/장애 검증은 NOT_RUN. x-open-decisions는 미정 제품 세부, x-draft-status는 초안 완성도, x-verification-status는 실행 증거를 구분한다.
+    제한 미기재는 무제한 허용 정책이 아니다. 추가 실험은 초안 작성이나 사용자 계약 승인에 대한 일괄 선행조건이 아니다. 이벤트 전송 의미는 auction-events.md, 변경 절차와 잔여 사항은
+    README.md.
+servers:
+- url: /api/v1
+  description: 같은 출처의 버전 경로. 실제 배포 주소·서비스는 아직 없음.
+tags:
+- name: Identity
+- name: Public
+- name: Listings
+- name: Bidding
+- name: Results
+- name: Operations
+- name: Realtime
+security: []
+x-contract-status: USER_APPROVED
+x-verification-status: NOT_RUN
+x-approval:
+  decisionId: D-095
+  source: ../docs/decisions/DECISION-LOG.md
+  approvedOn: '2026-10-15'
+  approvedFrom: 0.1.0-draft.2
+  baseline: approved-baseline-0.1.0.json
+  scope: 정의된 경로·스키마·권한/오류·입찰 접수/판정/ACK·이벤트/복구 의미의 구현 기준선. OPEN의 미선택 값·추가 권한·deferred 표면과 실행/운영 보장은 포함하지 않는다.
+x-approved-policy-decisions:
+  source: ../docs/decisions/DECISION-LOG.md
+  ids:
+  - D-092
+  - D-093
+  - D-094
+  scope: 제품 정책 승인 참조. 설계·계약 채택 승인은 x-approval의 D-095로 구분한다.
+x-request-identities:
+  BID: memberId + requestId. 등록/실제 접수/원판정/ACK가 공유하는 이름공간. 원 auctionId·amount 고정.
+  MEMBER_ACTION: memberId + requestId. 모든 출품 변경 종류 사이 같은 키 공유·종류/원내용 고정.
+  OPERATOR_COMMAND: operatorId + requestId. 모든 운영 명령 종류 사이 같은 키 공유·종류/원대상/제출 사유/해제 발생 건 고정.
+  rule: 서로 다른 이름공간은 같은 문자열을 쓸 수 있으나 하나의 이름공간에서는 재사용해 새 효과를 만들지 않는다. 회차/현재 화면/stream 세대로 원키를 재분류하지 않는다. 사진 업로드/로그인처럼
+    원키 없는 작업은 이 멱등성 보장 대상이 아니다.
+x-authorization-policy: MEMBER는 이메일 검증 가입 완료 회원. OPERATOR는 명시 지정 운영 전용 계정이며 MEMBER와 겸용하지 않는다(D-092). 한 계정의 역할은 둘 중 하나다.
+  AUTHENTICATED는 현재 세션 주체. 권한 없는 원요청·개인정보 조회는 거절.
+x-http-policy:
+  requestMediaType: application/json (사진 제외)
+  responseCacheControl: no-store
+  sensitiveData: 비밀번호·세션·검증/재설정 토큰·이메일을 로그/URL에 기록하지 않음
+  unknownResponseFields: 현재 기준선 객체는 additionalProperties=false인 닫힌 스키마다. 알 수 없는 필드·타입을 성공 적용으로 추정하지 않는다. 선택 필드 추가도
+    strict 소비자 영향·호환성을 검토하고 승인한 계약 버전으로 반영한다.
+x-open-decisions:
+- id: OPEN-01
+  pending: 일정 입력 정밀도·미래 범위·변경 검증 상세
+  scope:
+  - createRound
+  - updateRoundSchedule
+- id: OPEN-05
+  pending: 가격/시간 범위·단위 후보·사진/문자 제한. 최저낙찰가 단위 정렬 불필요는 D-093으로 확정
+  scope:
+  - CreateLotRequest
+  - UpdateLotRequest
+  - UploadPhotoRequest
+  - DurationSettings
+- id: OPEN-06
+  pending: 계정 판정/수명·세션·인증/재설정 보안 상세. 운영 전용 계정 분리는 D-092로 확정
+  scope:
+  - Identity
+  - TradeContact
+- id: OPEN-07
+  pending: 낙찰자 필드·입찰 이력·운영자 개인정보 관리권한. 유찰 결과 최고입찰가 미노출은 D-094로 확정
+  scope:
+  - x-deferred-surfaces
+- id: OPEN-09
+  pending: 장애 증거·확인/이력 복원관리의 상세
+  scope:
+  - confirmRecovery
+  - resumeLane
+  - x-deferred-surfaces
+- id: OPEN-10
+  pending: 시각/순번/기록 보장·키 생성/운영 제한·재시도 수치·프로토콜 실제 원자성
+  scope:
+  - ADR-001
+  - ADR-002
+  - ADR-003
+  - Realtime
+- id: OPEN-12
+  pending: 운영 보존/삭제·연락처 접근 종료
+  scope:
+  - TradeContact
+  - replay-retention
+- id: OPEN-02
+  pending: 일정 지연 안내 표현
+  scope:
+  - consumer UX
+- id: OPEN-08
+  pending: 지원 브라우저/화면·자동 결과 표시
+  scope:
+  - consumer UX
+- id: OPEN-13
+  pending: 시험 조건·측정 경계·실패 표본 처리
+  scope:
+  - acceptance evidence
+- id: OPEN-14
+  pending: 실제 거래 운영의 품목·악용·불이행/분쟁/책임
+  scope:
+  - before actual operation
+x-deferred-surfaces:
+- path: /api/v1/listing-options
+  methods:
+  - GET
+  knownAuthorization: 출품 흐름의 회원
+  openDecisions:
+  - OPEN-05
+  reason: 입찰 단위 후보 공급 필드/값은 미정. 후보 기본 선택·직접 입력이라는 승인 흐름은 유지하며 임의 후보값을 예제 제품 정책으로 넣지 않음.
+- path: /api/v1/auctions/{auctionId}/winner
+  methods:
+  - GET
+  knownAuthorization: 해당 출품자·낙찰자·운영자
+  openDecisions:
+  - OPEN-07
+  reason: 식별 응답 필드 미정. 빈 성공 스키마나 임의 회원 필드를 추가하지 않음.
+- path: /api/v1/auctions/{auctionId}/bids
+  methods:
+  - GET
+  knownAuthorization: 접근 범위 미정
+  openDecisions:
+  - OPEN-07
+  reason: 개별 입찰 이력 공개/관리 범위 미정. 새 MVP 필수 분석 기능 승인 아님.
+- path: /api/v1/operator/rounds/{roundId}/lanes/{laneId}/history-evidence
+  methods:
+  - POST
+  knownAuthorization: 상세 관리 권한 미정
+  openDecisions:
+  - OPEN-06
+  - OPEN-09
+  - OPEN-10
+  reason: 이력 증거 보완/재검증 절차·payload/감사 미정. historyComplete=true 덮어쓰기 API를 만들지 않음.
+- path: null
+  methods: []
+  knownAuthorization: 필요성 미확정
+  openDecisions:
+  - OPEN-07
+  reason: 운영자 거래 이메일·비공개 최저금액·타회원 개인목록 조회는 권한을 임의 부여하지 않음.
+paths:
+  /auth/csrf:
+    get:
+      operationId: getCsrfToken
+      tags:
+      - Identity
+      summary: CSRF 토큰 확보
+      description: 로그인 전에도 세션/CSRF 준비 가능. 반환 토큰은 메모리에서 보관하고 변경 요청 X-CSRF-Token에 전달. 로그인/로그아웃 뒤 재취득. 쿠키 속성·세션 수명은
+        OPEN-06의 제안 범위.
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsrfToken'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      x-open-decisions:
+      - OPEN-06
+  /auth/session:
+    get:
+      operationId: getSession
+      tags:
+      - Identity
+      summary: 현재 세션 조회
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionView'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      x-open-decisions:
+      - OPEN-06
+    delete:
+      operationId: logout
+      tags:
+      - Identity
+      summary: 현재 세션 로그아웃
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: AUTHENTICATED
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '204':
+          description: 현재 세션 무효화. 기존 원판정/공유 의도는 보존.
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      x-open-decisions:
+      - OPEN-06
+  /auth/registrations:
+    post:
+      operationId: registerMember
+      tags:
+      - Identity
+      summary: 이메일 검증 가입 요청
+      description: 일반 가입으로 운영자 권한 취득 불가. 비밀번호/토큰/시도 제한 상세를 결정한 뒤 보안 구현 기준선으로 사용한다.
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationReceipt'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+      x-open-decisions:
+      - OPEN-06
+  /auth/email-verifications:
+    post:
+      operationId: verifyEmail
+      tags:
+      - Identity
+      summary: 가입 이메일 검증
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedMember'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationRequest'
+      x-open-decisions:
+      - OPEN-06
+  /auth/sessions:
+    post:
+      operationId: login
+      tags:
+      - Identity
+      summary: 이메일·비밀번호 로그인
+      description: 성공 시 AUCTION_SESSION 보안 쿠키 설정·세션 고정 방어 및 CSRF 재취득. 정확한 쿠키 수명/동시 세션 정책은 미정이며 다중 기기 공유를 막는 단일 기기
+        제한을 추가하지 않는다.
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedSession'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      x-open-decisions:
+      - OPEN-06
+  /auth/password-reset-requests:
+    post:
+      operationId: requestPasswordReset
+      tags:
+      - Identity
+      summary: 검증 이메일을 통한 재설정 요청
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailActionReceipt'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+      x-open-decisions:
+      - OPEN-06
+  /auth/password-resets:
+    post:
+      operationId: completePasswordReset
+      tags:
+      - Identity
+      summary: 비밀번호 재설정 완료
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '204':
+          description: 새 비밀번호로 로그인 가능·기존 비밀번호 불가. 기존 세션 처리와 토큰 만료/재사용은 OPEN-06 결정 필요.
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetCompletion'
+      x-open-decisions:
+      - OPEN-06
+  /rounds:
+    get:
+      operationId: listPublicRounds
+      tags:
+      - Public
+      summary: 공개 회차 목록
+      description: 공개된 회차만. 생성 직후 미공개 회차·상품·배정을 guest에 노출하지 않는다.
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicRoundPage'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 서버가 반환한 목록 페이지 커서. stream cursor와 혼용 금지.
+  /rounds/{roundId}:
+    get:
+      operationId: getPublicRound
+      tags:
+      - Public
+      summary: 공개 회차 상태
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicRoundState'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+  /rounds/{roundId}/lots:
+    get:
+      operationId: listPublishedLots
+      tags:
+      - Public
+      summary: 공개된 회차 상품 목록
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedLotPage'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 서버가 반환한 목록 페이지 커서. stream cursor와 혼용 금지.
+  /lots/{lotId}:
+    get:
+      operationId: getPublishedLot
+      tags:
+      - Public
+      summary: 공개 상품 상세
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedLot'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: lotId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원출품 식별
+  /lots/{lotId}/photos/{photoId}:
+    get:
+      operationId: getPublishedPhoto
+      tags:
+      - Public
+      summary: 공개 상품에 연결된 사진
+      description: ''
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 공개 상태·상품 관계 확인 후 이미지 바이너리.
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: lotId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원출품 식별
+      - name: photoId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 해당 공개 상품의 사진
+      x-open-decisions:
+      - OPEN-05
+  /auctions/{auctionId}:
+    get:
+      operationId: getPublicAuction
+      tags:
+      - Public
+      summary: 원경매 진행·결과 조회
+      description: 종료 후에도 원경매 조회. D-094에 따라 유찰 결과에는 최고입찰가를 제공하지 않는다. 종료된 경매의 liveState로 옛 최고가를 다시 제공하지 않는다. 회차 취소로 미진행은 ROUND_CANCELLED/result=null로 보존한다.
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicAuctionView'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: auctionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원경매 식별; 레인은 서버 기록에서 결정
+  /rounds/{roundId}/snapshot:
+    get:
+      operationId: getAuctionSnapshot
+      tags:
+      - Realtime
+      summary: 일관된 공개 snapshot과 stream cursor
+      description: 초기 연결/재동기화 기준. snapshot-first 후 cursor로 SSE 재생. 세대·상태·버전·cursor는 같은 읽기에 해당한다.
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuctionSnapshot'
+              examples:
+                SnapshotFourLanes:
+                  $ref: '#/components/examples/SnapshotFourLanes'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+  /rounds/{roundId}/events:
+    get:
+      operationId: subscribeAuctionEvents
+      tags:
+      - Realtime
+      summary: 공개 회차 SSE 구독
+      description: 비회원 허용. snapshot-first → cursor 이후 범위별 영속 replay → live 공백 없는 인계. heartbeat/resync에는 SSE id 없음.
+        cursor 부재·이전 세대·invalid/replay 초과는 control frame으로 재동기화. 상세 순서·cursor/오류 규약은 auction-events.md가 원본.
+      security: []
+      x-required-role: PUBLIC
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: text/event-stream. JSON 프레임은 StreamEvent. cursor가 없거나 재생할 수 없으면 resync-required 후 종료.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Content-Type:
+              schema:
+                type: string
+                const: text/event-stream
+              description: UTF-8 SSE 프레임
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/StreamCursor'
+        description: snapshot 또는 적용한 프레임의 opaque vector cursor. 값이 있으면 Last-Event-ID보다 우선한다.
+      - name: Last-Event-ID
+        in: header
+        required: false
+        schema:
+          $ref: '#/components/schemas/StreamCursor'
+        description: 기본 EventSource 재접속 표식. 앱 반영 확인 아님. cursor query가 있으면 그 값을 우선.
+      x-event-schema:
+        $ref: '#/components/schemas/StreamEvent'
+  /me/listing-context:
+    get:
+      operationId: getListingContext
+      tags:
+      - Listings
+      summary: 현재 출품 모집 맥락
+      description: 검증 가입 회원. 현재 귀속 회차와 설정된 다음 모집 일정을 제공하고 future private Lot 정보는 제외한다.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListingContext'
+              examples:
+                NextRecruitmentOnly:
+                  $ref: '#/components/examples/NextRecruitmentOnly'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      x-open-decisions:
+      - OPEN-01
+  /me/lots:
+    get:
+      operationId: listMyLots
+      tags:
+      - Listings
+      summary: 본인 출품 목록
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyLotPage'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 서버가 반환한 목록 페이지 커서. stream cursor와 혼용 금지.
+    post:
+      operationId: createLot
+      tags:
+      - Listings
+      summary: 모집 회차 자동 귀속 출품
+      description: 서버 원접수 시각으로 현재 모집 회차 귀속. Round 최초 공식 출품 순번으로 유효 요청을 배정. publicNumber/레인을 본문으로 선택 불가. 원결과 조회는
+        /api/v1/me/action-requests/{requestId}.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: LOT_CREATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: LOT_CREATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLotRequest'
+            examples:
+              NonAlignedReserve:
+                $ref: '#/components/examples/CreateLotNonAlignedReserve'
+      x-open-decisions:
+      - OPEN-05
+      - OPEN-10
+      x-action-kind: LOT_CREATE
+  /me/lots/{lotId}:
+    get:
+      operationId: getMyLot
+      tags:
+      - Listings
+      summary: 본인 출품 상세
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyLot'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: lotId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원출품 식별
+    put:
+      operationId: updateLot
+      tags:
+      - Listings
+      summary: 공개 전 본인 상품 수정
+      description: 공개 직전 공식 접수 변경을 선행 순서대로 반영. 공개 정각부터 수정 불가. 최초 등록순·배정은 유지. 원요청 조회는 me/action-requests.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: LOT_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: LOT_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: lotId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원출품 식별
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLotRequest'
+            examples:
+              NonAlignedReserve:
+                $ref: '#/components/examples/UpdateLotNonAlignedReserve'
+      x-open-decisions:
+      - OPEN-05
+      - OPEN-10
+      x-action-kind: LOT_UPDATE
+  /me/participations:
+    get:
+      operationId: listMyParticipations
+      tags:
+      - Bidding
+      summary: 본인 참여·결과 목록
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipationPage'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 서버가 반환한 목록 페이지 커서. stream cursor와 혼용 금지.
+  /me/photos:
+    post:
+      operationId: uploadPhoto
+      tags:
+      - Listings
+      summary: 본인 출품용 사진 저장
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '201':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredPhoto'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadPhotoRequest'
+      x-open-decisions:
+      - OPEN-05
+  /me/photos/{photoId}:
+    get:
+      operationId: getOwnedPhoto
+      tags:
+      - Listings
+      summary: 공개 전후 본인 저장 사진 읽기
+      description: 공개 전 출품 재조회/수정 때 기존 사진을 복원한다. photoId를 알아도 타인 사진은 404 RESOURCE_NOT_FOUND. 본인 사진의 운영 보존/정리 조건은
+        OPEN-12.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 같은 인증 회원이 소유한 기존 업로드/출품 사진 바이너리.
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: photoId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 본인 소유 사진
+      x-open-decisions:
+      - OPEN-05
+      - OPEN-12
+  /me/lots/{lotId}/cancellations:
+    post:
+      operationId: cancelOwnLot
+      tags:
+      - Listings
+      summary: 원출품 취소
+      description: 원상품 고정. 공개 전후 경계의 서버 라우팅은 Round 공개 순서와 Lane 개시/취소 순서를 함께 보호. 유효 개시 전 접수는 늦게 판정돼도 취소 자격 유지. 개시
+        정각에는 개시 우선. 사유 필수화 없음.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: LOT_CANCEL
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: LOT_CANCEL
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: lotId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원출품 식별
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberCancellation'
+      x-open-decisions:
+      - OPEN-10
+      x-action-kind: LOT_CANCEL
+  /me/action-requests/{requestId}:
+    get:
+      operationId: getMyActionRequest
+      tags:
+      - Listings
+      summary: 본인 출품 변경 원요청 결과
+      description: MEMBER_ACTION의 원 requestId 내용·원접수·원결과. 없음은 404 REQUEST_RECORD_NOT_FOUND이며 원최종 거절 아님.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberActionRequest'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 인증된 본인/운영자의 원요청·명령 키
+  /me/bid-intents/{requestId}:
+    put:
+      operationId: registerBidIntent
+      tags:
+      - Bidding
+      summary: 공유 입찰 의도 등록·동일 키 복구
+      description: 회원×Auction당 동시에 미확인 공유 의도 하나. 같은 회원+키에 원경매·금액 고정. 다른 기기도 원등록을 확인한 뒤 같은 의도로 실제 제출 가능. 이 API는 현재가/마감/최고자
+        자격을 사전 업무 판정하지 않는다. 등록 응답 유실은 같은 PUT/현재 의도 조회로 복구. 등록은 공식 입찰 접수 아님.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '201':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidIntent'
+              examples:
+                RegisteredIntent:
+                  $ref: '#/components/examples/RegisteredIntent'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '200':
+          description: 같은 키·내용의 원등록. ACK된 옛 의도를 현재 의도로 되살리지 않는다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidIntent'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 인증된 본인/운영자의 원요청·명령 키
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterBidIntent'
+            examples:
+              RegisterIntentInput:
+                $ref: '#/components/examples/RegisterIntentInput'
+  /me/bid-intents:
+    get:
+      operationId: getCurrentBidIntent
+      tags:
+      - Bidding
+      summary: 현재 미확인 공유 의도 조회
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentBidIntent'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: auctionId
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 해당 원경매
+  /auctions/{auctionId}/bid-requests:
+    post:
+      operationId: submitBid
+      tags:
+      - Bidding
+      summary: 등록된 원의도로 실제 입찰 접수
+      description: 등록 확인 뒤 제출. member+requestId에 원경매·금액 고정. 접수 gate 이후 원시각/순번을 저장하고 commit 성공 후 202. 현재 업무 금액/개시/마감·본인
+        출품/최고자는 자기 공식 순번에서 판정한다. 같은 키 재전송은 원접수·원판정, 최초 미도달이면 이번 첫 공식 접수 시각. 409/401/5xx는 원입찰 REJECTED나 제한 해제 아님.
+        HTTP 도착 선착순 보장 없음.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidPending'
+              examples:
+                PendingBid:
+                  $ref: '#/components/examples/PendingBid'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: /api/v1/me/bid-requests/{requestId}
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 이미 기록되었거나 응답 시점에 확인한 원최종 판정.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinalBidOutcome'
+              examples:
+                ApprovedBid:
+                  $ref: '#/components/examples/ApprovedBid'
+                RejectedBid:
+                  $ref: '#/components/examples/RejectedBid'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: auctionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원경매 식별; 레인은 서버 기록에서 결정
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitBid'
+            examples:
+              SubmitBidInput:
+                $ref: '#/components/examples/SubmitBidInput'
+  /me/bid-requests/{requestId}:
+    get:
+      operationId: getBidRequest
+      tags:
+      - Bidding
+      summary: 본인 원입찰 판정 조회
+      description: 반환 원기록은 불변 최종 판정을 보존. 현재 Auction 상태는 별도 조회. 404는 단순 기록 없음이고 timeout·경매 종료와 함께 미확인 해제의 근거가 아니다.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidRequest'
+              examples:
+                PendingBid:
+                  $ref: '#/components/examples/PendingBid'
+                ApprovedBid:
+                  $ref: '#/components/examples/ApprovedBid'
+                RejectedBid:
+                  $ref: '#/components/examples/RejectedBid'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 인증된 본인/운영자의 원요청·명령 키
+  /me/bid-requests/{requestId}/acknowledgements:
+    post:
+      operationId: acknowledgeBidOutcome
+      tags:
+      - Bidding
+      summary: 원최종 판정 수신·반영 자동 확인
+      description: 동일 회원 어느 기기든 원판정을 수신·반영한 뒤 자동 ACK. 서버 전송 성공/공개 SSE 수신/최신 snapshot만으로 ACK 호출하지 않는다. 동일 ACK는 최초
+        확인 시각 유지. 최종 없음/다른 outcomeId는 409이며 제한 해제 없음. 옛 ACK는 새 의도에 영향 없음.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BidAcknowledgement'
+              examples:
+                AcknowledgedBid:
+                  $ref: '#/components/examples/AcknowledgedBid'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 인증된 본인/운영자의 원요청·명령 키
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcknowledgeBidOutcome'
+            examples:
+              AcknowledgeInput:
+                $ref: '#/components/examples/AcknowledgeInput'
+  /auctions/{auctionId}/contact:
+    get:
+      operationId: getTradeContact
+      tags:
+      - Results
+      summary: 낙찰 당사자의 상대 이메일
+      description: SOLD의 출품자/낙찰자 본인만 상대 인증 가입 이메일. 미인증은 401 AUTHENTICATION_REQUIRED, MEMBER 역할 없음/검증 미완료는 403 ROLE_REQUIRED/EMAIL_NOT_VERIFIED.
+        MEMBER 요건을 충족해도 대상 없음·비SOLD·당사자 아님은 404 RESOURCE_NOT_FOUND. 운영자 역할만으로 이메일 권한 없음.
+      security:
+      - SessionCookie: []
+      x-required-role: MEMBER
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeContact'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: auctionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원경매 식별; 레인은 서버 기록에서 결정
+      x-open-decisions:
+      - OPEN-06
+      - OPEN-12
+  /operator/rounds:
+    get:
+      operationId: listOperatorRounds
+      tags:
+      - Operations
+      summary: 운영 회차 목록
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorRoundPage'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 서버가 반환한 목록 페이지 커서. stream cursor와 혼용 금지.
+    post:
+      operationId: createRound
+      tags:
+      - Operations
+      summary: 일정·레인·시간을 가진 회차 생성
+      description: 소급 생성 금지·모집 기간 중복 검증. 원명령 결과 조회는 /api/v1/operator/commands/{requestId}. 자동 시작은 시스템 처리이며 수동 start
+        API는 추가하지 않는다.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: ROUND_CREATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: ROUND_CREATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoundRequest'
+      x-open-decisions:
+      - OPEN-01
+      - OPEN-05
+      - OPEN-10
+      x-action-kind: ROUND_CREATE
+  /operator/rounds/{roundId}:
+    get:
+      operationId: getOperatorRound
+      tags:
+      - Operations
+      summary: 운영 회차 설정 조회
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorRound'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+  /operator/rounds/{roundId}/schedule:
+    put:
+      operationId: updateRoundSchedule
+      tags:
+      - Operations
+      summary: 공개 전 회차 일정 변경
+      description: 공개 후 예약 일정 고정. 모집/공개 관계와 중복을 변경 공식 차례에 재검증.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: ROUND_SCHEDULE_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: ROUND_SCHEDULE_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoundSchedule'
+      x-open-decisions:
+      - OPEN-01
+      - OPEN-10
+      x-action-kind: ROUND_SCHEDULE_UPDATE
+  /operator/rounds/{roundId}/lane-configuration:
+    put:
+      operationId: updateRoundLanes
+      tags:
+      - Operations
+      summary: 공개 전 레인 수 변경·전체 재배정
+      description: 공개 전만. 남은 유효 출품 전체를 최초 등록순·최소 대기 수·레인 번호 동률 규칙으로 재배정. 공개 직전 선행 변경을 반영한 뒤 공개 고정.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: ROUND_LANES_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: ROUND_LANES_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoundLanes'
+      x-open-decisions:
+      - OPEN-10
+      x-action-kind: ROUND_LANES_UPDATE
+  /operator/rounds/{roundId}/timing:
+    put:
+      operationId: updateRoundTiming
+      tags:
+      - Operations
+      summary: 실제 시작 전 회차 시간 변경
+      description: 공개 후에도 실제 시작 전에는 가능. 실제 시작 후 중단/재개를 포함해 시간 세트 고정.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: ROUND_TIMING_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: ROUND_TIMING_UPDATE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoundTiming'
+      x-open-decisions:
+      - OPEN-05
+      - OPEN-10
+      x-action-kind: ROUND_TIMING_UPDATE
+  /operator/rounds/{roundId}/cancellations:
+    post:
+      operationId: cancelRound
+      tags:
+      - Operations
+      summary: 공개 후 실제 시작 전 회차 취소
+      description: Round 공통 시작/취소 순서에서 자기 차례 자격 확인. 지연 대기라도 실제 시작 전이면 자격 판정. 공개 전/진행 중 전체 회차 취소는 MVP 제외. 상품은 경매
+        미진행 표시·기존 개별 취소 보존, 자동 이전 없음.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: ROUND_CANCEL
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: ROUND_CANCEL
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorCancellation'
+      x-open-decisions:
+      - OPEN-10
+      x-action-kind: ROUND_CANCEL
+  /operator/rounds/{roundId}/lanes/{laneId}:
+    get:
+      operationId: getOperatorLane
+      tags:
+      - Operations
+      summary: 레인 현재 제어·복구 맥락 조회
+      description: ''
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorLaneView'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - name: laneId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LaneId'
+        description: 원회차 안의 레인 번호
+  /operator/rounds/{roundId}/lanes/{laneId}/pauses:
+    post:
+      operationId: pauseLane
+      tags:
+      - Operations
+      summary: 원회차 레인 중단
+      description: 동일 Lane 공통 접수 순번. 선행 유효 입찰 효과를 보존한다. 반복 동일 키는 원결과, 새 중단 발생 건과 구분.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: LANE_PAUSE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: LANE_PAUSE
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - name: laneId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LaneId'
+        description: 원회차 안의 레인 번호
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PauseLane'
+      x-open-decisions:
+      - OPEN-10
+      x-action-kind: LANE_PAUSE
+  /operator/rounds/{roundId}/lanes/{laneId}/resumes:
+    post:
+      operationId: resumeLane
+      tags:
+      - Operations
+      summary: 현재 중단 발생 건에 대한 명시적 재개
+      description: 현재 발생 건·원인별 확인·선행 요청·권위 이력 확인. 실제 R부터 단계 전체 시간. 기존 최고입찰 보존. 원성공 재전송은 원 R만 반환하며 새 중단을 해제하지 않는다.
+        진행 중 새 키 재개도 시간을 갱신하지 않는다.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: LANE_RESUME
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: LANE_RESUME
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - name: laneId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LaneId'
+        description: 원회차 안의 레인 번호
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResumeLane'
+      x-open-decisions:
+      - OPEN-09
+      - OPEN-10
+      x-action-kind: LANE_RESUME
+  /operator/rounds/{roundId}/lanes/{laneId}/recovery-confirmations:
+    post:
+      operationId: confirmRecovery
+      tags:
+      - Operations
+      summary: 현재 장애의 복구 가능 상태 확인
+      description: 서버가 원접수·판정·최고입찰·단계·미결·정상 접수/기록 증거를 검증한다. 확인만으로 보류·수동 중단 해제/자동 재개/시간 부여 없음. historyStatus UNKNOWN을
+        본문의 true로 덮어쓰는 기능 없음. 증거 보완 관리 API는 deferred.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: RECOVERY_CONFIRM
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: RECOVERY_CONFIRM
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: roundId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원회차 식별
+      - name: laneId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/LaneId'
+        description: 원회차 안의 레인 번호
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmRecovery'
+      x-open-decisions:
+      - OPEN-09
+      - OPEN-10
+      x-action-kind: RECOVERY_CONFIRM
+  /operator/auctions/{auctionId}/cancellations:
+    post:
+      operationId: cancelCurrentAuction
+      tags:
+      - Operations
+      summary: 원현재 경매 운영자 취소
+      description: 원Auction 고정. 자기 차례에 현재 대상·현재 마감·선행 요청·확정 결과 부재를 확인한다. 결과 존재 여부 불명은 추정 취소/거절하지 않고 보류. 진행 레인은 다음
+        준비, 중단 레인은 중단 유지.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-with-open-policy
+      x-verification-status: NOT_RUN
+      responses:
+        '202':
+          description: 내구 접수·아직 처리 중.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ActionPending'
+                - properties:
+                    kind:
+                      const: AUCTION_CANCEL
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+            Location:
+              description: 인증된 원요청 조회 URI.
+              schema:
+                $ref: '#/components/schemas/RelativeUrl'
+        '200':
+          description: 기록된 원최종 결과. 같은 키는 현재 상태로 재실행하지 않는다.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/FinalActionOutcome'
+                - properties:
+                    kind:
+                      const: AUCTION_CANCEL
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: auctionId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 원경매 식별; 레인은 서버 기록에서 결정
+      - $ref: '#/components/parameters/CsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorCancellation'
+      x-open-decisions:
+      - OPEN-10
+      x-action-kind: AUCTION_CANCEL
+  /operator/commands/{requestId}:
+    get:
+      operationId: getOperatorCommand
+      tags:
+      - Operations
+      summary: 본인 운영 명령 원결과 조회
+      description: 운영자+requestId 원명령 내용/접수/결과. 다른 운영자 개인 명령 조회 권한은 추가하지 않는다. 같은 성공 재개는 원 R 유지. 현재 레인은 별도 조회.
+      security:
+      - SessionCookie: []
+      x-required-role: OPERATOR
+      x-draft-status: draft-complete
+      x-verification-status: NOT_RUN
+      responses:
+        '200':
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorCommand'
+          headers:
+            Cache-Control:
+              description: JSON 및 동적 응답은 no-store.
+              schema:
+                type: string
+                const: no-store
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '503':
+          $ref: '#/components/responses/Error503'
+        '500':
+          $ref: '#/components/responses/Error500'
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/OpaqueId'
+        description: 인증된 본인/운영자의 원요청·명령 키
+components:
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      in: cookie
+      name: AUCTION_SESSION
+      description: 보안 서버 세션 제안. 운영 시 HttpOnly/Secure/SameSite=Lax. 인증·세션 수명 상세 OPEN-06. 기본 EventSource와 같은 출처 쿠키를
+        사용하고 URL에 토큰을 넣지 않는다.
+  parameters:
+    CsrfToken:
+      name: X-CSRF-Token
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 1
+      description: GET /api/v1/auth/csrf에서 확보. 로그인/로그아웃 후 재취득. 변경 요청에 필수; 실패는 403 CSRF_INVALID.
+  responses:
+    Error400:
+      description: 'HTTP 400: VALIDATION_FAILED. 원입찰 최종 판정이나 미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - VALIDATION_FAILED
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+    Error401:
+      description: 'HTTP 401: AUTHENTICATION_REQUIRED, AUTHENTICATION_FAILED. 원입찰 최종 판정이나 미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - AUTHENTICATION_REQUIRED
+                  - AUTHENTICATION_FAILED
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+    Error403:
+      description: 'HTTP 403: ROLE_REQUIRED, EMAIL_NOT_VERIFIED, CSRF_INVALID. 원입찰 최종 판정이나 미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - ROLE_REQUIRED
+                  - EMAIL_NOT_VERIFIED
+                  - CSRF_INVALID
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+    Error404:
+      description: 'HTTP 404: RESOURCE_NOT_FOUND, REQUEST_RECORD_NOT_FOUND. 원입찰 최종 판정이나 미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - RESOURCE_NOT_FOUND
+                  - REQUEST_RECORD_NOT_FOUND
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+    Error409:
+      description: 'HTTP 409: CONTENT_CONFLICT, UNCONFIRMED_INTENT_EXISTS, INTENT_NOT_REGISTERED, OUTCOME_NOT_FINAL,
+        OUTCOME_MISMATCH. 원입찰 최종 판정이나 미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - CONTENT_CONFLICT
+                  - UNCONFIRMED_INTENT_EXISTS
+                  - INTENT_NOT_REGISTERED
+                  - OUTCOME_NOT_FINAL
+                  - OUTCOME_MISMATCH
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+    Error429:
+      description: 'HTTP 429: RATE_LIMITED. 원입찰 최종 판정이나 미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - RATE_LIMITED
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+    Error503:
+      description: 'HTTP 503: SERVICE_UNAVAILABLE, COMMIT_RESULT_UNKNOWN, RECOVERY_REVIEW_REQUIRED. 원입찰 최종 판정이나
+        미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - SERVICE_UNAVAILABLE
+                  - COMMIT_RESULT_UNKNOWN
+                  - RECOVERY_REVIEW_REQUIRED
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+    Error500:
+      description: 'HTTP 500: INTERNAL_ERROR. 원입찰 최종 판정이나 미확인 해제를 뜻하지 않는다.'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/Problem'
+            - properties:
+                code:
+                  enum:
+                  - INTERNAL_ERROR
+      headers:
+        Cache-Control:
+          description: JSON 및 동적 응답은 no-store.
+          schema:
+            type: string
+            const: no-store
+  schemas:
+    OpaqueId:
+      type: string
+      minLength: 1
+      pattern: \S
+      description: 대소문자 구분·정확 일치하는 불투명 식별자. 공백만인 값은 거절. 클라이언트가 분해·정렬·trim하지 않는다. 길이/생성 운영 제한은 OPEN-10. URL에서는 인코딩한다.
+    StreamCursor:
+      type: string
+      minLength: 1
+      pattern: ^[^\u0000\r\n]+$
+      description: SSE id와 재생 요청에 쓰는 서버 발행 opaque vector cursor. NUL·CR·LF 없는 단일행이며 클라이언트가 분해·수정하지 않는다. 다른 종류의 원키/목록
+        커서와 혼용 금지.
+    NonBlankString:
+      type: string
+      minLength: 1
+      pattern: \S
+      description: 공백만인 입력은 거절한다. 문자 수 상한은 해당 OPEN을 따른다.
+    MoneyWon:
+      type: string
+      minLength: 1
+      pattern: ^[1-9][0-9]*$
+      description: KRW 양의 정수의 10진 문자열. 선행 0·부호·소수·지수 표기 금지. 제품 상한은 OPEN-05이며 이 스키마에 임의 상한을 추가하지 않는다.
+    Counter:
+      type: string
+      minLength: 1
+      pattern: ^(0|[1-9][0-9]*)$
+      description: 0 이상의 카운터. JavaScript 숫자 변환 없이 BigInt/문자열로 보존. 서로 다른 scope/epoch 사이 비교 금지.
+    ReceiptSequence:
+      type: string
+      minLength: 1
+      pattern: ^[1-9][0-9]*$
+      description: 1 이상의 해당 회차·레인 공식 접수 순번. 이벤트 버전·전역 ID와 다름.
+    UtcInstant:
+      type: string
+      format: date-time
+      pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?Z$
+      description: UTC RFC 3339 문자열. 최대 6자리 소수의 wire 제안이며 원기록 정밀도를 보존한다. 절삭/반올림해 마감 비교하지 않는다. 실제 시각 취득·정밀도·연속성 보장은
+        ADR-001/OPEN-10에서 별도 검증. 일정 계산/표시는 Asia/Seoul.
+    LaneId:
+      type: integer
+      minimum: 1
+      maximum: 4
+      description: roundId 안에서만 의미가 있는 레인 번호.
+    RelativeUrl:
+      type: string
+      minLength: 1
+      pattern: ^/api/v1/
+      description: 이 API의 같은 출처에 대한 /api/v1/... 상대 URL. 비밀·이메일·세션 토큰을 넣지 않는다.
+    DurationSettings:
+      type: object
+      additionalProperties: false
+      properties:
+        preparationSeconds:
+          type: integer
+        initialBidSeconds:
+          type: integer
+        followupBidSeconds:
+          type: integer
+      required:
+      - preparationSeconds
+      - initialBidSeconds
+      - followupBidSeconds
+      description: 회차 시간 한 세트. 기본 5/10/5초. 실제 시작 때 고정. 허용 입력 범위는 OPEN-05; integer 스키마만으로 모든 정수의 허용을 승인한 것이 아니다.
+      x-open-decisions:
+      - OPEN-05
+    ControlState:
+      type: object
+      additionalProperties: false
+      properties:
+        manualStopped:
+          type: boolean
+        held:
+          type: boolean
+      required:
+      - manualStopped
+      - held
+      description: 중단/보류 원인을 함께 표시. 마감 시각 경과나 snapshot 수신으로 해제하지 않는다.
+    LaneWatermark:
+      type: object
+      additionalProperties: false
+      properties:
+        laneId:
+          $ref: '#/components/schemas/LaneId'
+        laneVersion:
+          $ref: '#/components/schemas/Counter'
+      required:
+      - laneId
+      - laneVersion
+    SoldResult:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        status:
+          const: SOLD
+          type: string
+        finalizedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        winningPrice:
+          $ref: '#/components/schemas/MoneyWon'
+      required:
+      - auctionId
+      - lotId
+      - status
+      - finalizedAt
+      - winningPrice
+    NoSaleResult:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        status:
+          const: NO_SALE
+          type: string
+        finalizedAt:
+          $ref: '#/components/schemas/UtcInstant'
+      required:
+      - auctionId
+      - lotId
+      - status
+      - finalizedAt
+      description: D-094에 따라 유찰 종료 결과에는 최고입찰가를 제공하지 않는다. 기존 공개 진행 가격을 사용자가 기억하거나 저장한 것까지 회수한다는 뜻은 아니다. 본인 원입찰 기록 보존과 구분하며 개별 입찰 이력의 추가 조회 범위는 OPEN-07이다.
+    CancelledResult:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        status:
+          const: CANCELLED
+          type: string
+        finalizedAt:
+          $ref: '#/components/schemas/UtcInstant'
+      required:
+      - auctionId
+      - lotId
+      - status
+      - finalizedAt
+      description: 허용된 개별 상품 경매 취소. 회차 취소에 의한 미진행과 다르다. 공개 취소 사유 필드는 추가하지 않는다.
+    PublicAuctionResult:
+      oneOf:
+      - $ref: '#/components/schemas/SoldResult'
+      - $ref: '#/components/schemas/NoSaleResult'
+      - $ref: '#/components/schemas/CancelledResult'
+      discriminator:
+        propertyName: status
+    PublicCurrentAuction:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        stage:
+          type: string
+          enum:
+          - PREPARATION
+          - INITIAL_WAIT
+          - FOLLOWUP_WAIT
+        startingPrice:
+          $ref: '#/components/schemas/MoneyWon'
+        bidIncrement:
+          $ref: '#/components/schemas/MoneyWon'
+        highestBidAmount:
+          oneOf:
+          - $ref: '#/components/schemas/MoneyWon'
+          - type: 'null'
+        reserveMet:
+          type: boolean
+        nextBidAmount:
+          $ref: '#/components/schemas/MoneyWon'
+        windowStartAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+        opensAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+        closesAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+      required:
+      - auctionId
+      - lotId
+      - stage
+      - startingPrice
+      - bidIncrement
+      - highestBidAmount
+      - reserveMet
+      - nextBidAmount
+      - windowStartAt
+      - opensAt
+      - closesAt
+      description: 진행 대상의 공개 상태. 승인 입찰 없으면 highestBidAmount=null이고 nextBidAmount=startingPrice. FOLLOWUP_WAIT에는
+        승인 최고입찰이 존재한다. 준비/중단 후 다음 상품 준비 미개시의 시간은 null 가능. 실제 개시/재개·마감 원값을 보존하며 controlState가 중단/보류면 입찰 가능으로 해석하지
+        않는다.
+      allOf:
+      - if:
+          properties:
+            stage:
+              const: FOLLOWUP_WAIT
+          required:
+          - stage
+        then:
+          properties:
+            highestBidAmount:
+              $ref: '#/components/schemas/MoneyWon'
+      - if:
+          properties:
+            stage:
+              enum:
+              - PREPARATION
+              - INITIAL_WAIT
+          required:
+          - stage
+        then:
+          properties:
+            highestBidAmount:
+              type: 'null'
+            reserveMet:
+              const: false
+    PublicLaneState:
+      type: object
+      additionalProperties: false
+      properties:
+        laneId:
+          $ref: '#/components/schemas/LaneId'
+        laneVersion:
+          $ref: '#/components/schemas/Counter'
+        status:
+          type: string
+          enum:
+          - RUNNING
+          - FINISHED
+        controlState:
+          $ref: '#/components/schemas/ControlState'
+        currentAuction:
+          oneOf:
+          - $ref: '#/components/schemas/PublicCurrentAuction'
+          - type: 'null'
+        lastResult:
+          oneOf:
+          - $ref: '#/components/schemas/PublicAuctionResult'
+          - type: 'null'
+      required:
+      - laneId
+      - laneVersion
+      - status
+      - controlState
+      - currentAuction
+      - lastResult
+      description: 같은 레인 버전의 전체 공개 상태. 종료된 Auction을 currentAuction의 live 가격 형태로 남기지 않는다. lastResult도 공개 결과 스키마만
+        사용한다. FINISHED는 남은 대상과 보류가 없어 currentAuction=null이며 control flags=false인 상태다.
+      allOf:
+      - if:
+          properties:
+            status:
+              const: FINISHED
+          required:
+          - status
+        then:
+          properties:
+            currentAuction:
+              type: 'null'
+            controlState:
+              properties:
+                manualStopped:
+                  const: false
+                held:
+                  const: false
+    PublicRoundState:
+      type: object
+      additionalProperties: false
+      properties:
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        roundVersion:
+          $ref: '#/components/schemas/Counter'
+        status:
+          type: string
+          enum:
+          - PUBLISHED
+          - WAITING
+          - ACTIVE
+          - COMPLETED
+          - CANCELLED
+        recruitmentOpensAt:
+          $ref: '#/components/schemas/UtcInstant'
+        publicationAt:
+          $ref: '#/components/schemas/UtcInstant'
+        scheduledStartsAt:
+          $ref: '#/components/schemas/UtcInstant'
+        actualStartedAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+        completedAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+        cancelledAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+        laneCount:
+          type: integer
+          minimum: 1
+          maximum: 4
+        durations:
+          $ref: '#/components/schemas/DurationSettings'
+        durationsFrozen:
+          type: boolean
+      required:
+      - roundId
+      - roundVersion
+      - status
+      - recruitmentOpensAt
+      - publicationAt
+      - scheduledStartsAt
+      - actualStartedAt
+      - completedAt
+      - cancelledAt
+      - laneCount
+      - durations
+      - durationsFrozen
+      description: 공개된 회차만. PUBLISHED=공개 후 시작 전, WAITING=예약 시각 후 선행 회차 등 시작 조건 대기, ACTIVE=진행/중단/보류 포함. 예약 시각을 실제
+        시작으로 덮어쓰지 않는다. 공개는 예약 시작일 전날 00:00 Asia/Seoul. 실제 시작 때 공통 시간 세트 고정.
+    AuctionSnapshot:
+      type: object
+      additionalProperties: false
+      properties:
+        schemaVersion:
+          const: 1
+          type: integer
+        streamEpoch:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        serverTime:
+          $ref: '#/components/schemas/UtcInstant'
+        round:
+          $ref: '#/components/schemas/PublicRoundState'
+        lanes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicLaneState'
+          minItems: 1
+          maxItems: 4
+        cursor:
+          $ref: '#/components/schemas/StreamCursor'
+      required:
+      - schemaVersion
+      - streamEpoch
+      - roundId
+      - serverTime
+      - round
+      - lanes
+      - cursor
+      description: 한 READ ONLY 일관 읽기의 공개 회차·운영 레인·watermark와 해당 시점까지의 opaque vector cursor. roundId는 round.roundId와
+        동일하고 lanes는 laneId 오름차순·중복 없음·laneCount와 일치. serverTime은 응답 구성 시 권위 시계 표본이며 입찰 접수 시각/COMMIT 완료 시각이 아니다.
+        이 커서 이후 영속 재생이 필수.
+    PublishedLot:
+      type: object
+      additionalProperties: false
+      properties:
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        laneId:
+          $ref: '#/components/schemas/LaneId'
+        publicNumber:
+          type: integer
+          minimum: 1
+        title:
+          $ref: '#/components/schemas/NonBlankString'
+        description:
+          $ref: '#/components/schemas/NonBlankString'
+        photoIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpaqueId'
+          minItems: 1
+        startingPrice:
+          $ref: '#/components/schemas/MoneyWon'
+        bidIncrement:
+          $ref: '#/components/schemas/MoneyWon'
+        availability:
+          type: string
+          enum:
+          - PUBLISHED
+          - WITHDRAWN
+          - ROUND_CANCELLED
+      required:
+      - lotId
+      - auctionId
+      - roundId
+      - laneId
+      - publicNumber
+      - title
+      - description
+      - photoIds
+      - startingPrice
+      - bidIncrement
+      - availability
+      description: 공개 번호·자리는 공개 후 취소돼도 유지한다. ROUND_CANCELLED는 회차 취소로 미진행이며 가상의 개별 CANCELLED/NO_SALE 결과를 만들지 않는다.
+        reservePrice·판매자/입찰자 식별·이메일은 없다.
+    PublicAuctionView:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        laneId:
+          $ref: '#/components/schemas/LaneId'
+        lifecycle:
+          type: string
+          enum:
+          - WAITING
+          - LIVE
+          - FINISHED
+          - ROUND_CANCELLED
+        liveState:
+          oneOf:
+          - $ref: '#/components/schemas/PublicCurrentAuction'
+          - type: 'null'
+        result:
+          oneOf:
+          - $ref: '#/components/schemas/PublicAuctionResult'
+          - type: 'null'
+      required:
+      - auctionId
+      - lotId
+      - roundId
+      - laneId
+      - lifecycle
+      - liveState
+      - result
+      description: WAITING/LIVE에는 result=null, FINISHED에는 liveState=null·result 존재, ROUND_CANCELLED는 둘 다 null. 종료
+        결과는 live DTO를 직렬화하지 않는다.
+      allOf:
+      - if:
+          properties:
+            lifecycle:
+              const: FINISHED
+          required:
+          - lifecycle
+        then:
+          properties:
+            liveState:
+              type: 'null'
+            result:
+              $ref: '#/components/schemas/PublicAuctionResult'
+      - if:
+          properties:
+            lifecycle:
+              const: ROUND_CANCELLED
+          required:
+          - lifecycle
+        then:
+          properties:
+            liveState:
+              type: 'null'
+            result:
+              type: 'null'
+      - if:
+          properties:
+            lifecycle:
+              const: WAITING
+          required:
+          - lifecycle
+        then:
+          properties:
+            result:
+              type: 'null'
+            liveState:
+              type: 'null'
+      - if:
+          properties:
+            lifecycle:
+              const: LIVE
+          required:
+          - lifecycle
+        then:
+          properties:
+            result:
+              type: 'null'
+            liveState:
+              $ref: '#/components/schemas/PublicCurrentAuction'
+    PublicRoundPage:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicRoundState'
+        nextCursor:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+      description: 공개 회차의 scheduledStartsAt, roundId 오름차순. 페이지 크기는 이 초안에서 고정하지 않으며 nextCursor=null이면 끝. 새 변경 중 목록이
+        완전히 고정된다는 보장은 없다.
+    PublishedLotPage:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublishedLot'
+        nextCursor:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+      description: laneId, 공개 당시 publicNumber 오름차순. 공개 취소 번호를 당기지 않는다.
+    RegisterBidIntent:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        amount:
+          $ref: '#/components/schemas/MoneyWon'
+      required:
+      - auctionId
+      - amount
+    BidIntent:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        amount:
+          $ref: '#/components/schemas/MoneyWon'
+        registrationState:
+          const: REGISTERED
+          type: string
+        registeredAt:
+          $ref: '#/components/schemas/UtcInstant'
+        acknowledgedAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+      required:
+      - requestId
+      - auctionId
+      - amount
+      - registrationState
+      - registeredAt
+      - acknowledgedAt
+      description: 회원+requestId의 원경매·금액 고정. REGISTERED는 공식 입찰 접수/승인/순번 확보가 아니다. 같은 의도 최초 실제 제출·재전송은 허용. 이미 확인한 옛
+        키 PUT은 원의도만 반환하고 다시 현재 의도로 만들지 않는다.
+    CurrentBidIntent:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        intent:
+          oneOf:
+          - $ref: '#/components/schemas/BidIntent'
+          - type: 'null'
+      required:
+      - auctionId
+      - intent
+      description: 해당 인증 회원×Auction의 현재 미확인 공유 의도. 없음은 intent=null. 조회 부재/timeout으로 의도를 폐기하거나 원입찰 미접수를 영구 확정하지 않는다.
+    SubmitBid:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        amount:
+          $ref: '#/components/schemas/MoneyWon'
+      required:
+      - requestId
+      - amount
+      description: 등록 확인한 같은 requestId·원경매·원금액. actor는 세션에서 확보하며 본문으로 보내지 않는다.
+    BidPending:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        amount:
+          $ref: '#/components/schemas/MoneyWon'
+        receivedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        receiptSequence:
+          $ref: '#/components/schemas/ReceiptSequence'
+        status:
+          const: PENDING
+          type: string
+      required:
+      - requestId
+      - auctionId
+      - amount
+      - receivedAt
+      - receiptSequence
+      - status
+      description: 공식 접수 내구 기록 존재·미판정. receivedAt은 인증/기본형식 확인 후 gate 안에서 원기록에 넣은 시각이며 HTTP 도착/등록/판정/응답 시각과 다르다.
+        접수 사실은 commit 성공 후 응답한다.
+    BidApproved:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        amount:
+          $ref: '#/components/schemas/MoneyWon'
+        receivedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        receiptSequence:
+          $ref: '#/components/schemas/ReceiptSequence'
+        status:
+          const: APPROVED
+          type: string
+        outcomeId:
+          $ref: '#/components/schemas/OpaqueId'
+        decidedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        resultingClosesAt:
+          $ref: '#/components/schemas/UtcInstant'
+      required:
+      - requestId
+      - auctionId
+      - amount
+      - receivedAt
+      - receiptSequence
+      - status
+      - outcomeId
+      - decidedAt
+      - resultingClosesAt
+      description: 원최종 승인. resultingClosesAt=이 원입찰 receivedAt+회차 고정 후속 시간. 현재 최고입찰자·낙찰 보장이 아니다. 조회/재전송은 같은 원시각·순번·판정·마감
+        값을 반환하며 현재 상태로 재계산하지 않는다.
+    BidRejectionCode:
+      type: string
+      enum:
+      - SELF_LISTING
+      - CURRENT_LEADER
+      - WRONG_AMOUNT
+      - BEFORE_BIDDING_WINDOW
+      - DEADLINE_REACHED
+      - BIDDING_SUSPENDED
+      - AUCTION_NOT_CURRENT
+      - AUCTION_FINISHED
+      - AUCTION_CANCELLED
+      x-code-meanings:
+        SELF_LISTING: 본인 출품
+        CURRENT_LEADER: 자기 차례 현재 최고입찰자
+        WRONG_AMOUNT: 자기 차례의 정확한 다음 금액과 다름
+        BEFORE_BIDDING_WINDOW: 공식 접수가 현재 유효 개시/재개 하한 전
+        DEADLINE_REACHED: 선행 효과를 반영한 현재 마감 정각 또는 이후 접수
+        BIDDING_SUSPENDED: 자기 차례에 중단/보류로 입찰 불가
+        AUCTION_NOT_CURRENT: 원경매가 현재 대상 아님
+        AUCTION_FINISHED: 원경매 정상 종료
+        AUCTION_CANCELLED: 원경매 취소 또는 회차 취소로 미진행
+    BidRejected:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        amount:
+          $ref: '#/components/schemas/MoneyWon'
+        receivedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        receiptSequence:
+          $ref: '#/components/schemas/ReceiptSequence'
+        status:
+          const: REJECTED
+          type: string
+        outcomeId:
+          $ref: '#/components/schemas/OpaqueId'
+        decidedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        rejectionCode:
+          $ref: '#/components/schemas/BidRejectionCode'
+      required:
+      - requestId
+      - auctionId
+      - amount
+      - receivedAt
+      - receiptSequence
+      - status
+      - outcomeId
+      - decidedAt
+      - rejectionCode
+      description: 내구 저장된 원최종 업무 거절. 가격·마감 효과 없음. 운영/통신/인증/조회 없음·단순 처리 지연은 이 원거절을 대신하지 않는다.
+    BidRequest:
+      oneOf:
+      - $ref: '#/components/schemas/BidPending'
+      - $ref: '#/components/schemas/BidApproved'
+      - $ref: '#/components/schemas/BidRejected'
+      discriminator:
+        propertyName: status
+    FinalBidOutcome:
+      oneOf:
+      - $ref: '#/components/schemas/BidApproved'
+      - $ref: '#/components/schemas/BidRejected'
+      discriminator:
+        propertyName: status
+    AcknowledgeBidOutcome:
+      type: object
+      additionalProperties: false
+      properties:
+        outcomeId:
+          $ref: '#/components/schemas/OpaqueId'
+      required:
+      - outcomeId
+      description: 앱이 이 requestId의 해당 원최종 판정을 실제 수신·반영한 뒤 자동 전송. 사람의 읽음·모든 기기 확인은 요구하지 않는다.
+    BidAcknowledgement:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        outcomeId:
+          $ref: '#/components/schemas/OpaqueId'
+        acknowledgedAt:
+          $ref: '#/components/schemas/UtcInstant'
+      required:
+      - requestId
+      - outcomeId
+      - acknowledgedAt
+      description: 해당 의도에 대한 최초 확인 시각. 같은 ACK 재시도는 원시각을 반환. 어느 기기 확인이든 해당 공유 제한만 해제하며 최고자 재입찰 금지 등 다른 조건은 유지한다.
+        옛 ACK는 새 의도에 영향 없음.
+    ActionKind:
+      type: string
+      enum:
+      - LOT_CREATE
+      - LOT_UPDATE
+      - LOT_CANCEL
+      - ROUND_CREATE
+      - ROUND_SCHEDULE_UPDATE
+      - ROUND_LANES_UPDATE
+      - ROUND_TIMING_UPDATE
+      - ROUND_CANCEL
+      - LANE_PAUSE
+      - LANE_RESUME
+      - AUCTION_CANCEL
+      - RECOVERY_CONFIRM
+    ActionTarget:
+      type: object
+      additionalProperties: false
+      properties:
+        roundId:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+        laneId:
+          oneOf:
+          - $ref: '#/components/schemas/LaneId'
+          - type: 'null'
+        lotId:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+        auctionId:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+      required:
+      - roundId
+      - laneId
+      - lotId
+      - auctionId
+      description: 원요청의 대상. 생성 작업은 아직 식별하지 못한 대상이 null일 수 있다. 기존 상품/경매 취소는 원대상을 새 현재 상품으로 바꾸지 않는다.
+    ActionPending:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        target:
+          $ref: '#/components/schemas/ActionTarget'
+        receivedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        status:
+          const: PENDING
+          type: string
+      required:
+      - requestId
+      - kind
+      - target
+      - receivedAt
+      - status
+      description: 원행위자+requestId와 종류·원내용에 결합한 내구 접수. 운영자에게 requestId는 명령 번호다. 내부 Round/Lane 순번은 서로 다른 scope이며 전역
+        비교하지 않는다.
+    ActionSucceeded:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        target:
+          $ref: '#/components/schemas/ActionTarget'
+        receivedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        status:
+          const: SUCCEEDED
+          type: string
+        outcomeId:
+          $ref: '#/components/schemas/OpaqueId'
+        decidedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        resourceUri:
+          $ref: '#/components/schemas/RelativeUrl'
+        effectiveAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+      required:
+      - requestId
+      - kind
+      - target
+      - receivedAt
+      - status
+      - outcomeId
+      - decidedAt
+      - resourceUri
+      - effectiveAt
+      description: 원명령 효과의 성공. Lane 재개는 원실제 R을 effectiveAt에 보존하며 같은 키 재전송이 시간을 다시 주지 않는다. 현재 리소스 상태는 resourceUri로
+        별도 조회한다.
+      allOf:
+      - if:
+          properties:
+            kind:
+              const: LANE_RESUME
+          required:
+          - kind
+        then:
+          properties:
+            effectiveAt:
+              $ref: '#/components/schemas/UtcInstant'
+    ActionRejectionCode:
+      type: string
+      enum:
+      - NO_RECRUITING_ROUND
+      - RECRUITMENT_CLOSED
+      - LOT_NOT_EDITABLE
+      - LOT_NOT_CANCELLABLE
+      - LOT_NOT_OWNED
+      - INVALID_SCHEDULE
+      - SCHEDULE_CONFLICT
+      - ROUND_NOT_EDITABLE
+      - ROUND_NOT_CANCELLABLE
+      - LANE_CONFIGURATION_FROZEN
+      - TIMING_CONFIGURATION_FROZEN
+      - NOT_CURRENT_AUCTION
+      - ALREADY_FINAL
+      - STALE_SUSPENSION
+      - LANE_NOT_SUSPENDED
+      - RECOVERY_NOT_CONFIRMED
+      x-code-meanings:
+        NO_RECRUITING_ROUND: 원접수에 해당하는 모집 회차 없음
+        RECRUITMENT_CLOSED: 원접수 차례에 모집 불가
+        LOT_NOT_EDITABLE: 상품 수정 가능 시점 아님
+        LOT_NOT_CANCELLABLE: 원상품 취소 자격 없음
+        LOT_NOT_OWNED: 해당 출품 소유자 아님
+        INVALID_SCHEDULE: 승인된 현재/모집/공개/예약 관계 위반
+        SCHEDULE_CONFLICT: 다른 회차 모집과 중복
+        ROUND_NOT_EDITABLE: 회차 설정 변경 자격 없음
+        ROUND_NOT_CANCELLABLE: 공개 후 실제 시작 전 취소 범위 아님
+        LANE_CONFIGURATION_FROZEN: 공개 이후 레인 수 변경
+        TIMING_CONFIGURATION_FROZEN: 실제 시작 이후 시간 변경
+        NOT_CURRENT_AUCTION: 원대상이 현재 경매 아님
+        ALREADY_FINAL: 정상 확정 결과 변경 불가
+        STALE_SUSPENSION: 원해제 대상과 현재 중단 발생 건 불일치
+        LANE_NOT_SUSPENDED: 진행 중 레인 재개로 시간 갱신 불가
+        RECOVERY_NOT_CONFIRMED: 확인 가능한 현재 상태에 필요한 복구 확인 미완료
+    ActionRejected:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        target:
+          $ref: '#/components/schemas/ActionTarget'
+        receivedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        status:
+          const: REJECTED
+          type: string
+        outcomeId:
+          $ref: '#/components/schemas/OpaqueId'
+        decidedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        rejectionCode:
+          $ref: '#/components/schemas/ActionRejectionCode'
+      required:
+      - requestId
+      - kind
+      - target
+      - receivedAt
+      - status
+      - outcomeId
+      - decidedAt
+      - rejectionCode
+      description: 효과 없음이 확인된 원최종 업무 거절. 원효과/결과 존재 불명을 REJECTED로 바꾸지 않는다. 불명은 원기록 PENDING·복구 확인 경로를 유지한다.
+    ActionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/ActionPending'
+      - $ref: '#/components/schemas/ActionSucceeded'
+      - $ref: '#/components/schemas/ActionRejected'
+      discriminator:
+        propertyName: status
+    FinalActionOutcome:
+      oneOf:
+      - $ref: '#/components/schemas/ActionSucceeded'
+      - $ref: '#/components/schemas/ActionRejected'
+      discriminator:
+        propertyName: status
+    MemberActionRequest:
+      allOf:
+      - $ref: '#/components/schemas/ActionRequest'
+      - properties:
+          kind:
+            enum:
+            - LOT_CREATE
+            - LOT_UPDATE
+            - LOT_CANCEL
+      description: MEMBER_ACTION 이름공간의 본인 출품 원요청만.
+    OperatorCommand:
+      allOf:
+      - $ref: '#/components/schemas/ActionRequest'
+      - properties:
+          kind:
+            enum:
+            - ROUND_CREATE
+            - ROUND_SCHEDULE_UPDATE
+            - ROUND_LANES_UPDATE
+            - ROUND_TIMING_UPDATE
+            - ROUND_CANCEL
+            - LANE_PAUSE
+            - LANE_RESUME
+            - AUCTION_CANCEL
+            - RECOVERY_CONFIRM
+      description: OPERATOR_COMMAND 이름공간의 해당 운영자 원명령만.
+    CsrfToken:
+      type: object
+      additionalProperties: false
+      properties:
+        headerName:
+          const: X-CSRF-Token
+          type: string
+        token:
+          type: string
+          minLength: 1
+          description: 비밀 CSRF 값. 로그·URL에 넣지 않는다.
+      required:
+      - headerName
+      - token
+    SessionUser:
+      type: object
+      additionalProperties: false
+      properties:
+        subjectId:
+          $ref: '#/components/schemas/OpaqueId'
+        email:
+          type: string
+          format: email
+        emailVerified:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+            - MEMBER
+            - OPERATOR
+          minItems: 1
+          maxItems: 1
+          uniqueItems: true
+      required:
+      - subjectId
+      - email
+      - emailVerified
+      - roles
+      description: D-092에 따라 한 계정은 MEMBER 또는 OPERATOR 하나의 역할만 가진다. 운영 전용 계정은 회원 출품·입찰·개인 목록·당사자 연락처 권한을 갖지 않는다. 동일인이 별도 일반회원 계정을 사용하는 것까지 금지한 정책은 아니다. MEMBER는 이메일 검증 가입 완료를 전제로 한다.
+      allOf:
+      - if:
+          properties:
+            roles:
+              contains:
+                const: MEMBER
+          required:
+          - roles
+        then:
+          properties:
+            emailVerified:
+              const: true
+    AnonymousSession:
+      type: object
+      additionalProperties: false
+      properties:
+        authenticated:
+          const: false
+          type: boolean
+        user:
+          type: 'null'
+      required:
+      - authenticated
+      - user
+    AuthenticatedSession:
+      type: object
+      additionalProperties: false
+      properties:
+        authenticated:
+          const: true
+          type: boolean
+        user:
+          $ref: '#/components/schemas/SessionUser'
+      required:
+      - authenticated
+      - user
+    SessionView:
+      oneOf:
+      - $ref: '#/components/schemas/AnonymousSession'
+      - $ref: '#/components/schemas/AuthenticatedSession'
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 1
+          writeOnly: true
+          description: 원문 비밀번호. 정책은 OPEN-06.
+      required:
+      - email
+      - password
+    RegistrationRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 1
+          writeOnly: true
+          description: 원문 비밀번호. 정책은 OPEN-06.
+      required:
+      - email
+      - password
+    RegistrationReceipt:
+      type: object
+      additionalProperties: false
+      properties:
+        registrationId:
+          $ref: '#/components/schemas/OpaqueId'
+        status:
+          const: VERIFICATION_REQUIRED
+          type: string
+      required:
+      - registrationId
+      - status
+      description: 가입 완료/실명 확인이 아니며 이메일 검증 전 회원 출품/입찰 권한 없음. 메일 발송 요청과 실제 메일 도달도 다르다.
+    VerificationRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        token:
+          type: string
+          minLength: 1
+          writeOnly: true
+      required:
+      - token
+    VerifiedMember:
+      type: object
+      additionalProperties: false
+      properties:
+        memberId:
+          $ref: '#/components/schemas/OpaqueId'
+        email:
+          type: string
+          format: email
+        emailVerified:
+          const: true
+          type: boolean
+      required:
+      - memberId
+      - email
+      - emailVerified
+    PasswordResetRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    EmailActionReceipt:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          const: REQUEST_RECEIVED
+          type: string
+      required:
+      - status
+      description: 보안 응답 제안. 계정 존재·메일 도달·비밀번호 변경 성공을 뜻하지 않는다. 상세는 OPEN-06.
+    PasswordResetCompletion:
+      type: object
+      additionalProperties: false
+      properties:
+        token:
+          type: string
+          minLength: 1
+          writeOnly: true
+        newPassword:
+          type: string
+          minLength: 1
+          writeOnly: true
+      required:
+      - token
+      - newPassword
+    UploadPhotoRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+      - file
+      description: 사진 형식/크기/수 제한은 OPEN-05. multipart 경로의 존재가 무제한 업로드 승인이 아니다.
+    StoredPhoto:
+      type: object
+      additionalProperties: false
+      properties:
+        photoId:
+          $ref: '#/components/schemas/OpaqueId'
+        status:
+          const: STORED
+          type: string
+      required:
+      - photoId
+      - status
+      description: 인증된 소유자의 저장 완료 사진. 연결 가능한지 출품 때 재검증한다. 외부 정적 경로로 비공개 사진을 노출하지 않는다.
+    CreateLotRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        title:
+          $ref: '#/components/schemas/NonBlankString'
+        description:
+          $ref: '#/components/schemas/NonBlankString'
+        photoIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpaqueId'
+          minItems: 1
+          uniqueItems: true
+        startingPrice:
+          $ref: '#/components/schemas/MoneyWon'
+        reservePrice:
+          $ref: '#/components/schemas/MoneyWon'
+        bidIncrement:
+          $ref: '#/components/schemas/MoneyWon'
+      required:
+      - requestId
+      - title
+      - description
+      - photoIds
+      - startingPrice
+      - reservePrice
+      - bidIncrement
+      description: 현재 모집 회차로 서버가 자동 귀속. roundId·laneId·소유자는 본문에 받지 않는다. reservePrice >= startingPrice. D-093에 따라 reservePrice - startingPrice가 bidIncrement의 정수배일 필요는 없다. 단위 후보/금액·사진·텍스트 범위는 OPEN-05.
+    UpdateLotRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        title:
+          $ref: '#/components/schemas/NonBlankString'
+        description:
+          $ref: '#/components/schemas/NonBlankString'
+        photoIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpaqueId'
+          minItems: 1
+          uniqueItems: true
+        startingPrice:
+          $ref: '#/components/schemas/MoneyWon'
+        reservePrice:
+          $ref: '#/components/schemas/MoneyWon'
+        bidIncrement:
+          $ref: '#/components/schemas/MoneyWon'
+      required:
+      - requestId
+      - title
+      - description
+      - photoIds
+      - startingPrice
+      - reservePrice
+      - bidIncrement
+      description: 전체 편집 가능 내용을 교체하되 최초 등록순·레인을 변경하지 않는다. 수정 시각을 등록순으로 사용하지 않는다. 공개 전 자기 공식 차례의 자격 확인. reservePrice >= startingPrice이며 D-093에 따라 최저낙찰가의 입찰 단위 정렬을 요구하지 않는다.
+    MemberCancellation:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+      required:
+      - requestId
+      description: 출품자 취소에 사유 필수 입력을 추가하지 않는다. 공개 후에도 유효 개시 전 원접수 취소 가능; 개시 정각에는 개시 우선.
+    MyLot:
+      type: object
+      additionalProperties: false
+      properties:
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        laneId:
+          $ref: '#/components/schemas/LaneId'
+        auctionId:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+        submittedAt:
+          $ref: '#/components/schemas/UtcInstant'
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - WITHDRAWN
+          - ROUND_CANCELLED
+        title:
+          $ref: '#/components/schemas/NonBlankString'
+        description:
+          $ref: '#/components/schemas/NonBlankString'
+        photoIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpaqueId'
+          minItems: 1
+          uniqueItems: true
+        startingPrice:
+          $ref: '#/components/schemas/MoneyWon'
+        reservePrice:
+          $ref: '#/components/schemas/MoneyWon'
+        bidIncrement:
+          $ref: '#/components/schemas/MoneyWon'
+      required:
+      - lotId
+      - roundId
+      - laneId
+      - auctionId
+      - submittedAt
+      - status
+      - title
+      - description
+      - photoIds
+      - startingPrice
+      - reservePrice
+      - bidIncrement
+      description: 인증된 본인 출품 DTO. reservePrice는 여기에서만 소유자에게 제공. 전체 개인정보/관리 조회를 의미하지 않는다.
+    MyLotPage:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MyLot'
+        nextCursor:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+    Participation:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        lotId:
+          $ref: '#/components/schemas/OpaqueId'
+        isCurrentLeader:
+          type: boolean
+        currentIntentRequestId:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+        lastBidRequestId:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+        result:
+          oneOf:
+          - $ref: '#/components/schemas/PublicAuctionResult'
+          - type: 'null'
+      required:
+      - auctionId
+      - lotId
+      - isCurrentLeader
+      - currentIntentRequestId
+      - lastBidRequestId
+      - result
+      description: 본인 참여 요약. 원입찰 판정은 bid-requests 조회로 확인. 다른 참가자 식별·입찰 이력은 포함하지 않음.
+    ParticipationPage:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Participation'
+        nextCursor:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+    RecruitingRound:
+      type: object
+      additionalProperties: false
+      properties:
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        recruitmentOpensAt:
+          $ref: '#/components/schemas/UtcInstant'
+        publicationAt:
+          $ref: '#/components/schemas/UtcInstant'
+        scheduledStartsAt:
+          $ref: '#/components/schemas/UtcInstant'
+      required:
+      - roundId
+      - recruitmentOpensAt
+      - publicationAt
+      - scheduledStartsAt
+    ListingContext:
+      type: object
+      additionalProperties: false
+      properties:
+        serverTime:
+          $ref: '#/components/schemas/UtcInstant'
+        recruitingRound:
+          oneOf:
+          - $ref: '#/components/schemas/RecruitingRound'
+          - type: 'null'
+        nextRecruitment:
+          oneOf:
+          - $ref: '#/components/schemas/RecruitingRound'
+          - type: 'null'
+      required:
+      - serverTime
+      - recruitingRound
+      - nextRecruitment
+      description: 본인 출품 흐름에 필요한 현재 모집 여부·귀속 일정과 설정된 다음 모집 일정. nextRecruitment는 취소되지 않은 미래 모집 중 가장 이른 일정 또는 null.
+        recruitingRound=null이면 현재 출품 접수 불가이며 다음 일정이 있으면 안내한다. 미공개 상품·배정·회원 정보는 포함하지 않는다.
+    TradeContact:
+      type: object
+      additionalProperties: false
+      properties:
+        auctionId:
+          $ref: '#/components/schemas/OpaqueId'
+        counterpartyEmail:
+          type: string
+          format: email
+      required:
+      - auctionId
+      - counterpartyEmail
+      description: 낙찰된 거래의 해당 출품자/낙찰자 서로에게만 상대 인증 가입 이메일 제공. 제3자·유찰/취소·운영자 역할만으로 조회 불가. 이메일 변경·접근 종료·보존은 OPEN-06/12.
+    CreateRoundRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        recruitmentOpensAt:
+          $ref: '#/components/schemas/UtcInstant'
+        scheduledStartsAt:
+          $ref: '#/components/schemas/UtcInstant'
+        laneCount:
+          type: integer
+          minimum: 1
+          maximum: 4
+        durations:
+          $ref: '#/components/schemas/DurationSettings'
+      required:
+      - requestId
+      - recruitmentOpensAt
+      - scheduledStartsAt
+      - laneCount
+      description: durations 생략 시 승인 기본 5/10/5초. publicationAt은 서버가 예약 시작일 전날 00:00 Asia/Seoul로 도출. 현재 <= 모집 시작
+        < 공개 < 예약 시작 및 모집 중복 없음. 일정 정밀도/미래 상한·시간 범위는 OPEN-01/05.
+    UpdateRoundSchedule:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        recruitmentOpensAt:
+          $ref: '#/components/schemas/UtcInstant'
+        scheduledStartsAt:
+          $ref: '#/components/schemas/UtcInstant'
+      required:
+      - requestId
+      - recruitmentOpensAt
+      - scheduledStartsAt
+    UpdateRoundLanes:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        laneCount:
+          type: integer
+          minimum: 1
+          maximum: 4
+      required:
+      - requestId
+      - laneCount
+    UpdateRoundTiming:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        durations:
+          $ref: '#/components/schemas/DurationSettings'
+      required:
+      - requestId
+      - durations
+    OperatorCancellation:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        reason:
+          $ref: '#/components/schemas/NonBlankString'
+      required:
+      - requestId
+      - reason
+      description: 원운영자+번호에 종류·원대상·제출 사유 고정. 텍스트 길이 상한은 미정. 재전송에 사유를 바꾸지 않는다.
+    PauseLane:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        reason:
+          $ref: '#/components/schemas/NonBlankString'
+      required:
+      - requestId
+      description: 사유는 제출하면 원명령에 고정. 중단이 앞선 입찰을 추월하지 않으며 단순 우선 처리 명령이 아니다.
+    ResumeLane:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        suspensionOccurrenceId:
+          $ref: '#/components/schemas/OpaqueId'
+      required:
+      - requestId
+      - suspensionOccurrenceId
+      description: 해당 회차·레인과 현재 해제 대상 발생 건에 결합. 원상품 일치를 모든 Lane 명령에 요구하지 않는다. 새 원인/새 중단이면 옛 명령으로 해제 불가.
+    ConfirmRecovery:
+      type: object
+      additionalProperties: false
+      properties:
+        requestId:
+          $ref: '#/components/schemas/OpaqueId'
+        suspensionOccurrenceId:
+          $ref: '#/components/schemas/OpaqueId'
+      required:
+      - requestId
+      - suspensionOccurrenceId
+      description: 해당 회차·레인과 현재 해제 대상 발생 건에 결합. 원상품 일치를 모든 Lane 명령에 요구하지 않는다. 새 원인/새 중단이면 옛 명령으로 해제 불가.
+    OperatorRound:
+      type: object
+      additionalProperties: false
+      properties:
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        status:
+          type: string
+          enum:
+          - SCHEDULED
+          - RECRUITING
+          - PUBLISHED
+          - WAITING
+          - ACTIVE
+          - COMPLETED
+          - CANCELLED
+        recruitmentOpensAt:
+          $ref: '#/components/schemas/UtcInstant'
+        publicationAt:
+          $ref: '#/components/schemas/UtcInstant'
+        scheduledStartsAt:
+          $ref: '#/components/schemas/UtcInstant'
+        actualStartedAt:
+          oneOf:
+          - $ref: '#/components/schemas/UtcInstant'
+          - type: 'null'
+        laneCount:
+          type: integer
+          minimum: 1
+          maximum: 4
+        durations:
+          $ref: '#/components/schemas/DurationSettings'
+        durationsFrozen:
+          type: boolean
+      required:
+      - roundId
+      - status
+      - recruitmentOpensAt
+      - publicationAt
+      - scheduledStartsAt
+      - actualStartedAt
+      - laneCount
+      - durations
+      - durationsFrozen
+    OperatorRoundPage:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperatorRound'
+        nextCursor:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+      required:
+      - items
+      - nextCursor
+    RecoveryControl:
+      type: object
+      additionalProperties: false
+      properties:
+        suspensionOccurrenceId:
+          oneOf:
+          - $ref: '#/components/schemas/OpaqueId'
+          - type: 'null'
+        incidentIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpaqueId'
+        historyStatus:
+          type: string
+          enum:
+          - CHECKING
+          - COMPLETE
+          - UNKNOWN
+        recoveryConfirmed:
+          type: boolean
+      required:
+      - suspensionOccurrenceId
+      - incidentIds
+      - historyStatus
+      - recoveryConfirmed
+      description: 운영자 조회에만 제공할 복구 제어 맥락. historyStatus는 증거 확인 결과이며 임의 true 입력으로 덮어쓰지 않는다.
+    OperatorLaneView:
+      type: object
+      additionalProperties: false
+      properties:
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        lane:
+          $ref: '#/components/schemas/PublicLaneState'
+        recovery:
+          $ref: '#/components/schemas/RecoveryControl'
+      required:
+      - roundId
+      - lane
+      - recovery
+    ProblemCode:
+      type: string
+      enum:
+      - VALIDATION_FAILED
+      - AUTHENTICATION_REQUIRED
+      - AUTHENTICATION_FAILED
+      - ROLE_REQUIRED
+      - EMAIL_NOT_VERIFIED
+      - CSRF_INVALID
+      - RESOURCE_NOT_FOUND
+      - REQUEST_RECORD_NOT_FOUND
+      - CONTENT_CONFLICT
+      - UNCONFIRMED_INTENT_EXISTS
+      - INTENT_NOT_REGISTERED
+      - OUTCOME_NOT_FINAL
+      - OUTCOME_MISMATCH
+      - RATE_LIMITED
+      - SERVICE_UNAVAILABLE
+      - COMMIT_RESULT_UNKNOWN
+      - RECOVERY_REVIEW_REQUIRED
+      - INTERNAL_ERROR
+      x-code-meanings:
+        VALIDATION_FAILED: 필수·형식·이미 승인된 기본 입력 관계 위반
+        AUTHENTICATION_REQUIRED: 로그인 필요/세션 만료
+        AUTHENTICATION_FAILED: 이메일·비밀번호 인증 실패; 계정 존재 여부나 상세 실패 이유 노출 없음
+        ROLE_REQUIRED: 해당 명시 역할 없음
+        EMAIL_NOT_VERIFIED: 가입 완료 권한 전 이메일 미검증
+        CSRF_INVALID: 변경 요청 CSRF 없음/불일치
+        RESOURCE_NOT_FOUND: 대상 없음 또는 이 조회 권한에 공개되지 않음
+        REQUEST_RECORD_NOT_FOUND: 해당 권위 조회에서 본인 원요청 기록 못 찾음; 최종 거절·영구 미접수 아님
+        CONTENT_CONFLICT: 같은 행위자+키에 종류/원경매/금액/원대상/사유 등 내용 불일치; 원판정 유지
+        UNCONFIRMED_INTENT_EXISTS: 같은 회원×Auction의 다른 미확인 의도 존재
+        INTENT_NOT_REGISTERED: 실제 입찰 전에 같은 의도 등록 확인 필요
+        OUTCOME_NOT_FINAL: 원최종 판정 없는 ACK, 제한 해제 없음
+        OUTCOME_MISMATCH: ACK의 outcomeId가 해당 원최종 판정과 다름
+        RATE_LIMITED: 기술적 재시도/요청 제한, 수치 미정; 원요청 효과 추정 금지
+        SERVICE_UNAVAILABLE: 정상 처리 불가, 원키 복구
+        COMMIT_RESULT_UNKNOWN: 저장 결과 불명, 같은 키 조회/재전송
+        RECOVERY_REVIEW_REQUIRED: 권위 증거 확인 필요; 추정 원거절·정상 결과로 대체 금지
+        INTERNAL_ERROR: 내부 오류, 최종 업무 거절 아님
+    FieldViolation:
+      type: object
+      additionalProperties: false
+      properties:
+        field:
+          type: string
+          minLength: 1
+        reason:
+          type: string
+          minLength: 1
+      required:
+      - field
+      - reason
+      description: 필드 위치와 입력 오류 안내. 비밀번호·토큰·제출 원문은 넣지 않는다.
+    Problem:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          $ref: '#/components/schemas/ProblemCode'
+        message:
+          type: string
+          minLength: 1
+        traceId:
+          $ref: '#/components/schemas/OpaqueId'
+        serverTime:
+          $ref: '#/components/schemas/UtcInstant'
+        fieldErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldViolation'
+      required:
+      - code
+      - message
+      - traceId
+      - serverTime
+      - fieldErrors
+      description: 접수 전후 프로토콜/보안/가용성 오류. 이 응답 자체는 원입찰 최종 REJECTED가 아니다. HTTP timeout/5xx/기록 없음 뒤 원키로 복구하며 새 키·의도
+        포기로 제한을 풀지 않는다.
+    RoundStateEvent:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          const: round.state.changed
+          type: string
+        schemaVersion:
+          const: 1
+          type: integer
+        eventId:
+          $ref: '#/components/schemas/OpaqueId'
+        streamEpoch:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        occurredAt:
+          $ref: '#/components/schemas/UtcInstant'
+        data:
+          $ref: '#/components/schemas/PublicRoundState'
+      required:
+      - type
+      - schemaVersion
+      - eventId
+      - streamEpoch
+      - roundId
+      - occurredAt
+      - data
+      description: data.roundId는 envelope.roundId와 동일. occurredAt은 공개 변화와 함께 기록한 서버 시각이며 실제 전이 S/N/R·flush·클라이언트
+        반영 시각을 대체하지 않는다.
+    LaneStateEvent:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          const: lane.state.changed
+          type: string
+        schemaVersion:
+          const: 1
+          type: integer
+        eventId:
+          $ref: '#/components/schemas/OpaqueId'
+        streamEpoch:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        occurredAt:
+          $ref: '#/components/schemas/UtcInstant'
+        data:
+          $ref: '#/components/schemas/PublicLaneState'
+      required:
+      - type
+      - schemaVersion
+      - eventId
+      - streamEpoch
+      - roundId
+      - occurredAt
+      - data
+    HeartbeatEvent:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          const: stream.heartbeat
+          type: string
+        schemaVersion:
+          const: 1
+          type: integer
+        streamEpoch:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        serverTime:
+          $ref: '#/components/schemas/UtcInstant'
+        roundVersion:
+          $ref: '#/components/schemas/Counter'
+        laneVersions:
+          type: array
+          items:
+            $ref: '#/components/schemas/LaneWatermark'
+          minItems: 1
+          maxItems: 4
+      required:
+      - type
+      - schemaVersion
+      - streamEpoch
+      - roundId
+      - serverTime
+      - roundVersion
+      - laneVersions
+      description: 관측 순간 권위 버전 광고. SSE id를 내보내거나 cursor를 전진시키지 않는다. 마지막 데이터 유실 발견 보조이며 앱 원판정 ACK 아님.
+    ResyncRequiredEvent:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          const: stream.resync-required
+          type: string
+        schemaVersion:
+          const: 1
+          type: integer
+        streamEpoch:
+          $ref: '#/components/schemas/OpaqueId'
+        roundId:
+          $ref: '#/components/schemas/OpaqueId'
+        serverTime:
+          $ref: '#/components/schemas/UtcInstant'
+        reason:
+          type: string
+          enum:
+          - EPOCH_CHANGED
+          - CURSOR_INVALID
+          - REPLAY_UNAVAILABLE
+          - BUFFER_OVERFLOW
+          - PROTOCOL_UNSUPPORTED
+        snapshotUrl:
+          $ref: '#/components/schemas/RelativeUrl'
+      required:
+      - type
+      - schemaVersion
+      - streamEpoch
+      - roundId
+      - serverTime
+      - reason
+      - snapshotUrl
+      description: SSE id 없음. 클라이언트는 기존 EventSource를 닫고 snapshot으로 복원한 cursor로 새 연결을 만든다. unknown schema를 같은 자동
+        재시도 루프로 반복하지 않는다.
+    StreamEvent:
+      oneOf:
+      - $ref: '#/components/schemas/RoundStateEvent'
+      - $ref: '#/components/schemas/LaneStateEvent'
+      - $ref: '#/components/schemas/HeartbeatEvent'
+      - $ref: '#/components/schemas/ResyncRequiredEvent'
+      discriminator:
+        propertyName: type
+  examples:
+    RegisterIntentInput:
+      summary: '검토용 합성 예제: RegisterIntentInput'
+      value:
+        auctionId: auction_demo
+        amount: '10000'
+      x-schema-ref: '#/components/schemas/RegisterBidIntent'
+    RegisteredIntent:
+      summary: '검토용 합성 예제: RegisteredIntent'
+      value:
+        requestId: request_demo
+        auctionId: auction_demo
+        amount: '10000'
+        registrationState: REGISTERED
+        registeredAt: '2026-10-20T01:00:05.900000Z'
+        acknowledgedAt: null
+      x-schema-ref: '#/components/schemas/BidIntent'
+    SubmitBidInput:
+      summary: '검토용 합성 예제: SubmitBidInput'
+      value:
+        requestId: request_demo
+        amount: '10000'
+      x-schema-ref: '#/components/schemas/SubmitBid'
+    PendingBid:
+      summary: '검토용 합성 예제: PendingBid'
+      value:
+        requestId: request_demo
+        auctionId: auction_demo
+        amount: '10000'
+        receivedAt: '2026-10-20T01:00:06Z'
+        receiptSequence: '7'
+        status: PENDING
+      x-schema-ref: '#/components/schemas/BidPending'
+    ApprovedBid:
+      summary: '검토용 합성 예제: ApprovedBid'
+      value:
+        requestId: request_demo
+        auctionId: auction_demo
+        amount: '10000'
+        receivedAt: '2026-10-20T01:00:06Z'
+        receiptSequence: '7'
+        status: APPROVED
+        outcomeId: outcome_demo
+        decidedAt: '2026-10-20T01:00:06.050000Z'
+        resultingClosesAt: '2026-10-20T01:00:11Z'
+      x-schema-ref: '#/components/schemas/BidApproved'
+    RejectedBid:
+      summary: '검토용 합성 예제: RejectedBid'
+      value:
+        requestId: request_later
+        auctionId: auction_demo
+        amount: '10000'
+        receivedAt: '2026-10-20T01:00:06Z'
+        receiptSequence: '8'
+        status: REJECTED
+        outcomeId: outcome_rejected
+        decidedAt: '2026-10-20T01:00:06.060000Z'
+        rejectionCode: WRONG_AMOUNT
+      x-schema-ref: '#/components/schemas/BidRejected'
+    AcknowledgeInput:
+      summary: '검토용 합성 예제: AcknowledgeInput'
+      value:
+        outcomeId: outcome_demo
+      x-schema-ref: '#/components/schemas/AcknowledgeBidOutcome'
+    AcknowledgedBid:
+      summary: '검토용 합성 예제: AcknowledgedBid'
+      value:
+        requestId: request_demo
+        outcomeId: outcome_demo
+        acknowledgedAt: '2026-10-20T01:00:06.200000Z'
+      x-schema-ref: '#/components/schemas/BidAcknowledgement'
+    SnapshotFourLanes:
+      summary: '검토용 합성 예제: SnapshotFourLanes'
+      value:
+        schemaVersion: 1
+        streamEpoch: epoch_demo
+        roundId: round_demo
+        serverTime: '2026-10-20T01:00:06.100000Z'
+        round:
+          roundId: round_demo
+          roundVersion: '3'
+          status: ACTIVE
+          recruitmentOpensAt: '2026-10-16T01:00:00Z'
+          publicationAt: '2026-10-18T15:00:00Z'
+          scheduledStartsAt: '2026-10-20T01:00:00.000000Z'
+          actualStartedAt: '2026-10-20T01:00:00.000000Z'
+          completedAt: null
+          cancelledAt: null
+          laneCount: 4
+          durations:
+            preparationSeconds: 5
+            initialBidSeconds: 10
+            followupBidSeconds: 5
+          durationsFrozen: true
+        lanes:
+        - laneId: 1
+          laneVersion: '8'
+          status: RUNNING
+          controlState:
+            manualStopped: false
+            held: false
+          currentAuction:
+            auctionId: auction_demo
+            lotId: lot_demo
+            stage: FOLLOWUP_WAIT
+            startingPrice: '10000'
+            bidIncrement: '1000'
+            highestBidAmount: '10000'
+            reserveMet: false
+            nextBidAmount: '11000'
+            windowStartAt: '2026-10-20T01:00:05Z'
+            opensAt: '2026-10-20T01:00:05Z'
+            closesAt: '2026-10-20T01:00:11Z'
+          lastResult: null
+        - laneId: 2
+          laneVersion: '1'
+          status: FINISHED
+          controlState:
+            manualStopped: false
+            held: false
+          currentAuction: null
+          lastResult: null
+        - laneId: 3
+          laneVersion: '1'
+          status: FINISHED
+          controlState:
+            manualStopped: false
+            held: false
+          currentAuction: null
+          lastResult: null
+        - laneId: 4
+          laneVersion: '1'
+          status: FINISHED
+          controlState:
+            manualStopped: false
+            held: false
+          currentAuction: null
+          lastResult: null
+        cursor: cursor_demo_3_8_1_1_1
+      x-schema-ref: '#/components/schemas/AuctionSnapshot'
+    RoundChanged:
+      summary: '검토용 합성 예제: RoundChanged'
+      value:
+        type: round.state.changed
+        schemaVersion: 1
+        eventId: event_round
+        streamEpoch: epoch_demo
+        roundId: round_demo
+        occurredAt: '2026-10-20T01:00:00.000000Z'
+        data:
+          roundId: round_demo
+          roundVersion: '3'
+          status: ACTIVE
+          recruitmentOpensAt: '2026-10-16T01:00:00Z'
+          publicationAt: '2026-10-18T15:00:00Z'
+          scheduledStartsAt: '2026-10-20T01:00:00.000000Z'
+          actualStartedAt: '2026-10-20T01:00:00.000000Z'
+          completedAt: null
+          cancelledAt: null
+          laneCount: 4
+          durations:
+            preparationSeconds: 5
+            initialBidSeconds: 10
+            followupBidSeconds: 5
+          durationsFrozen: true
+      x-schema-ref: '#/components/schemas/RoundStateEvent'
+    LaneChanged:
+      summary: '검토용 합성 예제: LaneChanged'
+      value:
+        type: lane.state.changed
+        schemaVersion: 1
+        eventId: event_lane
+        streamEpoch: epoch_demo
+        roundId: round_demo
+        occurredAt: '2026-10-20T01:00:06.050000Z'
+        data:
+          laneId: 1
+          laneVersion: '8'
+          status: RUNNING
+          controlState:
+            manualStopped: false
+            held: false
+          currentAuction:
+            auctionId: auction_demo
+            lotId: lot_demo
+            stage: FOLLOWUP_WAIT
+            startingPrice: '10000'
+            bidIncrement: '1000'
+            highestBidAmount: '10000'
+            reserveMet: false
+            nextBidAmount: '11000'
+            windowStartAt: '2026-10-20T01:00:05Z'
+            opensAt: '2026-10-20T01:00:05Z'
+            closesAt: '2026-10-20T01:00:11Z'
+          lastResult: null
+      x-schema-ref: '#/components/schemas/LaneStateEvent'
+    Heartbeat:
+      summary: '검토용 합성 예제: Heartbeat'
+      value:
+        type: stream.heartbeat
+        schemaVersion: 1
+        streamEpoch: epoch_demo
+        roundId: round_demo
+        serverTime: '2026-10-20T01:00:06.100000Z'
+        roundVersion: '3'
+        laneVersions:
+        - laneId: 1
+          laneVersion: '8'
+        - laneId: 2
+          laneVersion: '1'
+        - laneId: 3
+          laneVersion: '1'
+        - laneId: 4
+          laneVersion: '1'
+      x-schema-ref: '#/components/schemas/HeartbeatEvent'
+    ResyncRequired:
+      summary: '검토용 합성 예제: ResyncRequired'
+      value:
+        type: stream.resync-required
+        schemaVersion: 1
+        streamEpoch: epoch_new
+        roundId: round_demo
+        serverTime: '2026-10-20T01:00:00.000000Z'
+        reason: EPOCH_CHANGED
+        snapshotUrl: /api/v1/rounds/round_demo/snapshot
+      x-schema-ref: '#/components/schemas/ResyncRequiredEvent'
+    PublicNoSale:
+      summary: '검토용 합성 예제: PublicNoSale'
+      value:
+        auctionId: auction_no_sale
+        lotId: lot_no_sale
+        status: NO_SALE
+        finalizedAt: '2026-10-20T01:00:00.000000Z'
+      x-schema-ref: '#/components/schemas/NoSaleResult'
+    NextRecruitmentOnly:
+      summary: '검토용 합성 예제: NextRecruitmentOnly'
+      value:
+        serverTime: '2026-10-15T01:00:00Z'
+        recruitingRound: null
+        nextRecruitment:
+          roundId: round_future
+          recruitmentOpensAt: '2026-10-16T01:00:00Z'
+          publicationAt: '2026-10-18T15:00:00Z'
+          scheduledStartsAt: '2026-10-20T01:00:00Z'
+      x-schema-ref: '#/components/schemas/ListingContext'
+    AuthenticatedMember:
+      summary: '검토용 합성 예제: AuthenticatedMember'
+      value:
+        authenticated: true
+        user:
+          subjectId: member_demo
+          email: member@example.invalid
+          emailVerified: true
+          roles:
+          - MEMBER
+      x-schema-ref: '#/components/schemas/AuthenticatedSession'
+    AuthenticatedOperator:
+      summary: '검토용 합성 예제: AuthenticatedOperator'
+      value:
+        authenticated: true
+        user:
+          subjectId: operator_demo
+          email: operator@example.invalid
+          emailVerified: true
+          roles:
+          - OPERATOR
+      x-schema-ref: '#/components/schemas/AuthenticatedSession'
+    LookupNotFound:
+      summary: '검토용 합성 예제: LookupNotFound'
+      value:
+        code: REQUEST_RECORD_NOT_FOUND
+        message: 원요청 기록을 아직 확인하지 못했습니다. 같은 키로 확인을 계속합니다.
+        traceId: trace_demo
+        serverTime: '2026-10-20T01:00:00.000000Z'
+        fieldErrors: []
+      x-schema-ref: '#/components/schemas/Problem'
+    CreateLotInput:
+      summary: '검토용 합성 예제: CreateLotInput'
+      value:
+        requestId: lot_create_demo
+        title: 중고 스탠드
+        description: 시험용 출품 예시
+        photoIds:
+        - photo_demo
+        startingPrice: '10000'
+        reservePrice: '20000'
+        bidIncrement: '1000'
+      x-schema-ref: '#/components/schemas/CreateLotRequest'
+    CreateLotNonAlignedReserve:
+      summary: 'D-093 합성 예제: 정렬되지 않은 최저낙찰가로 출품'
+      value:
+        requestId: lot_non_aligned_demo
+        title: 중고 스탠드
+        description: 시작가 10000원에서 1000원씩 입찰하며 11000원부터 최저낙찰가 도달
+        photoIds:
+        - photo_demo
+        startingPrice: '10000'
+        reservePrice: '10500'
+        bidIncrement: '1000'
+      x-schema-ref: '#/components/schemas/CreateLotRequest'
+    UpdateLotNonAlignedReserve:
+      summary: 'D-093 합성 예제: 수정에도 같은 비정렬 허용'
+      value:
+        requestId: lot_update_non_aligned_demo
+        title: 중고 스탠드
+        description: 최저낙찰가의 단위 정렬을 강제하지 않음
+        photoIds:
+        - photo_demo
+        startingPrice: '10000'
+        reservePrice: '10500'
+        bidIncrement: '1000'
+      x-schema-ref: '#/components/schemas/UpdateLotRequest'
+    NoSaleLaneChanged:
+      summary: 'D-094 합성 예제: 입찰 후 유찰에도 종료 이벤트는 최고가 미노출'
+      value:
+        type: lane.state.changed
+        schemaVersion: 1
+        eventId: event_lane_no_sale
+        streamEpoch: epoch_demo
+        roundId: round_demo
+        occurredAt: '2026-10-20T01:00:11.050000Z'
+        data:
+          laneId: 1
+          laneVersion: '9'
+          status: FINISHED
+          controlState:
+            manualStopped: false
+            held: false
+          currentAuction: null
+          lastResult:
+            auctionId: auction_demo
+            lotId: lot_demo
+            status: NO_SALE
+            finalizedAt: '2026-10-20T01:00:11Z'
+      x-schema-ref: '#/components/schemas/LaneStateEvent'
+    ResumeInput:
+      summary: '검토용 합성 예제: ResumeInput'
+      value:
+        requestId: resume_demo
+        suspensionOccurrenceId: suspension_demo
+      x-schema-ref: '#/components/schemas/ResumeLane'
+    OriginalResumeSucceeded:
+      summary: '검토용 합성 예제: OriginalResumeSucceeded'
+      value:
+        requestId: resume_demo
+        kind: LANE_RESUME
+        target:
+          roundId: round_demo
+          laneId: 1
+          lotId: null
+          auctionId: null
+        receivedAt: '2026-10-20T01:00:00.000000Z'
+        status: SUCCEEDED
+        outcomeId: resume_outcome
+        decidedAt: '2026-10-20T01:00:00.100000Z'
+        resourceUri: /api/v1/operator/rounds/round_demo/lanes/1
+        effectiveAt: '2026-10-20T01:00:00.100000Z'
+      x-schema-ref: '#/components/schemas/ActionSucceeded'

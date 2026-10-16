@@ -1,0 +1,506 @@
+{
+  "scope": "CONTRACT_STATIC_ONLY",
+  "status": "PASS",
+  "validatedAtUtc": "2026-10-15T08:52:04.886992+00:00",
+  "contractVersion": "0.1.0",
+  "openapiVersion": "3.1.1",
+  "openapiSha256": "4cad0ae25cb48ef7891176594093374ae5007587d28ac5563fc644e21aaa527d",
+  "tools": {
+    "openapi-spec-validator": "0.9.0",
+    "PyYAML": "6.0.3",
+    "jsonschema": "4.26.0",
+    "referencing": "0.37.0"
+  },
+  "counts": {
+    "paths": 41,
+    "operations": 45,
+    "schemas": 91,
+    "resolvedRefs": 716,
+    "positiveExamples": 24,
+    "operationMediaExamples": 15,
+    "negativeSchemaChecks": 38,
+    "mutationsWithCsrfAnd403": 22,
+    "publicPrivacyGraphs": 4
+  },
+  "checks": {
+    "openapiSpecification": "PASS",
+    "schemaMetaschemas": "PASS",
+    "internalReferences": "PASS",
+    "goldenFixtureRelations": "PASS",
+    "operationIdsAndPathParameters": "PASS",
+    "securityAndCsrf": "PASS",
+    "publicSchemaPrivacy": "PASS",
+    "operationMediaExamples": "PASS",
+    "streamEventUnion": "PASS"
+  },
+  "examples": [
+    {
+      "example": "RegisterIntentInput",
+      "schema": "RegisterBidIntent",
+      "status": "PASS"
+    },
+    {
+      "example": "RegisteredIntent",
+      "schema": "BidIntent",
+      "status": "PASS"
+    },
+    {
+      "example": "SubmitBidInput",
+      "schema": "SubmitBid",
+      "status": "PASS"
+    },
+    {
+      "example": "PendingBid",
+      "schema": "BidPending",
+      "status": "PASS"
+    },
+    {
+      "example": "ApprovedBid",
+      "schema": "BidApproved",
+      "status": "PASS"
+    },
+    {
+      "example": "RejectedBid",
+      "schema": "BidRejected",
+      "status": "PASS"
+    },
+    {
+      "example": "AcknowledgeInput",
+      "schema": "AcknowledgeBidOutcome",
+      "status": "PASS"
+    },
+    {
+      "example": "AcknowledgedBid",
+      "schema": "BidAcknowledgement",
+      "status": "PASS"
+    },
+    {
+      "example": "SnapshotFourLanes",
+      "schema": "AuctionSnapshot",
+      "status": "PASS"
+    },
+    {
+      "example": "RoundChanged",
+      "schema": "RoundStateEvent",
+      "status": "PASS"
+    },
+    {
+      "example": "LaneChanged",
+      "schema": "LaneStateEvent",
+      "status": "PASS"
+    },
+    {
+      "example": "Heartbeat",
+      "schema": "HeartbeatEvent",
+      "status": "PASS"
+    },
+    {
+      "example": "ResyncRequired",
+      "schema": "ResyncRequiredEvent",
+      "status": "PASS"
+    },
+    {
+      "example": "PublicNoSale",
+      "schema": "NoSaleResult",
+      "status": "PASS"
+    },
+    {
+      "example": "NextRecruitmentOnly",
+      "schema": "ListingContext",
+      "status": "PASS"
+    },
+    {
+      "example": "AuthenticatedMember",
+      "schema": "AuthenticatedSession",
+      "status": "PASS"
+    },
+    {
+      "example": "AuthenticatedOperator",
+      "schema": "AuthenticatedSession",
+      "status": "PASS"
+    },
+    {
+      "example": "LookupNotFound",
+      "schema": "Problem",
+      "status": "PASS"
+    },
+    {
+      "example": "CreateLotInput",
+      "schema": "CreateLotRequest",
+      "status": "PASS"
+    },
+    {
+      "example": "CreateLotNonAlignedReserve",
+      "schema": "CreateLotRequest",
+      "status": "PASS"
+    },
+    {
+      "example": "UpdateLotNonAlignedReserve",
+      "schema": "UpdateLotRequest",
+      "status": "PASS"
+    },
+    {
+      "example": "NoSaleLaneChanged",
+      "schema": "LaneStateEvent",
+      "status": "PASS"
+    },
+    {
+      "example": "ResumeInput",
+      "schema": "ResumeLane",
+      "status": "PASS"
+    },
+    {
+      "example": "OriginalResumeSucceeded",
+      "schema": "ActionSucceeded",
+      "status": "PASS"
+    }
+  ],
+  "operationMediaExamples": [
+    {
+      "location": "getAuctionSnapshot:response:200",
+      "mediaType": "application/json",
+      "example": "SnapshotFourLanes",
+      "status": "PASS"
+    },
+    {
+      "location": "getListingContext:response:200",
+      "mediaType": "application/json",
+      "example": "NextRecruitmentOnly",
+      "status": "PASS"
+    },
+    {
+      "location": "createLot:request",
+      "mediaType": "application/json",
+      "example": "NonAlignedReserve",
+      "status": "PASS"
+    },
+    {
+      "location": "updateLot:request",
+      "mediaType": "application/json",
+      "example": "NonAlignedReserve",
+      "status": "PASS"
+    },
+    {
+      "location": "registerBidIntent:request",
+      "mediaType": "application/json",
+      "example": "RegisterIntentInput",
+      "status": "PASS"
+    },
+    {
+      "location": "registerBidIntent:response:201",
+      "mediaType": "application/json",
+      "example": "RegisteredIntent",
+      "status": "PASS"
+    },
+    {
+      "location": "submitBid:request",
+      "mediaType": "application/json",
+      "example": "SubmitBidInput",
+      "status": "PASS"
+    },
+    {
+      "location": "submitBid:response:202",
+      "mediaType": "application/json",
+      "example": "PendingBid",
+      "status": "PASS"
+    },
+    {
+      "location": "submitBid:response:200",
+      "mediaType": "application/json",
+      "example": "ApprovedBid",
+      "status": "PASS"
+    },
+    {
+      "location": "submitBid:response:200",
+      "mediaType": "application/json",
+      "example": "RejectedBid",
+      "status": "PASS"
+    },
+    {
+      "location": "getBidRequest:response:200",
+      "mediaType": "application/json",
+      "example": "PendingBid",
+      "status": "PASS"
+    },
+    {
+      "location": "getBidRequest:response:200",
+      "mediaType": "application/json",
+      "example": "ApprovedBid",
+      "status": "PASS"
+    },
+    {
+      "location": "getBidRequest:response:200",
+      "mediaType": "application/json",
+      "example": "RejectedBid",
+      "status": "PASS"
+    },
+    {
+      "location": "acknowledgeBidOutcome:request",
+      "mediaType": "application/json",
+      "example": "AcknowledgeInput",
+      "status": "PASS"
+    },
+    {
+      "location": "acknowledgeBidOutcome:response:200",
+      "mediaType": "application/json",
+      "example": "AcknowledgedBid",
+      "status": "PASS"
+    }
+  ],
+  "negativeChecks": [
+    {
+      "case": "money:0",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "money:-1",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "money:1.2",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "money:1e3",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "money:010",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "money:+100",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "money: 100 ",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "money:100",
+      "schema": "MoneyWon",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "counter:01",
+      "schema": "Counter",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "counter:-1",
+      "schema": "Counter",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "counter:1",
+      "schema": "Counter",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "receipt sequence zero",
+      "schema": "ReceiptSequence",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "UTC instant:2026-10-20T10:00:00+09:00",
+      "schema": "UtcInstant",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "UTC instant:2026-02-31T00:00:00Z",
+      "schema": "UtcInstant",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "cursor control:''",
+      "schema": "StreamCursor",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "cursor control:'a\\nb'",
+      "schema": "StreamCursor",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "cursor control:'a\\rb'",
+      "schema": "StreamCursor",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "cursor control:'a\\x00b'",
+      "schema": "StreamCursor",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "client actor injection",
+      "schema": "SubmitBid",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "number amount",
+      "schema": "SubmitBid",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "ACK missing outcome identity",
+      "schema": "AcknowledgeBidOutcome",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "approved missing outcomeId",
+      "schema": "BidApproved",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "transport error is not final rejection",
+      "schema": "BidRejected",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "NO_SALE high price leak",
+      "schema": "NoSaleResult",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "NO_SALE reserve price leak",
+      "schema": "NoSaleResult",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "LIVE without live state",
+      "schema": "PublicAuctionView",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "WAITING with live state",
+      "schema": "PublicAuctionView",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "FINISHED with live state",
+      "schema": "PublicAuctionView",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "round cancellation has no fabricated result",
+      "schema": "PublicAuctionView",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "finished lane with current auction",
+      "schema": "PublicLaneState",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "finished lane with hold",
+      "schema": "PublicLaneState",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "unverified MEMBER role",
+      "schema": "SessionUser",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "D-092 operator and member cannot share an account",
+      "schema": "AuthenticatedSession",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "D-094 NO_SALE event cannot carry high price",
+      "schema": "LaneStateEvent",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "D-094 NO_SALE query cannot carry high price",
+      "schema": "PublicAuctionView",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "resume missing suspension occurrence",
+      "schema": "ResumeLane",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "seller cancellation has no required reason extension",
+      "schema": "MemberCancellation",
+      "expected": "REJECT",
+      "status": "PASS"
+    },
+    {
+      "case": "operator command is not a member action",
+      "schema": "MemberActionRequest",
+      "expected": "REJECT",
+      "status": "PASS"
+    }
+  ],
+  "approvedPolicyStaticChecks": {
+    "D-092": {
+      "scope": "mixed-role session schema rejection",
+      "status": "PASS"
+    },
+    "D-093": {
+      "scope": "non-aligned create/update fixture schemas and price arithmetic only",
+      "status": "PASS"
+    },
+    "D-094": {
+      "scope": "NO_SALE query/event field rejection; no runtime or record deletion proof",
+      "status": "PASS"
+    }
+  },
+  "notRun": [
+    "product-service",
+    "database-transactions",
+    "concurrency",
+    "network-SSE",
+    "reconnect",
+    "browser",
+    "load",
+    "failure-recovery",
+    "deployment"
+  ],
+  "note": "Static artifact and schema validation only; no product service, DB, browser, network stream, concurrency or performance acceptance proof."
+}
