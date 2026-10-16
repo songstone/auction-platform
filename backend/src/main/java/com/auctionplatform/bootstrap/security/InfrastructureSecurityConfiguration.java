@@ -36,6 +36,7 @@ class InfrastructureSecurityConfiguration {
         return http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/rounds").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/rounds/{roundId}").permitAll()
                         .anyRequest().denyAll())
                 .csrf(csrf -> csrf.csrfTokenRepository(csrfTokens))

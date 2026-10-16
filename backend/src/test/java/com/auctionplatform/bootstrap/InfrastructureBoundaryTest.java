@@ -39,7 +39,8 @@ class InfrastructureBoundaryTest {
 
     @Test
     void scaffoldingDoesNotExposeBusinessOrManagementSurfaces() {
-        for (String path : new String[]{"/api/v1/rounds", "/actuator/env", "/actuator/configprops",
+        for (String path : new String[]{"/api/v1/rounds/", "/api/v1/rounds/demo/extra", "/api/v1/operator/rounds",
+                "/api/v1/me/rounds", "/actuator/env", "/actuator/configprops",
                 "/actuator/health/liveness", "/actuator/health/readiness", "/login"}) {
             assertThat(http.getForEntity(path, String.class).getStatusCode())
                     .as("bootstrap must deny %s; this is not business-contract coverage", path)
@@ -66,6 +67,41 @@ class InfrastructureBoundaryTest {
         assertThat(output.getAll()).contains(problem.get("traceId").asString())
                 .doesNotContain("do-not-log-round", "do-not-log-token");
         assertThat(response.getBody()).doesNotContain("do-not-log-round", "do-not-log-token");
+    }
+
+    @Test
+    void publicListWithoutDatabaseIsUnavailableAndDoesNotLogQueryOrHeaders(CapturedOutput output) {
+        ResponseEntity<String> response = http.getForEntity("/api/v1/rounds?token=do-not-log-list-token", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
+        assertThat(response.getHeaders().getCacheControl()).isEqualTo("no-store");
+        var problem = json.readTree(response.getBody());
+        assertThat(problem.size()).isEqualTo(5);
+        assertThat(problem.get("code").asString()).isEqualTo("SERVICE_UNAVAILABLE");
+        assertThat(problem.get("traceId").asString()).isEqualTo(response.getHeaders().getFirst("X-Trace-Id"));
+        assertThat(output.getAll()).contains(problem.get("traceId").asString()).doesNotContain("do-not-log-list-token");
+        assertThat(response.getBody()).doesNotContain("do-not-log-list-token");
+    }
+
+    @Test
+    void malformedListCursorIsRejectedBeforeDatabaseAccessAndNotEchoed(CapturedOutput output) {
+        ResponseEntity<String> response = http.getForEntity("/api/v1/rounds?cursor=do-not-log-cursor", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getHeaders().getCacheControl()).isEqualTo("no-store");
+        var problem = json.readTree(response.getBody());
+        assertThat(problem.size()).isEqualTo(5);
+        assertThat(problem.get("code").asString()).isEqualTo("VALIDATION_FAILED");
+        assertThat(problem.get("traceId").asString()).isEqualTo(response.getHeaders().getFirst("X-Trace-Id"));
+        assertThat(problem.get("fieldErrors").get(0).get("field").asString()).isEqualTo("cursor");
+        assertThat(output.getAll()).doesNotContain("do-not-log-cursor");
+        assertThat(response.getBody()).doesNotContain("do-not-log-cursor");
+    }
+
+    @Test
+    void publicListDoesNotPermitPostOrHead() {
+        assertThat(http.postForEntity("/api/v1/rounds", HttpEntity.EMPTY, String.class).getStatusCode())
+                .isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(http.exchange("/api/v1/rounds", org.springframework.http.HttpMethod.HEAD,
+                HttpEntity.EMPTY, String.class).getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
