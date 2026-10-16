@@ -1,0 +1,18 @@
+# Approval hashes cover exact bytes; Git must not rewrite these files on checkout.
+/contracts/** -text whitespace=cr-at-eol
+/docs/product/** -text whitespace=cr-at-eol
+/docs/architecture/** -text whitespace=cr-at-eol
+/docs/decisions/** -text whitespace=cr-at-eol
+/docs/spikes/SPIKE-001.md -text whitespace=cr-at-eol
+
+# New implementation files have explicit portable line endings.
+/backend/** text eol=lf
+/backend/gradlew.bat text eol=crlf
+/backend/gradle/wrapper/gradle-wrapper.jar binary
+/frontend/** text eol=lf
+/infra/** text eol=lf
+/scripts/** text eol=lf
+/.github/** text eol=lf
+/docs/implementation/** text eol=lf
+/README.md text eol=lf
+/.gitignore text eol=lf

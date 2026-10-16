@@ -1,1 +1,13 @@
 .idea/
+.venv/
+.artifacts/
+infra/.runtime/
+infra/.env
+backend/target/
+backend/.gradle/
+backend/build/
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+output/playwright/
+.playwright-cli/
