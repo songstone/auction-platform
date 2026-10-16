@@ -13,26 +13,20 @@ $javaVersion = (& $javaExe -version 2>&1 | Out-String)
 if ($javaVersion -notmatch 'version "25(?:\.|\")') { throw 'JDK 25 is required.' }
 $jarPath = Join-Path $repoPath 'backend/build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar'
 if (!(Test-Path -LiteralPath $jarPath)) { throw 'Build the backend first with scripts/verify.ps1 or backend/gradlew.bat clean build.' }
-$environmentNames = @('SPRING_PROFILES_ACTIVE', 'DB_URL', 'DB_USER', 'DB_PASSWORD', 'MAIL_HOST', 'MAIL_PORT', 'PHOTO_ROOT',
-    'SPRING_DATASOURCE_URL', 'SPRING_DATASOURCE_USERNAME', 'SPRING_DATASOURCE_PASSWORD',
-    'SPRING_FLYWAY_URL', 'SPRING_FLYWAY_USER', 'SPRING_FLYWAY_PASSWORD')
+$environmentNames = @('SPRING_PROFILES_ACTIVE', 'DB_URL', 'DB_USER', 'DB_PASSWORD', 'MAIL_HOST', 'MAIL_PORT', 'PHOTO_ROOT')
 $originalEnvironment = @{}
 foreach ($name in $environmentNames) { $originalEnvironment[$name] = [Environment]::GetEnvironmentVariable($name, 'Process') }
 try {
     if ($WithInfrastructure) {
-        & (Join-Path $repoPath 'infra/up.ps1')
         $env:SPRING_PROFILES_ACTIVE = 'local-infra'
-        foreach ($line in [System.IO.File]::ReadAllLines((Join-Path $repoPath 'infra/.runtime/backend.properties'))) {
-            $name, $value = $line.Split('=', 2)
-            [Environment]::SetEnvironmentVariable($name, $value, 'Process')
+        if (!$env:DB_PASSWORD) {
+            $secretPath = Join-Path $repoPath 'infra/.runtime/db-password'
+            if (!(Test-Path -LiteralPath $secretPath)) { throw 'Run infra/up.ps1 first, or provide DB_PASSWORD in the process environment.' }
+            $env:DB_PASSWORD = [System.IO.File]::ReadAllText($secretPath).Trim()
         }
-        $env:DB_PASSWORD = [System.IO.File]::ReadAllText((Join-Path $repoPath 'infra/.runtime/db-password')).Trim()
-        $env:SPRING_DATASOURCE_URL = $env:DB_URL
-        $env:SPRING_DATASOURCE_USERNAME = $env:DB_USER
-        $env:SPRING_DATASOURCE_PASSWORD = $env:DB_PASSWORD
-        $env:SPRING_FLYWAY_URL = $env:DB_URL
-        $env:SPRING_FLYWAY_USER = $env:DB_USER
-        $env:SPRING_FLYWAY_PASSWORD = $env:DB_PASSWORD
+        if (!$env:MAIL_HOST) { $env:MAIL_HOST = '127.0.0.1' }
+        if (!$env:MAIL_PORT) { $env:MAIL_PORT = '51025' }
+        if (!$env:PHOTO_ROOT) { $env:PHOTO_ROOT = Join-Path $repoPath 'infra/.runtime/photos' }
     }
     & $javaExe -jar $jarPath
     if ($LASTEXITCODE -ne 0) { throw 'Backend process exited unsuccessfully; inspect its startup log.' }

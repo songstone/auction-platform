@@ -59,8 +59,6 @@ class PublicRoundPostgresIntegrationTest {
     static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer(DockerImageName.parse(
             "postgres:18.6-alpine@sha256:77f585114c32fbca283dc835b0596f4e52b51b4c6662d7810b2f4084f60a1873")
             .asCompatibleSubstituteFor("postgres"))
-            // Match Compose: PostgreSQL's "$user" search path resolves to auction after V1.
-            .withUsername("auction")
             // Docker may reassign a dynamic host port on stop/start. Keep this disposable DB's endpoint stable.
             .withCreateContainerCmdModifier(command -> command.getHostConfig().withPortBindings(
                     new PortBinding(Ports.Binding.bindIpAndPort("127.0.0.1", DATABASE_PORT), ExposedPort.tcp(5432))));
