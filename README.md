@@ -8,8 +8,11 @@
 | [시스템 설계](docs/architecture/SYSTEM-DESIGN.md) | 채택한 모듈·트랜잭션·복구 구조 |
 | [계약 안내](contracts/README.md) | 계약 0.1.0·OPEN·변경 절차·승인 범위 |
 | [현재 상태](docs/STATE.md) | 구현·검증 근거와 리드가 관리하는 작업 상태 |
+| [전체 MVP 로드맵](docs/ROADMAP.md) | 승인 대기: 7개 마일스톤·사용자 흐름·완료 조건·의존성·위험·시작 조건 |
+| [Epic·Feature 백로그](docs/BACKLOG.md) | 승인 대기: 전체 요구사항·제외 범위·통합 시나리오 추적 |
+| [전체 로드맵 검토 기록](docs/implementation/ROADMAP-REVIEW-2026-10-16.md) | 문서 범위의 검사·독립 검토·미실행 경계 |
 | [다음 마일스톤 작업안](docs/tasks/README.md) | 공개 회차 탐색 M-01, DRAFT 작업지시서·의존성·소유권 |
-| [작업 분해 문서 검토](docs/implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md) | 이번 계획의 정적 검사·독립 리뷰·미실행 경계 |
+| [M-01 작업 분해 검토 이력](docs/implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md) | 기존 최소 흐름 계획의 정적 검사·독립 리뷰·미실행 경계 |
 | [작업 계획](docs/implementation/IMPLEMENTATION-PLAN.md) | BE·FE·QA 작업 카드와 의존성 |
 | [QA 계획](docs/implementation/QA-PLAN.md) | 검증 종류와 실제 증거의 구분 |
 | [초기 골격 실행 이력](docs/implementation/FOUNDATION-VERIFICATION.md) | 최초 Maven 골격의 실행·미실행 범위 |

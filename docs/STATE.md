@@ -5,6 +5,12 @@
 - 최초 조사 기준: `e5ebde892395c02bae9f4e604b610a4bf7088ee0` (`dev = origin/dev`, fetch 확인, clean). `main = origin/main = 003a28fb9f2836f80ce21ed4e64f855977632eb8`.
 - 이번 작업 분해 문서의 검토 범위·명령·미실행: [M-01 문서 검토 기록](implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md).
 
+## 전체 MVP 로드맵 검토 상태 — 2026-10-16
+
+[ROADMAP](ROADMAP.md)과 [BACKLOG](BACKLOG.md)에 전체 MVP의 7개 마일스톤·9개 Epic·26개 Feature 및 G/R/EX/SC 추적을 제안했다. **전체 로드맵과 첫 M-01 범위는 DRAFT / 사용자 승인 대기**다. 조사 기준은 fetch 확인한 `origin/dev = a8d4df69c891f0f55fd017f20a2f427f27367de6`이며 미래 구현 착수 SHA가 아니다. 이번에는 제품 코드·시험·계약을 변경하거나 구현자를 가동하지 않았다.
+
+기존 M-01과 T-001~004의 범위·DRAFT 상태를 유지한다. 사용자가 전체 로드맵을 승인하면 **별도 M-01 실행 리드 세션용 컨텍스트를 작성**한다. 아직 해당 인계 문서는 없으며 실제 시작 조건은 [ROADMAP](ROADMAP.md)의 마지막 절을 따른다. 기존 계획/검증 보고서의 조사 SHA·실행 결과는 역사로 보존한다. 이번 문서 검토 증거는 [ROADMAP-REVIEW](implementation/ROADMAP-REVIEW-2026-10-16.md)에 따로 기록한다.
+
 ## 확인된 현재 범위
 
 | 대상 | 확인 상태 | 증거와 한계 |
