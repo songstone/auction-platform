@@ -1,5 +1,8 @@
 package com.auctionplatform.bootstrap;
 
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -25,16 +28,24 @@ import org.testcontainers.utility.DockerImageName;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 import java.net.URI;
+import java.net.ServerSocket;
+import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @Tag("integration")
 @Testcontainers
@@ -43,16 +54,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestRestTemplate
 class PublicRoundPostgresIntegrationTest {
     private static final AtomicBoolean FIRST_SETUP = new AtomicBoolean(true);
+    private static final int DATABASE_PORT = unusedLocalPort();
     @Container
     static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer(DockerImageName.parse(
             "postgres:18.6-alpine@sha256:77f585114c32fbca283dc835b0596f4e52b51b4c6662d7810b2f4084f60a1873")
-            .asCompatibleSubstituteFor("postgres"));
+            .asCompatibleSubstituteFor("postgres"))
+            // Docker may reassign a dynamic host port on stop/start. Keep this disposable DB's endpoint stable.
+            .withCreateContainerCmdModifier(command -> command.getHostConfig().withPortBindings(
+                    new PortBinding(Ports.Binding.bindIpAndPort("127.0.0.1", DATABASE_PORT), ExposedPort.tcp(5432))));
 
     @DynamicPropertySource
     static void database(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRES::getUsername);
         registry.add("spring.datasource.password", POSTGRES::getPassword);
+        registry.add("spring.datasource.hikari.connection-timeout", () -> "1000");
+        registry.add("spring.datasource.hikari.validation-timeout", () -> "500");
     }
 
     @Autowired JdbcTemplate jdbc;
@@ -140,6 +157,136 @@ class PublicRoundPostgresIntegrationTest {
     }
 
     @Test
+    void emptyPublicListHasAnExplicitEndAndClosedSchema() {
+        jdbc.execute("TRUNCATE TABLE auction.rounds");
+        JsonNode body = assertPage(list(null));
+        assertThat(body.get("items").isEmpty()).isTrue();
+        assertThat(body.get("nextCursor").isNull()).isTrue();
+    }
+
+    @Test
+    void publicListUsesPersistedPublicationAndAllowedStatesWithoutAdvancingRecords() {
+        jdbc.execute("TRUNCATE TABLE auction.rounds");
+        List<String> allowed = List.of("PUBLISHED", "WAITING", "ACTIVE", "COMPLETED", "CANCELLED");
+        for (String status : allowed) insert("public-" + status, status, true);
+        insert("private-future", "PUBLISHED", false);
+        insert("private-past", "PUBLISHED", false);
+        insert("private-cancelled", "CANCELLED", false);
+        insert("private-scheduled", "SCHEDULED", true);
+        insert("private-recruiting", "RECRUITING", true);
+        jdbc.update("""
+                UPDATE auction.rounds SET recruitment_opens_at='2000-10-01T00:00:00Z',
+                  publication_at='2000-10-14T15:00:00Z', scheduled_starts_at='2000-10-16T01:00:00Z'
+                WHERE round_id='private-past'
+                """);
+        List<Map<String, Object>> before = jdbc.queryForList("SELECT * FROM auction.rounds ORDER BY round_id");
+        JsonNode page = assertPage(list(null));
+        assertThat(ids(page)).containsExactly("public-ACTIVE", "public-CANCELLED", "public-COMPLETED",
+                "public-PUBLISHED", "public-WAITING");
+        assertThat(page.get("nextCursor").isNull()).isTrue();
+        for (JsonNode item : page.get("items")) {
+            assertThat(item).isEqualTo(json.readTree(get(item.get("roundId").asString()).getBody()));
+        }
+        assertThat(jdbc.queryForList("SELECT * FROM auction.rounds ORDER BY round_id")).isEqualTo(before);
+    }
+
+    @Test
+    void repeatedPaginationPreservesTupleOrderEveryIdentifierAndMicrosecondsWithoutDuplicates() {
+        jdbc.execute("TRUNCATE TABLE auction.rounds");
+        List<String> expected = new ArrayList<>();
+        String boundaryId = "round-019 /한글 +% " + "x".repeat(512);
+        for (int i = 0; i < 47; i++) {
+            expected.add(i == 19 ? boundaryId : (i < 42 ? "round-" : "earlier-id-later-time-") + "%03d".formatted(i));
+        }
+        // Reverse insertion order prevents insertion order from accidentally satisfying the expectation.
+        for (int i = expected.size() - 1; i >= 0; i--) {
+            insert(expected.get(i), "PUBLISHED", true);
+            jdbc.update("UPDATE auction.rounds SET scheduled_starts_at=? WHERE round_id=?",
+                    OffsetDateTime.parse(i < 42 ? "2099-10-16T01:00:00.123456Z" : "2099-10-16T01:00:00.123457Z"),
+                    expected.get(i));
+        }
+        assertThat(traverse()).containsExactlyElementsOf(expected);
+        assertThat(traverse()).containsExactlyElementsOf(expected);
+        assertThat(json.readTree(get(boundaryId).getBody()).get("roundId").asString()).isEqualTo(boundaryId);
+        JsonNode first = assertPage(list(null));
+        assertThat(first.get("items").size()).isLessThan(expected.size());
+        for (JsonNode item : first.get("items")) {
+            assertThat(item.get("roundVersion").isString()).isTrue();
+            assertThat(item.get("roundVersion").asString()).isEqualTo("9007199254740993");
+            assertThat(item.get("scheduledStartsAt").asString()).isEqualTo("2099-10-16T01:00:00.123456Z");
+        }
+        String cursor = first.get("nextCursor").asString();
+        assertThat(list(cursor).getBody()).isEqualTo(list(cursor).getBody());
+        // A returned continuation remains usable if all later rows have since gone away.
+        jdbc.execute("TRUNCATE TABLE auction.rounds");
+        JsonNode end = assertPage(list(cursor));
+        assertThat(end.get("items").isEmpty()).isTrue();
+        assertThat(end.get("nextCursor").isNull()).isTrue();
+    }
+
+    @Test
+    void listTieBreakPreservesCaseWhitespaceAndUnicodeWithoutNormalizingIdentifiers() {
+        jdbc.execute("TRUNCATE TABLE auction.rounds");
+        for (String id : List.of("한글", "a", "Z", "A", " A ")) insert(id, "PUBLISHED", true);
+        assertThat(ids(assertPage(list(null)))).containsExactly(" A ", "A", "Z", "a", "한글");
+    }
+
+    @Test
+    void aFullLastPageHasNoSpuriousContinuation() {
+        jdbc.execute("TRUNCATE TABLE auction.rounds");
+        for (int i = 0; i < 40; i++) insert("full-page-%03d".formatted(i), "PUBLISHED", true);
+        JsonNode first = assertPage(list(null));
+        JsonNode last = assertPage(list(first.get("nextCursor").asString()));
+        assertThat(last.get("items").size()).isEqualTo(first.get("items").size());
+        assertThat(last.get("nextCursor").isNull()).isTrue();
+        List<String> all = ids(first);
+        all.addAll(ids(last));
+        assertThat(all).hasSize(40).doesNotHaveDuplicates();
+    }
+
+    @Test
+    void malformedAndForeignCursorsReturnOnlyTheFixedValidationProblem() {
+        for (String cursor : List.of("", " ", "cursor_demo_3_8_1_1_1", "public-rounds-v2.abc",
+                "public-rounds-v1.!", "public-rounds-v1._w", encodedCursor("not-a-date\nprivate-looking-id"),
+                encodedCursor("2099-10-16T01:00:00Z\n "), encodedCursor("2099-10-16T01:00:00Z\nid\0"),
+                encodedCursor("2099-10-16T01:00:00.1234567Z\nid"), encodedCursor("2099-10-16T10:00:00+09:00\nid"),
+                encodedCursor("2099-10-16T01:00:00Z\nid") + "=", "' OR 1=1 --")) {
+            ResponseEntity<String> response = list(cursor);
+            assertProblem(response, 400, "VALIDATION_FAILED");
+            assertThat(json.readTree(response.getBody()).get("fieldErrors").get(0).get("field").asString())
+                    .isEqualTo("cursor");
+            assertThat(response.getBody()).doesNotContain("private-looking-id", "SELECT", "SQLException");
+        }
+    }
+
+    @Test
+    void boundCursorIdentifierCannotInjectSql() {
+        String cursor = encodedCursor("2099-10-16T01:00:00Z\n' OR 1=1 --");
+        JsonNode page = assertPage(list(cursor));
+        assertThat(ids(page)).containsExactly("demo-round");
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM auction.rounds", Integer.class)).isEqualTo(2);
+    }
+
+    @Test
+    void stoppedDatabaseReturnsUnavailableThenTheSameServerRecovers() {
+        assertPage(list(null));
+        POSTGRES.getDockerClient().stopContainerCmd(POSTGRES.getContainerId()).withTimeout(1).exec();
+        try {
+            ResponseEntity<String> response = list(null);
+            assertProblem(response, 503, "SERVICE_UNAVAILABLE");
+            assertThat(response.getBody()).doesNotContain("SELECT", "jdbc:", "auction.rounds", "SQLException");
+        } finally {
+            POSTGRES.getDockerClient().startContainerCmd(POSTGRES.getContainerId()).exec();
+            assertThat(POSTGRES.getDockerClient().inspectContainerCmd(POSTGRES.getContainerId()).exec()
+                    .getNetworkSettings().getPorts().getBindings().get(ExposedPort.tcp(5432))[0].getHostPortSpec())
+                    .isEqualTo(Integer.toString(DATABASE_PORT));
+            await().atMost(Duration.ofSeconds(30)).pollInterval(Duration.ofMillis(250)).untilAsserted(() -> {
+                assertThat(ids(assertPage(list(null)))).containsExactly("demo-round");
+            });
+        }
+    }
+
+    @Test
     void databaseFailureIsUnavailableWithoutSqlOrIdentifierDisclosure() {
         jdbc.execute("ALTER TABLE auction.rounds RENAME TO rounds_unavailable_test");
         try {
@@ -179,6 +326,61 @@ class PublicRoundPostgresIntegrationTest {
     private ResponseEntity<String> get(String id) {
         return http.getForEntity(URI.create(http.getRootUri() + "/api/v1/rounds/"
                 + UriUtils.encodePathSegment(id, StandardCharsets.UTF_8)), String.class);
+    }
+
+    private ResponseEntity<String> list(String cursor) {
+        return http.getForEntity(URI.create(http.getRootUri() + "/api/v1/rounds"
+                + (cursor == null ? "" : "?cursor=" + UriUtils.encodeQueryParam(cursor, StandardCharsets.UTF_8))), String.class);
+    }
+
+    private JsonNode assertPage(ResponseEntity<String> response) {
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getHeaders().getCacheControl()).isEqualTo("no-store");
+        assertThat(response.getHeaders().getFirst("X-Trace-Id")).isNotBlank();
+        JsonNode body = json.readTree(response.getBody());
+        assertThat(body.properties().stream().map(Map.Entry::getKey).collect(Collectors.toSet()))
+                .isEqualTo(Set.of("items", "nextCursor"));
+        assertThat(body.get("items").isArray()).isTrue();
+        for (JsonNode item : body.get("items")) {
+            assertThat(item.properties().stream().map(Map.Entry::getKey).collect(Collectors.toSet())).isEqualTo(Set.of(
+                    "roundId", "roundVersion", "status", "recruitmentOpensAt", "publicationAt", "scheduledStartsAt",
+                    "actualStartedAt", "completedAt", "cancelledAt", "laneCount", "durations", "durationsFrozen"));
+        }
+        return body;
+    }
+
+    private List<String> ids(JsonNode page) {
+        List<String> ids = new ArrayList<>();
+        for (JsonNode item : page.get("items")) ids.add(item.get("roundId").asString());
+        return ids;
+    }
+
+    private List<String> traverse() {
+        List<String> seen = new ArrayList<>();
+        String cursor = null;
+        int pages = 0;
+        do {
+            JsonNode page = assertPage(list(cursor));
+            seen.addAll(ids(page));
+            assertThat(seen).doesNotHaveDuplicates();
+            cursor = page.get("nextCursor").isNull() ? null : page.get("nextCursor").asString();
+            assertThat(++pages).isLessThan(20);
+        } while (cursor != null);
+        assertThat(pages).isGreaterThan(1);
+        return seen;
+    }
+
+    private static String encodedCursor(String payload) {
+        return "public-rounds-v1." + Base64.getUrlEncoder().withoutPadding()
+                .encodeToString(payload.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static int unusedLocalPort() {
+        try (ServerSocket socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
+        } catch (IOException unavailable) {
+            throw new ExceptionInInitializerError(unavailable);
+        }
     }
 
     private void assertProblem(ResponseEntity<String> response, int status, String code) {

@@ -1,5 +1,7 @@
 # 현재 상태와 다음 마일스톤
 
+> 2026-10-16 M-01 실행 착수: fetch한 `origin/dev=fa4dac5c106cb114c1919aec2bdc6021f79f1958`, clean 및 worktree/환경/strict-evidence PASS 확인 후 T-001 BE A(`/root/be`)·T-002 FE B(`/root/fe`)를 별도 worktree에 배정했다. 구현 활성 2/2. QA C(`/root/qa`)는 선행 통합 전 읽기 전용 기대값 검토만 수행한다. 아래 계획 세션의 조사·승인 이력은 당시 기록이며 최신 실행 상태는 이 문단과 작업 표를 따른다.
+
 - 관리 책임: Engineering Lead. 구현자는 결과를 제출하고 리드만 상태를 갱신한다.
 - 확인일: 2026-10-16. 이 문서는 실행 현황과 작업 승인 상태를 관리한다. 제품·설계·계약의 원본을 대체하지 않는다.
 - 최초 조사 기준: `e5ebde892395c02bae9f4e604b610a4bf7088ee0` (`dev = origin/dev`, fetch 확인, clean). `main = origin/main = 003a28fb9f2836f80ce21ed4e64f855977632eb8`.
@@ -28,14 +30,14 @@
 
 **비회원이 첫 화면에서 공개 회차 목록을 탐색하고 선택한 회차의 공개 상세를 확인한다.**
 
-상태: **범위 승인 완료 / 실행 준비 대기**. 작업 카드는 DRAFT, 구현 에이전트 활성 수 **0/2**다. 인계 작성 중 검토자는 읽기 전용 조사·문서 검토만 수행했다. 아래 담당은 역할 배정안이며 실제 구현자 실행·브랜치/worktree 생성 보고가 아니다.
+상태: **M-01 IN_PROGRESS**. T-001/T-002를 READY 확인 뒤 배정했으며 구현 에이전트 활성 수 **2/2**다. 인계 작성 중 검토자는 읽기 전용 조사·문서 검토만 수행했다. 아래 담당은 역할 배정안이며 실제 구현자 실행·브랜치/worktree 생성 보고가 아니다.
 
 범위·의존성·충돌·인수 기준은 [M-01 작업 운영안](tasks/README.md)에 있다. 기존 [IMPLEMENTATION-PLAN](implementation/IMPLEMENTATION-PLAN.md)의 BE-50/FE-20/QA-10/INT-10 중 공개 회차 탐색 부분을 작은 작업으로 구체화한다. 기존 광범위 카드 전체를 완료 처리하지 않는다.
 
 | 작업 | 책임 역할 | 상태 | 실제 시작 커밋 | 검증 커밋 / 통합 커밋 |
 | --- | --- | --- | --- | --- |
-| [T-001](tasks/T-001.md) 공개 회차 목록 API | BE 구현자 A | DRAFT | 미배정, 시작 전 | 없음 / 없음 |
-| [T-002](tasks/T-002.md) 목록 탐색·상세 이동 화면 | FE 구현자 B | DRAFT | 미배정, 시작 전 | 없음 / 없음 |
+| [T-001](tasks/T-001.md) 공개 회차 목록 API | BE A `/root/be` | IN_PROGRESS | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | 실행 중 / 없음 |
+| [T-002](tasks/T-002.md) 목록 탐색·상세 이동 화면 | FE B `/root/fe` | IN_PROGRESS (계약 mock) | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | 실제 연동 대기 / 없음 |
 | [T-003](tasks/T-003.md) 실제 탐색 흐름의 독립 통합 검증 | QA/통합 구현자 C | DRAFT | 선행 병합 후 배정 | 없음 / 없음 |
 | [T-004](tasks/T-004.md) 마일스톤 검토·인수·상태 마감 | Engineering Lead | DRAFT | 선행 병합 후 배정 | 없음 / 없음 |
 

@@ -17,6 +17,12 @@ class ApiExceptionHandler {
     private final ProblemResponses problems;
     ApiExceptionHandler(ProblemResponses problems) { this.problems = problems; }
 
+    @ExceptionHandler(PublicRoundQuery.InvalidCursor.class)
+    ResponseEntity<ProblemResponses.Problem> invalidCursor(HttpServletRequest request) {
+        return ResponseEntity.badRequest().body(problems.create(request, "VALIDATION_FAILED", "Invalid list cursor.",
+                List.of(new ProblemResponses.FieldViolation("cursor", "A valid public round list cursor is required."))));
+    }
+
     @ExceptionHandler(PublicRoundQuery.InvalidId.class)
     ResponseEntity<ProblemResponses.Problem> invalid(HttpServletRequest request) {
         return ResponseEntity.badRequest().body(problems.create(request, "VALIDATION_FAILED", "Invalid round identifier.",
