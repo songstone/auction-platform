@@ -1,0 +1,82 @@
+# 프런트엔드 실행 골격
+
+승인 계약 **0.1.0 / D-095**를 소비하는 React/TypeScript 개발 셸이다. 실제 로그인·출품·입찰·HTTP 조회·SSE·재접속·서버 ACK는 아직 구현하지 않았다. 기본 화면은 이 상태를 표시한다. 남은 OPEN과 미검증 위험을 유지하며 제품 정책·입력 제한·세션 수명·지원 브라우저를 추가로 결정하지 않는다.
+
+## 실행
+
+이 작업에서 확인한 도구는 Node **24.19.0**, npm **11.17.0**이다. `.node-version`과 `packageManager`로 재현 기준을 표시하고 `engine-strict`로 해당 Node/npm 계열을 확인한다. Node 실행 파일이 PATH에 있어야 한다. 저장소 루트에서 다음을 실행한다.
+
+```powershell
+cd frontend
+npm ci
+npm run check:generated
+npm run dev
+```
+
+기본 화면: <http://127.0.0.1:5173/>. 개발용 예제: <http://127.0.0.1:5173/?preview=contract>. 개발 서버는 loopback에 바인딩하고 5173이 사용 중이면 다른 포트로 자동 이동하지 않는다. 프로세스는 `Ctrl+C`로 종료한다. 개발 미리보기는 백엔드 없이 실행하며 네트워크 요청을 만들지 않는다.
+
+`vite.config.ts`는 향후 `/api` 요청을 `http://127.0.0.1:8080`으로 전달하도록 준비했다. 실제 API 기준 경로는 `/api/v1`이다. 프록시 설정은 API 구현 완료나 인증·CSRF 집행을 뜻하지 않는다. 배포 시 동일 출처 라우팅은 별도 구성한다.
+
+```powershell
+npm run typecheck
+npm test
+npm run build
+npm run preview
+```
+
+`preview`는 빌드 결과를 4173에서 확인하는 로컬 서버다. 개발 예제 진입 기능은 배포 번들에서 제거한다. `build`의 후속 검사는 배포 JavaScript에 개발 마커·선택한 합성 ID가 포함되지 않는지 확인한다. 이 문자열 검사는 전체 보안 검증을 대신하지 않는다.
+
+## 계약 생성과 원본
+
+- HTTP·이벤트 JSON 필드의 단일 원본: [contracts/openapi.yaml](../contracts/openapi.yaml).
+- 이벤트 순서·cursor·재동기화 의미: [auction-events.md](../contracts/auction-events.md).
+- 승인된 파일 식별: [approved-baseline-0.1.0.json](../contracts/approved-baseline-0.1.0.json).
+- 변경 권한과 절차: [ADR-005](../docs/decisions/adr/ADR-005-CONTRACT-BASELINE.md).
+
+```powershell
+npm run generate:contract
+npm run check:generated
+```
+
+`scripts/generate-contract.mjs`는 승인 manifest의 상태·버전·OpenAPI SHA-256 일치를 확인한 뒤 `openapi-typescript` 공식 Node API로 `src/generated/api.d.ts`를 생성한다. 같은 OpenAPI의 `components/examples`에서 11개 예제를 추출해 `src/generated/contract-examples.ts`를 만든다. 각 예제는 원본의 `x-schema-ref`를 따라 생성 타입에 `satisfies`로 연결한다. 파일에 원본 hash를 기록하고 freshness 검사는 두 생성물의 정확한 일치를 확인한다. 생성물은 독립 계약 원본이 아니며 직접 편집하지 않는다.
+
+추출 대상은 `SnapshotFourLanes`, `RoundChanged`, `LaneChanged`, `Heartbeat`, `ResyncRequired`, `NoSaleLaneChanged`, `RegisteredIntent`, `PendingBid`, `ApprovedBid`, `RejectedBid`, `AcknowledgedBid`다. 미리보기는 이 원문을 수정하지 않는다. 생성 타입은 정규식·JSON Schema 조건식·권한·런타임 응답을 전부 검증하지 않는다. 실제 네트워크 경계에는 후속 런타임 검증과 HTTP/SSE 통합 검증이 필요하다. 승인 계약은 프런트엔드 구현자가 변경하지 않는다.
+
+실제 생성에서 `openapi-typescript 7.13.0`은 mapping 없는 discriminator의 literal을 분기 schema 이름으로 추론했다. 예를 들어 `round.state.changed` 대신 `RoundStateEvent`, `NO_SALE` 대신 `NoSaleResult`를 생성해 예제 타입 검사가 실패했다. `scripts/generator-input.mjs`는 **메모리상의 도구 입력 복제본**에 각 분기의 기존 필수 `properties.const`에서만 explicit mapping을 도출한다. 원본 OAS·const·예제·검증 제약은 수정하지 않으며 새 wire 값을 만들지 않는다. 필수 const 부재·중복·상충하는 기존 mapping은 추측하지 않고 실패한다. 이 어댑터와 원문 hash를 버전 관리하고 공식 도구 교체/업데이트 때 재검토한다. 관련 도구 동작은 [공식 discriminator 생성 코드](https://github.com/openapi-ts/openapi-typescript/blob/openapi-typescript%407.13.0/packages/openapi-typescript/src/lib/utils.ts)를 참고한다.
+
+## 개발 예제의 범위
+
+`?preview=contract`는 `import.meta.env.DEV`에서만 열리는 고정 예제 미리보기다. 모의 표시를 항상 보여 주며 기본 셸에는 예제를 자동 표시하지 않는다.
+
+- 4레인 snapshot 원문과 회차/레인 버전을 표시한다. 예제 timestamp를 현재 서버 시각·현재 마감·남은 시간으로 계산하지 않는다. 금액은 문자열로 출력하며 버전은 `BigInt`로 비교한다.
+- 4종 이벤트 payload를 버튼으로 전달한다. 초기 snapshot에 이미 포함된 회차/레인 변경 예제는 중복으로 처리한다. 별도 `NoSaleLaneChanged`는 레인 1의 다음 버전을 적용하고 유찰 종료 상태에 공개 최고가를 남기지 않는다.
+- 같은 scope·버전의 다른 내용, 버전 공백, 세대/회차 차이, heartbeat 버전 불일치는 모의 재동기화 필요 상태를 만든다. 이 상태에서 추가 payload를 적용하지 않는다. 초기화는 같은 고정 snapshot을 다시 읽으며 서버 복구 성공을 뜻하지 않는다.
+- 공유 의도 등록·내구 접수·원승인·별도 원요청의 거절·원판정 ACK 응답을 독립 열람한다. 버튼은 실제 입찰 상태 전이가 아니다. 원승인을 현재 최고자/낙찰과 동일시하거나 공개 SSE로 개인 ACK를 대신하지 않는다.
+
+실제 EventSource·SSE framing·runtime schema validation·cursor 전진/저장·영속 replay·snapshot/live 인계·old callback 폐기·retry·자동 ACK·인증 정보 저장은 구현하지 않았다. 초기 snapshot의 cursor는 원문 식별만 표시한다. 미리보기 reducer를 완성된 실시간 클라이언트로 사용하지 않는다.
+
+## 기술 선택과 호환성
+
+2026-10-16 npm 공식 registry의 안정 `latest`와 명시 버전 메타데이터를 확인했다. 직접 의존성은 정확 버전이고 전이 의존성은 `package-lock.json`으로 고정했다.
+
+| 선택 | 해결하는 문제와 이유 |
+| --- | --- |
+| React/ReactDOM **19.3.1**, 각 타입 **19.3.0** | 승인된 React/TS 방향에서 실행 가능한 단일 화면을 구성한다. ReactDOM의 React peer `^19.3.1`과 맞춘다. 지금 필요한 셸에 별도 라우터·상태 라이브러리를 추가하지 않았다. [React의 독립 앱 안내](https://react.dev/learn/build-a-react-app-from-scratch) |
+| Vite **8.3.4**, React 플러그인 **6.1.2** | 로컬 개발 서버·React 갱신·정적 번들을 제공한다. 플러그인 peer `vite ^8.0.0`, Vite Node `^20.19.0 \|\| >=22.12.0`에 실제 도구가 들어간다. 도구의 기본 브라우저 변환 대상이 제품 지원 브라우저 승인값은 아니다. [Vite 실행 요구](https://vite.dev/guide/), [공식 플러그인](https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react) |
+| TypeScript **5.9.3**, openapi-typescript **7.13.0** | 계약 DTO의 수작업 복제를 줄이고 필드/분기 타입을 재현한다. 생성기의 peer `typescript ^5.x`를 지키기 위해 최신 TS 7 대신 안정 5.9.3을 고정했다. [공식 Node API](https://openapi-ts.dev/node), [TS 5.9](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-9.html) |
+| yaml **2.9.1**, Node 타입 **24.19.2** | OAS 예제를 같은 생성 단계에서 추출하고 도구 설정 타입을 확인한다. Node 내장 test runner로 예제 적용의 핵심 반례를 검사해 테스트 프레임워크를 추가하지 않았다. [yaml 공식 저장소](https://github.com/eemeli/yaml), [Node TypeScript 실행](https://nodejs.org/api/typescript.html) |
+
+공식 registry 메타데이터 재확인 명령 예: `npm view vite@8.3.4 engines --json`, `npm view @vitejs/plugin-react@6.1.2 peerDependencies --json`, `npm view openapi-typescript@7.13.0 peerDependencies --json`. 전역 `npx ...@latest`로 생성하지 않고 lockfile의 로컬 도구를 사용한다.
+
+## 검증 기록
+
+이번 골격의 최신 실행 결과·증거·미실행 범위의 원본은 [FOUNDATION-VERIFICATION](../docs/implementation/FOUNDATION-VERIFICATION.md)이다. 아래는 프런트엔드 담당자가 2026-10-16에 이 디렉터리에서 실행한 **당시 결과 이력**이며 최신 통합 검증표의 복제본이 아니다. 계약 정적 검사의 기존 PASS는 실제 제품 HTTP/SSE·DB·동시성·권한·장애·브라우저·운영 성공으로 확대하지 않는다.
+
+| 검사 | 결과 |
+| --- | --- |
+| `npm ci` | PASS — 고정 lockfile로 57개 패키지 설치. 당시 npm audit 보고 0건 |
+| `npm run check:generated` | PASS — 승인 OAS SHA-256 `4cad0ae25cb48ef7891176594093374ae5007587d28ac5563fc644e21aaa527d`와 생성물 일치 |
+| `npm run typecheck` | PASS — 생성 freshness 검사와 TypeScript `--noEmit` |
+| `npm test` | PASS — 12/12. 생성 어댑터·예제 적용·중복·공백·세대·heartbeat·유찰·원판정 식별의 로컬 반례 |
+| `npm run build` | PASS — Vite 번들 생성 및 개발 예제 제외 마커 검사 |
+| 브라우저 직접 렌더·실제 HTTP/SSE·인증·DB·부하·장애·배포 | NOT_RUN |
