@@ -4,10 +4,10 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.6 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.7 |
 | 성격 | 구현 작업 분할·의존성·완료 조건. 새 제품 정책이나 계약의 원본이 아님 |
 | 입력 기준선 | SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, DECISION-LOG 1.8, 공통 계약 0.1.0, D-095 |
-| 현재 실행 범위 | M-01 공개 회차 목록·다음 페이지·상세·복귀의 PostgreSQL → API → React 연결, Flyway·공통 오류/추적·별도 DB/브라우저 통합 검사. 출품·입찰·SSE·실제 인증은 후속 카드 |
+| 현재 실행 범위 | M-01 공개 목록·페이지·상세·복귀/동일 화면 복구와 최종 문서 dev 통합 완료. 다음 M-02는 계정 정책·계약 구체화부터 준비하며 기능 구현 READY 아님 |
 | 후속 기능 범위 | 아래 기능 카드는 계획이다. 이번 골격 생성만으로 구현·연동·제품 인수 완료 처리하지 않음 |
 | 통합 기준 | 최신 `dev`에서 작업 브랜치 생성 → 검증/CI → `dev` 병합·푸시 → 완료 작업 브랜치 로컬·원격 삭제. `main` 병합은 사용자 주도로 별도 수행 |
 | 현재 새 검증 | 공개 회차 조회의 실제 실행·관측·미실행은 [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md) 참조. [Boot 전환](BOOT4-MIGRATION-VERIFICATION.md) 및 기존 정적 PASS·SPIKE 관측·후속 제품 인수와 구별 |
@@ -15,7 +15,7 @@
 
 승인된 설계의 정의된 부분에서 작업을 시작한다. 전체 기능·추가 SPIKE·성능 실험 통과를 골격 작성의 선행조건으로 두지 않는다. 영향 경로에 남은 정책은 그 경로의 구현/인수 전에 결정하고, 기술 위험은 실제 구현과 함께 검증한다. 골격이나 fixture가 그 보장을 제공한다고 보고하지 않는다.
 
-현재 작업 상태는 [STATE](../STATE.md), M-01 실행 기록은 [M-01 작업 운영안](../tasks/README.md)을 따른다. 전체 MVP의 순서·마일스톤·시작 조건은 승인된 [ROADMAP](../ROADMAP.md), Epic/Feature와 요구사항 전수 추적은 [BACKLOG](../BACKLOG.md)에 있다. 별도 실행 세션은 [M-01 리드 컨텍스트](../handoffs/M-01-LEAD-CONTEXT.md)를 따른다. 로드맵과 첫 M-01 범위는 승인됐고 실제 READY 확인·구현·독립 검증·CI 후 기능을 dev에 통합했다. 제품/계약 기준선과 기존 실행 증거는 그대로이며 초기 구현 활성 최대 2명과 실제 착수 SHA·계약·worktree·선행 통합 증거를 고정한다. 장기 기능 카드 전체 완료나 후속 기능의 일괄 구현 착수로 확대하지 않는다.
+현재 작업 상태는 [STATE](../STATE.md), M-01 실행 기록은 [M-01 작업 운영안](../tasks/README.md)을 따른다. 전체 MVP의 순서·마일스톤·시작 조건은 승인된 [ROADMAP](../ROADMAP.md), Epic/Feature와 요구사항 전수 추적은 [BACKLOG](../BACKLOG.md)에 있다. 다음 별도 세션은 [M-02 리드 컨텍스트](../handoffs/M-02-LEAD-CONTEXT.md)를 따른다. M-01 T-001~004는 MERGED이며 당시 [M-01 인계](../handoffs/M-01-LEAD-CONTEXT.md)는 이력으로 보존한다. M-02의 미승인 CR-10/SEC 결정을 정리하고 ADR-005의 관련 계약 변경 승인·봉인 뒤 필요한 실행 카드를 구체화한다. 초기 구현 활성 최대 2명과 실제 착수 SHA·계약·worktree·선행 통합 증거를 고정한다. 장기 기능 카드 전체 완료나 후속 기능의 일괄 구현 착수로 확대하지 않는다.
 
 ## 2. 공식 원본과 작업의 공통 입력
 
@@ -36,7 +36,7 @@
 | Spring Boot 4 전환 이력 | [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md). 당시 전환 실행 결과 원본 |
 | 현재 공개 회차 목록·상세 탐색의 실행 결과 | [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md). DB·HTTP·브라우저와 미실행 범위 |
 
-담당자는 같은 승인 manifest와 계약 버전을 입력으로 사용한다. 생성 타입·mock·화면 모델은 파생물이며 별도 계약 원본으로 취급하지 않는다. 현재 작업에서 `docs/product/**`, `docs/architecture/**`, `docs/decisions/**`, `contracts/**`를 수정하지 않는다. 기존 검사 재실행 시 봉인된 결과 파일을 덮어쓰지 않고 구현 증거 위치로 출력한다.
+담당자는 같은 승인 manifest와 계약 버전을 입력으로 사용한다. 생성 타입·mock·화면 모델은 파생물이며 별도 계약 원본으로 취급하지 않는다. 일반 구현 담당은 `docs/product/**`, `docs/architecture/**`, `docs/decisions/**`, `contracts/**`를 임의 수정하지 않는다. M-02 준비 중 필요한 변경은 Contract Owner가 ADR-005의 구체 승인·봉인 절차를 거쳐 반영하며 이번 인계 문서 작업은 이 원본을 변경하지 않았다. 기존 검사 재실행 시 봉인된 결과 파일을 덮어쓰지 않고 구현 증거 위치로 출력한다.
 
 ## 3. 병렬 작업 DAG
 
@@ -202,8 +202,8 @@ QA-10의 전체 TS 참조는 이번에 83개를 자동화한다는 범위 선언
 
 ## 10. 이번 실행 결과와 인계
 
-현재 공개 회차 목록·상세 탐색의 실행 상태·정확 명령·환경·관측·미실행은 [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md)이 원본이다. 초기 Maven·Gradle·Boot 전환 기록은 각 과거 검증 보고서에 보존한다. 작업별 현재 상태는 [STATE](../STATE.md)에서 리드가 관리한다. [M-01 작업 기록](../tasks/README.md)은 실제 착수·검증·통합을 기록한다. T-004 문서 자체의 최종 통합은 최종 인계 artifact와 응답으로 확정한다. 기존 후속 기능 묶음의 PLANNED / NOT_RUN은 개별 카드의 승인·실행·검증 상태를 대신하지 않는다.
+현재 공개 회차 목록·상세 탐색의 실행 상태·정확 명령·환경·관측·미실행은 [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md)이 원본이다. 초기 Maven·Gradle·Boot 전환 기록은 각 과거 검증 보고서에 보존한다. 작업별 현재 상태는 [STATE](../STATE.md)에서 리드가 관리한다. [M-01 작업 기록](../tasks/README.md)은 실제 착수·검증·통합을 기록한다. T-004 문서의 최종 dev 통합과 해당 CI는 현재 STATE에 확인 근거를 반영했다. 기존 후속 기능 묶음의 PLANNED / NOT_RUN은 개별 카드의 승인·실행·검증 상태를 대신하지 않는다.
 
 결과 원본에서는 실행한 대상만 갱신한다. `scripts/check-approved-baseline.py`의 해시 확인, `scripts/verify-contracts.py`의 임시 복사 검사, `scripts/verify.ps1`의 빌드 확인과 실제 앱/브라우저 관측은 각각 판정한다. 로컬 인프라·JDBC 연결·health·개발 미리보기의 관측을 제품 인증 세션·입찰·경합·재접속·장애·성능 인수 통과로 확대하지 않는다. 승인 원본의 과거 NOT_RUN/PASS 기록도 소급 수정하지 않는다.
 
-공개 상세만 수행한 이전 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)에 그대로 보존한다. 이번 0.6은 M-01 실행 안내 반영이며 제품/설계/계약 기준선·후속 QA 승인 범위를 변경하지 않는다.
+공개 상세만 수행한 이전 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)에 그대로 보존한다. 0.6은 M-01 실행 안내를 반영했고 이번 0.7은 M-02 인계와 M-01 최종 완료 안내를 반영했다. 제품/설계/계약 기준선·후속 QA 승인 범위는 변경하지 않았다.

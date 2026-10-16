@@ -10,8 +10,9 @@
 | [현재 상태](docs/STATE.md) | 구현·검증 근거와 리드가 관리하는 작업 상태 |
 | [전체 MVP 로드맵](docs/ROADMAP.md) | 승인 완료: 7개 마일스톤·사용자 흐름·완료 조건·의존성·위험·시작 조건 |
 | [Epic·Feature 백로그](docs/BACKLOG.md) | 승인 완료: 전체 요구사항·제외 범위·통합 시나리오 추적 |
-| [M-01 실행 리드 컨텍스트](docs/handoffs/M-01-LEAD-CONTEXT.md) | 별도 실행 세션의 진입점: 승인 범위·착수 확인·기존 카드·배정/통합·인수 조건 |
-| [승인·인계 문서 검토](docs/implementation/M-01-HANDOFF-REVIEW-2026-10-16.md) | 승인 반영과 인계 문서의 검사·미실행 범위 |
+| [M-02 리드 컨텍스트](docs/handoffs/M-02-LEAD-CONTEXT.md) | 다음 세션 진입점: M-01 완료 근거·남은 계정 정책·계약·착수/통합·인수 조건 |
+| [M-02 인계 문서 검토](docs/implementation/M-02-HANDOFF-REVIEW-2026-10-16.md) | 현재 문서 검사와 M-02 미실행 범위 |
+| [M-01 리드 인계 이력](docs/handoffs/M-01-LEAD-CONTEXT.md) | 당시 승인 범위·착수 확인·배정/통합 조건과 [문서 검토](docs/implementation/M-01-HANDOFF-REVIEW-2026-10-16.md) |
 | [전체 로드맵 검토 기록](docs/implementation/ROADMAP-REVIEW-2026-10-16.md) | 문서 범위의 검사·독립 검토·미실행 경계 |
 | [M-01 작업 기록](docs/tasks/README.md) | 실제 착수·소유권·검증·dev 통합 기록 |
 | [M-01 작업 분해 검토 이력](docs/implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md) | 기존 최소 흐름 계획의 정적 검사·독립 리뷰·미실행 경계 |

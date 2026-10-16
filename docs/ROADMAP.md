@@ -5,9 +5,11 @@
 - 대상: 승인된 G-01, R-01~R-52, EX-01~EX-10 및 AC 136개 전체. Feature 목록·추적 책임은 [BACKLOG](BACKLOG.md).
 - 조사 기준: fetch로 확인한 `origin/dev = a8d4df69c891f0f55fd017f20a2f427f27367de6`, 최초 작업 트리 clean. 실제 구현 착수 SHA가 아니다.
 - 이번 산출물은 승인된 개발 순서·의존성·완료 관문이다. 제품 정책·계약 변경, 실제 구현 시작, 기술 위험 해소, 릴리스 완료를 뜻하지 않는다. 미정 CR/SEC·deferred 표면은 별도 결정 대상이다.
-- 별도 실행 세션의 진입점은 **[M-01 실행 리드 컨텍스트](handoffs/M-01-LEAD-CONTEXT.md)**다. 범위 재승인 없이 실제 READY 조건을 확인하며, 이 계획 세션에서는 구현을 시작하지 않았다.
+- 현재 별도 세션의 진입점은 **[M-02 리드 컨텍스트](handoffs/M-02-LEAD-CONTEXT.md)**다. M-01은 최종 문서까지 dev 통합 완료이며 [STATE](STATE.md)가 실제 증거를 관리한다. M-02는 미승인 계정 정책·계약 구체화부터 시작한다. [M-01 인계](handoffs/M-01-LEAD-CONTEXT.md)는 이력으로 보존하며 승인된 마일스톤 범위·순서·DoD는 바꾸지 않았다.
 
-## 1. 기준선과 현재 출발점
+## 1. 로드맵 승인 당시 기준선과 출발점
+
+아래는 최초 계획 조사 시점의 기록이다. 이후 M-01 목록·상세·동일 화면 복구와 최종 문서 통합은 완료됐다. 최신 구현/검증 상태는 [STATE](STATE.md), 다음 착수 조건은 [M-02 인계](handoffs/M-02-LEAD-CONTEXT.md)를 따른다.
 
 | 기준 | 현재 입력과 사용 원칙 |
 | --- | --- |
@@ -239,7 +241,7 @@ pwsh -NoProfile -File scripts/verify.ps1 -JavaHome $env:AUCTION_JAVA_HOME -Integ
 
 Docker 없는 DB 통합을 성공 skip으로 처리하지 않는다. disposable 시험 DB만 사용하고 기존 migration을 재작성하거나 migration에 계정/예제 데이터를 넣지 않는다. 검증·필수 CI 후 최신 dev에 FF/일반 merge하고 충돌 해결을 재검증한 뒤 dev를 push한다. fetch 후 로컬/원격 task tip이 origin/dev의 조상임을 확인한 다음 다른 worktree가 쓰지 않는 완료 branch만 삭제한다. main/dev는 보존하고 checkout은 dev에 둔다. 정확한 검증·통합 SHA·CI·artifact·FAIL/NOT_RUN을 새 보고서에 남긴다.
 
-**M-01을 READY로 바꾸려면:**
+**당시 M-01 시작 조건 (완료 이력):**
 
 1. 사용자 범위 승인 조건은 **2026-10-16 “승인”으로 충족**했다. 작업 카드 DRAFT는 실제 배정·환경·기준 SHA 확인 전 상태이며 승인 대기를 뜻하지 않는다.
 2. [실행 리드 컨텍스트](handoffs/M-01-LEAD-CONTEXT.md)를 받은 별도 세션에서 fetch한 최신 origin/dev의 40자리 SHA, 계약 버전과 strict-evidence PASS를 다시 고정한다. 조사 SHA를 실제 착수 SHA로 복사하지 않는다.
@@ -247,4 +249,4 @@ Docker 없는 DB 통합을 성공 skip으로 처리하지 않는다. disposable 
 4. 필요한 도구·Corretto 25·Docker·disposable DB/브라우저 검사 환경과 실제 선행 통합 SHA 포함 관계를 확인한다. 실제 존재하지 않는 worktree/의존 commit을 기입하지 않는다.
 5. M-01 개발 관측 환경을 명시하고 전체 R-47 인수와 구분한다. OPEN-06·성능·운영 정책 결정을 공개 탐색의 선행조건으로 확대하지 않는다.
 
-T-001~004는 승인만으로 READY/IN_PROGRESS가 되지 않는다. 실제 착수 조건을 확인한 실행 리드가 상태를 전환한다. 실행 컨텍스트는 승인 범위, 최신 확인 명령, 필수 원본, 기존 카드, 파일 소유권, 통합 순서, DoD·증거·중단 조건을 전달한다. 먼 마일스톤의 세부 Task·클래스·파일 구조는 아직 확정하지 않는다.
+위 조건에 따라 실행한 T-001~004는 현재 MERGED다. 다음 M-02는 §3의 시작 조건과 [M-02 리드 컨텍스트](handoffs/M-02-LEAD-CONTEXT.md)를 적용한다. 관련 미정 정책 결정·계약 승인/봉인, 실제 최신 dev SHA·담당/worktree·환경·선행 포함을 확인한 뒤 기능 READY로 전환한다. 인계 문서 작성이나 기존 CI 통과만으로 미승인 CR/SEC 값을 확정하지 않는다. 먼 마일스톤의 세부 Task·클래스·파일 구조는 여전히 확정하지 않는다.

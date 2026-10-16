@@ -4,7 +4,7 @@
 - 승인 근거: `49bec92cc33e8a61dc5fa5d3f6c7c84432f78d7d`의 제안에 대한 사용자 응답 **“승인”**. Feature 범위·우선순위·추적 관계는 유지하고 승인 상태/인계만 반영했다. 개별 Feature의 구현·검증 완료 승인이 아니다.
 - 순서·마일스톤 DoD·위험/정책 게이트는 [ROADMAP](ROADMAP.md), 실제 실행 상태는 [STATE](STATE.md)가 관리한다.
 - 승인 원본은 [MVP-PRD 1.6](product/MVP-PRD.md), [AUCTION-RULES](product/AUCTION-RULES.md), [DOMAIN-MODEL 1.2](architecture/DOMAIN-MODEL.md), [SYSTEM-DESIGN 1.0](architecture/SYSTEM-DESIGN.md), [DECISION-LOG](decisions/DECISION-LOG.md), [계약 0.1.0](../contracts/README.md)이다. 아래 요약이 원본 AC를 대체하지 않는다.
-- 모든 Feature는 **계획 / NOT_RUN**에서 시작한다. 예외는 F04의 기존 상세, F23/F26의 기반에 과거 검증이 있는 것뿐이다. 이것도 Feature 전체 완료가 아니다.
+- 최초 계획 시 모든 Feature는 **계획 / NOT_RUN**에서 시작했으며 F04 기존 상세와 F23/F26 기반 증거만 있었다. 이후 M-01의 F04 공개 목록/상세 탐색은 검증·dev 통합 완료했다. 현재 증거는 [STATE](STATE.md)를 따르며 후속 상품·실시간 조회 등 Feature 전체 완료로 확대하지 않는다.
 - 이번에는 Epic/Feature와 인수 책임만 분류한다. 기존 M-01 T-001~004를 보존하고 미래 마일스톤의 세부 Task·클래스·파일 구조는 만들지 않는다.
 
 ## 1. 우선순위와 위험 판정
@@ -206,6 +206,6 @@ F07↔F09/10, F08↔F13, F14~16은 같은 마일스톤의 **통합 묶음**이�
 ## 6. 현재 준비할 것과 보류할 것
 
 - 승인 완료: [ROADMAP](ROADMAP.md)의 7개 마일스톤 순서·사용자 흐름·DoD, 조기 위험 검증 원칙, 기존 M-01을 첫 실행 범위로 삼는 안. 같은 범위의 승인을 다시 요청하지 않는다.
-- 실행 인계: [M-01 별도 실행 리드 컨텍스트](handoffs/M-01-LEAD-CONTEXT.md). 실행 세션에서 실제 최신 dev SHA·기존 T-001~004·소유권·2명 상한·통합/검증 환경을 확인한다. 현재 작업은 구현을 시작하지 않았다.
-- 다음 정책 논의: M-01 중 M-02의 OPEN-06/CR-10/SEC를 작은 묶음으로 검토한다. 승인된 공개 탐색을 이 결정 대기로 막지 않는다.
+- 실행 인계: M-01 T-001~004는 MERGED이며 다음 세션은 [M-02 리드 컨텍스트](handoffs/M-02-LEAD-CONTEXT.md)를 따른다. 실제 최신 dev SHA·소유권·2명 상한·통합/검증 환경을 확인한다. 이번 인계 작성 세션은 M-02를 구현하지 않았다.
+- 다음 정책 논의: M-02의 OPEN-06/CR-10/SEC를 작은 묶음으로 결정하고 ADR-005의 계약 승인·봉인 후 필요한 실행 카드만 준비한다. 현재 인계 요청은 후보 값의 승인이 아니다.
 - 나중에 구체화할 것: 다음 실행 마일스톤의 세부 Task와 검증 설계. 먼 단계의 클래스·DDL·파일·일정 확정, 미승인 CR/SEC 값, 운영 배포는 현재 산출물에 포함하지 않는다.

@@ -1,8 +1,8 @@
 # M-01 — 공개 회차 탐색 작업 운영안
 
-상태 **M-01 기능 검증·dev 통합 완료 / T-004 문서 마감**, 작성일 2026-10-16, 책임 Engineering Lead. 공식 작업 상태는 [STATE](../STATE.md)가 관리한다. 전체 로드맵과 첫 M-01 실행 범위에 사용자가 “승인”으로 답했으며 실제 착수 조건과 실행 결과는 각 카드 및 [새 검증 기록](../implementation/ROUND-DISCOVERY-VERIFICATION.md)에 남겼다.
+상태 **M-01 기능 검증·T-001~004 최종 dev 통합 완료**, 작성일 2026-10-16, 책임 Engineering Lead. 공식 작업 상태는 [STATE](../STATE.md)가 관리한다. 전체 로드맵과 첫 M-01 실행 범위에 사용자가 “승인”으로 답했으며 실제 착수 조건과 실행 결과는 각 카드 및 [새 검증 기록](../implementation/ROUND-DISCOVERY-VERIFICATION.md)에 남겼다.
 
-전체 MVP에서의 위치·선행/후속 마일스톤·위험 검증은 승인된 [ROADMAP](../ROADMAP.md), 기능 추적은 [BACKLOG](../BACKLOG.md)를 참조한다. 별도 세션은 [M-01 실행 리드 컨텍스트](../handoffs/M-01-LEAD-CONTEXT.md)에서 시작한다. T-001~003은 MERGED, 제품 구현 활성 0/2다. T-004의 작성 시점 상태와 최종 통합 기록은 해당 카드에서 구별한다.
+전체 MVP에서의 위치·선행/후속 마일스톤·위험 검증은 승인된 [ROADMAP](../ROADMAP.md), 기능 추적은 [BACKLOG](../BACKLOG.md)를 참조한다. 다음 별도 세션은 [M-02 리드 컨텍스트](../handoffs/M-02-LEAD-CONTEXT.md)에서 시작한다. [M-01 인계](../handoffs/M-01-LEAD-CONTEXT.md)는 당시 기록이다. T-001~004는 MERGED, 제품 구현 활성 0/2다. T-004의 작성 시점 상태는 보존하며 최종 통합 `5afa23dc1bd597bf437a960b9440dd6eb096602e`와 해당 CI는 현재 STATE에서 확인한다.
 
 ## 목표와 범위
 
@@ -22,7 +22,7 @@
 | 입력 | 버전·역할 |
 | --- | --- |
 | [AGENTS](../../AGENTS.md) | 조사 커밋의 작업/통합 규칙 |
-| [STATE](../STATE.md), [IMPLEMENTATION-PLAN](../implementation/IMPLEMENTATION-PLAN.md), [QA-PLAN](../implementation/QA-PLAN.md) | 리드의 상태, 입력 0.5 / 실행 반영 0.6 계획·증거 분류; 이 작업 세분화와 함께 읽음 |
+| [STATE](../STATE.md), [IMPLEMENTATION-PLAN](../implementation/IMPLEMENTATION-PLAN.md), [QA-PLAN](../implementation/QA-PLAN.md) | 리드의 상태, M-01 당시 입력 0.5 / 실행 반영 0.6 계획·증거 분류; 이 작업 세분화와 함께 읽음 |
 | [MVP-PRD](../product/MVP-PRD.md), [AUCTION-RULES](../product/AUCTION-RULES.md) | 1.6, R-37/AC-R37-01의 공개 접근 일부 및 R-47의 개발 화면 확인 |
 | [DOMAIN-MODEL](../architecture/DOMAIN-MODEL.md) | 1.2, INV-26의 공개 정보 보호 경계. 전체 상품/실시간 AC의 완료를 주장하지 않음 |
 | [SYSTEM-DESIGN](../architecture/SYSTEM-DESIGN.md), [MODULE-BOUNDARIES](../../backend/MODULE-BOUNDARIES.md) | 1.0 및 현재 코드 경계, auction 소유 records/query 읽기 SQL projection |
@@ -54,7 +54,7 @@ flowchart TD
 
 | 단계 | 슬롯 A | 슬롯 B | 실제 시작 조건 |
 | --- | --- | --- | --- |
-| 현재 | T-004 리드 문서 마감 | 제품 구현 0/2 | T-001~003 검증·CI·dev 포함 확인 완료 |
+| 현재 | T-001~004 MERGED / M-02 정책·계약 준비 인계 | 제품 구현 0/2 | 최종 T-004 검증·CI·dev 포함 확인 완료 |
 | 1 | T-001 / BE A | T-002 / FE B, 계약 mock 개발 | 승인 + 같은 실제 origin/dev SHA + 별도 worktree |
 | 2 | T-001 리뷰·검증/통합 | T-002 최신 dev 반영·실제 API 확인 | T-001 검증·통합 SHA 인계. FE mock 완료 보고로 서버 연동 완료 판단 금지 |
 | 3 | T-003 / QA·통합 C | 신규 구현 배정 없음 | T-001/T-002 tip이 origin/dev에 포함되고 통합 CI 성공 |
@@ -77,7 +77,7 @@ T-003의 독립 기대값 검토는 미리 읽기 전용으로 할 수 있으나
 
 ## 통합 순서와 마일스톤 인수
 
-완료된 통합 순서: **T-001 → T-002 → T-003**. T-004는 이 문서 후보의 리뷰·CI 후 마지막으로 통합한다. 각 코드 작업은 독립 리뷰, 해당 검증, 커밋별 CI를 통과한 뒤에만 dev로 보낸다. T-002를 최신 dev와 합친 후보에서도 검증하며 T-003을 미리 시작해 성공을 가정하지 않는다.
+완료된 통합 순서: **T-001 → T-002 → T-003 → T-004**. T-004는 최종 문서 후보의 리뷰·CI 후 dev에 통합했다. 당시 작업은 독립 리뷰, 해당 검증, 커밋별 CI를 확인하고 선행 통합을 포함한 후보를 검증했다. 아래 소유권·순서는 M-01 실행 기록이며 M-02 배정에는 새 실행 카드의 실제 담당/착수 조건을 사용한다.
 
 최종 인수에는 공개 목록 필터·정렬·다음 페이지·빈 결과·opaque ID/큰 counter/시각 보존, 선택→기존 상세→목록 복귀, DB 중단 시 503/화면 구분, **동일 오류 화면에서 사용자가 재시도해 복구**하는 실제 관측이 필요하다. 공개 전 데이터와 private 필드가 응답/화면에 없어야 한다. 자동 상태 전이·SSE·세션 복구 주장은 제외한다.
 
