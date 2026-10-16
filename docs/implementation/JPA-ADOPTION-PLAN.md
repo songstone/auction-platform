@@ -29,7 +29,7 @@ query/
   publicapi/                 승인 응답 DTO
 ```
 
-기본 CRUD를 감싸는 저장 포트·구현체·매퍼를 추가하지 않는다. 메일·파일·시계·명시 SQL 등 의미 있는 외부 협력은 필요에 맞게 유지한다. 동일 기능의 서비스만 해당 Repository를 사용하며 기능 간 조정은 기존 publicapi 방향을 따른다. domain의 Jakarta Persistence 매핑은 허용하되 Spring 서비스·Repository 호출·직접 I/O는 차단한다.
+기본 CRUD를 감싸는 저장 포트·구현체·매퍼를 추가하지 않는다. custom Repository fragment가 필요하면 인터페이스는 application의 Repository와 함께, 구현은 infrastructure에 둔다. 메일·파일·시계·명시 SQL 등 의미 있는 외부 협력은 필요에 맞게 유지한다. 동일 기능의 서비스만 해당 Repository를 사용하며 기능 간 조정은 기존 publicapi 방향을 따른다. domain의 Jakarta Persistence 매핑은 허용하되 Spring 서비스·Repository 호출·직접 I/O는 차단한다.
 
 엔티티의 업무 메서드가 상태 전이를 수행하고 서비스가 저장·트랜잭션을 조정한다. API에는 projection/직접 생성 DTO를 반환한다. 엔티티의 연관관계를 그대로 직렬화하지 않는다. 연관관계는 필요한 범위만 매핑하며 입찰 전체 이력을 읽거나 다른 기능의 엔티티를 연관관계로 연결하지 않는다.
 

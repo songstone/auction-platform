@@ -26,8 +26,10 @@
 | `python scripts/test-baseline-guard.py` | PASS — 7건 |
 | `.venv/Scripts/python.exe -X utf8 scripts/verify-contracts.py --output .artifacts/jpa-plan/contracts.json` | PASS — 41 paths·45 operations·91 schemas·24 positive/38 negative examples |
 | 변경 Markdown의 UTF-8·로컬 링크/앵커·표·후행 공백 / `git diff --check` | PASS — Markdown 17개·로컬 링크 254개·앵커 3개·표 116개 |
-| CI contracts/backend/frontend/integration | PENDING |
+| 최초 설계 후보 CI contracts/backend/frontend/integration | PASS — `6c657313fb48e26f5e41b058462fa9e1b188a703`, [run 38873007991](https://github.com/songstone/auction-platform/actions/runs/38873007991) 4개 job success |
 | 실제 JPA 저장·BIGINT 전환·JPA/JDBC transaction·검색 성능 | NOT_RUN — 후속 구현 범위 |
 | 새 계정·입찰·SSE·장애/시간/성능·운영 인수 | NOT_RUN — 이번 문서 변경으로 완료하지 않음 |
 
 Git 검증·통합 commit과 CI는 이력 보존을 위해 후속 완료 기록으로 추가한다. 보고서 자신의 최종 commit은 자체 문서에 선기록하지 않는다.
+
+최초 검증 뒤 custom Repository fragment의 인터페이스는 application, 구현은 infrastructure로 위치를 명확히 했다. 최종 보완본은 새 commit으로 baseline·mutation·계약·문서 검사를 다시 실행하고 해당 commit의 CI 통과 후 dev에 통합한다. 최종 검증·통합 SHA와 branch 정리는 작업 완료 응답에 기록한다. 이 문서는 최초 후보 CI와 문서 보완의 순서를 구분한다.

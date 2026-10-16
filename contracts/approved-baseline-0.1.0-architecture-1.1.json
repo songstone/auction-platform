@@ -7,7 +7,7 @@
   "contractVersion": "0.1.0",
   "systemDesignVersion": "1.1",
   "domainDocumentVersion": "1.3",
-  "createdAtUtc": "2026-10-16T08:19:58.891779+00:00",
+  "createdAtUtc": "2026-10-16T08:24:52.939549+00:00",
   "approvalRecordSource": "docs/decisions/DECISION-LOG.md",
   "approvedScope": {
     "description": "Current system architecture and defined HTTP/event contracts as implementation baseline; remaining OPEN and unverified risks retained. D-096 revises persistence architecture only; HTTP/event definitions remain unchanged.",
@@ -142,7 +142,7 @@
     },
     {
       "path": "docs/decisions/adr/ADR-006-JPA-DOMAIN-ENTITIES.md",
-      "sha256": "4b1446870ae22149f2e70034a094504d6e6c790fbad335ff5750117816ca638c"
+      "sha256": "35cf87f121ff55fe7a015648fd5c1afa4ca47f8f15368de9ec8784613fe65c55"
     }
   ],
   "sourceFiles": [
@@ -201,7 +201,7 @@
   "contractStaticVerification": "PASS",
   "independentDocumentReview": "NOT_RUN_FOR_ARCHITECTURE_REVISION",
   "runtimeVerification": "NOT_RUN",
-  "gitHead": "915f495d60e1238cfbe12c3ccfaf804bf3b65622",
+  "gitHead": "6c657313fb48e26f5e41b058462fa9e1b188a703",
   "workingTreeHasUncommittedChanges": true,
   "changeRule": "Do not overwrite a sealed approved baseline after semantic or scope changes. Follow ADR-005, assign a new baseline and preserve the predecessor.",
   "integrityRule": "approvedFiles hashes identify the exact approved document bytes. sourceFiles and staticEvidenceFiles hashes identify the approval-time snapshots; later evidence reruns do not by themselves change wire meaning. Any semantic/scope delta follows ADR-005 with a new matching baseline.",

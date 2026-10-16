@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 MANIFEST = "contracts/approved-baseline-0.1.0-architecture-1.1.json"
-PINNED_MANIFEST_SHA256 = "5bec532c04fad79927eadb5219d937685e544a3b78a52f298ee8d3b008573ac8"
+PINNED_MANIFEST_SHA256 = "165af2efe9d6b2561900e4554616264944293bd49f336593e815e256288fce37"
 PREDECESSOR_MANIFEST = "contracts/approved-baseline-0.1.0.json"
 PINNED_PREDECESSOR_SHA256 = "1f3f6d5be1896304b5d72ede521717d6ff6440f7b10a84ff338e3bd6d3b2d795"
 

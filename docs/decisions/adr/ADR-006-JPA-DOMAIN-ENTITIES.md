@@ -27,7 +27,7 @@ ADR-004의 JDBC 단독 기본 선택과 framework-free 도메인 설명은 이 A
 | `query.infrastructure` | query 소유 읽기 전용 SQL projection. 다른 기능의 엔티티·Repository를 import하지 않음 |
 | `bootstrap` | HTTP/보안·조립·설정. 업무 Repository를 직접 사용해 업무 상태를 변경하지 않음 |
 
-`RoundRepository extends JpaRepository<Round, Long>`처럼 서비스가 직접 주입받는다. 같은 메서드를 반복 선언하는 별도 저장 포트와 위임용 어댑터를 기본으로 만들지 않는다. 명시 SQL이 필요한 연산은 목적이 있는 fragment/기술 협력으로 구현한다. 연관관계는 필요한 범위만 매핑하고 다른 기능 엔티티로 객체 그래프를 확장하지 않는다. 기능 간 FK는 BIGINT 식별자로 표현하고 공개 포트를 통해 조정한다.
+`RoundRepository extends JpaRepository<Round, Long>`처럼 서비스가 직접 주입받는다. 같은 메서드를 반복 선언하는 별도 저장 포트와 위임용 어댑터를 기본으로 만들지 않는다. 명시 SQL이 필요한 연산은 목적이 있는 fragment/기술 협력으로 구현한다. custom fragment 인터페이스는 Repository와 같은 application에 두고 구현만 infrastructure에 두어 application이 adapter를 참조하지 않게 한다. 연관관계는 필요한 범위만 매핑하고 다른 기능 엔티티로 객체 그래프를 확장하지 않는다. 기능 간 FK는 BIGINT 식별자로 표현하고 공개 포트를 통해 조정한다.
 
 엔티티를 HTTP 응답으로 직렬화하지 않는다. 승인된 DTO는 projection 또는 직접 생성으로 반환하며 별도 매퍼 계층을 기본으로 두지 않는다. 엔티티에 public setter를 열어 최고가·단계·마감을 따로 갱신하지 않는다. 입찰 이력 전체를 Auction 컬렉션으로 로딩하거나 이력을 cascade delete하지 않는다.
 
