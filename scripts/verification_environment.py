@@ -4,7 +4,7 @@ OPTIONS = {"JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS", "JAVA_OPTS"
 
 
 def blocked(name: str) -> bool:
-    upper = name.upper()
+    upper = name.upper().replace(".", "_")
     return upper.startswith(PREFIXES) or upper in OPTIONS
 
 

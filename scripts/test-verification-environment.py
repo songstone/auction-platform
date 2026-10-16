@@ -14,7 +14,9 @@ SENTINELS = {"SPRING_PROFILES_ACTIVE": "local-infra", "DB_URL": "jdbc:postgresql
              "management_port": "1", "mail_host": "verification.invalid", "photo_root": "synthetic-probe",
              "JAVA_TOOL_OPTIONS": "-Dverification.sentinel=true", "JDK_JAVA_OPTIONS": "-Dverification.sentinel=true",
              "_JAVA_OPTIONS": "-Dverification.sentinel=true", "JAVA_OPTS": "-Dverification.sentinel=true",
-             "GRADLE_OPTS": "-Dverification.sentinel=true", "sPrInG_application_json": "{}"}
+             "GRADLE_OPTS": "-Dverification.sentinel=true", "sPrInG_application_json": "{}",
+             "spring.profiles.active": "local-infra", "spring.datasource.url": "jdbc:postgresql://verification.invalid:1/blocked",
+             "spring.config.import": "optional:file:/verification-nonexistent-probe.properties"}
 probe = "import os,json;print(json.dumps(dict(os.environ)))"
 source = os.environ.copy() | SENTINELS | {"QA_TOOL_SENTINEL": "preserved"}
 cleaned = isolated_environment(source)
