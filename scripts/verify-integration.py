@@ -219,7 +219,7 @@ def main() -> int:
         browser_cli = str(ROOT / "frontend/node_modules/playwright/cli.js")
         if args.install_browser:
             run([node, browser_cli, "install", "chromium"], log=artifacts / "browser-install.log")
-        postgres_image = yaml.safe_load((ROOT / "infra/compose.yaml").read_text(encoding="utf-8"))["services"]["postgres"]["image"]
+        postgres_image = yaml.safe_load((ROOT / "backend/compose.yaml").read_text(encoding="utf-8"))["services"]["postgres"]["image"]
         password = secrets.token_urlsafe(32)
         docker_env = environment | {"POSTGRES_PASSWORD": password}
         # Keep the chosen mapping stable across docker stop/start. Docker-assigned

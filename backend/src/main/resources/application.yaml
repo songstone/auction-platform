@@ -5,6 +5,9 @@ spring:
     banner-mode: "off"
   flyway:
     enabled: false
+  docker:
+    compose:
+      enabled: false
   web:
     error:
       include-message: never
@@ -13,7 +16,7 @@ spring:
       include-exception: false
   autoconfigure:
     # The default bootstrap is independent of DB/mail/photo infrastructure.
-    # local-infra explicitly overrides this exclusion and requires DB_PASSWORD.
+    # local-infra enables JDBC with Compose service connections or an external DB.
     exclude:
       - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
 

@@ -4,8 +4,14 @@ spring:
       on-profile: local-infra
   autoconfigure:
     exclude: []
+  docker:
+    compose:
+      enabled: true
+      file: compose.yaml
+      lifecycle-management: start-only
   flyway:
     enabled: true
+    default-schema: public
     locations: classpath:db/migration
     clean-disabled: true
   datasource:

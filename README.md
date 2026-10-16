@@ -21,6 +21,7 @@
 | [초기 골격 실행 이력](docs/implementation/FOUNDATION-VERIFICATION.md) | 최초 Maven 골격의 실행·미실행 범위 |
 | [Gradle 전환 실행 이력](docs/implementation/GRADLE-MIGRATION-VERIFICATION.md) | Spring Boot 3.5.16에서 수행한 빌드 도구 전환의 실행·미실행 범위 |
 | [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md) | 현재 백엔드 기준인 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1의 실행·미실행 범위 |
+| [로컬 Compose 실행 검증](docs/implementation/NATIVE-COMPOSE-VERIFICATION.md) | Spring Boot 기본 Docker Compose 연동의 실행·미실행 범위 |
 | [현재 M-01 탐색 검증](docs/implementation/ROUND-DISCOVERY-VERIFICATION.md) | 목록·상세·동일 화면 복구, 정확 SHA·CI·실패/정리·NOT_RUN |
 | [기존 공개 회차 상세 검증](docs/implementation/PUBLIC-ROUND-VERIFICATION.md) | 당시 상세 조회의 실행 이력 |
 | [공통 구현 지침](AGENTS.md) | 공유 파일 소유권·마이그레이션·계약·검증 규칙 |
@@ -42,38 +43,38 @@
 
 ## 로컬 실행
 
-Amazon Corretto 25, Node/npm([frontend/package.json](frontend/package.json)의 engines), Python 3.12 이상과 PowerShell 7을 사용한다. 백엔드는 Spring Boot 4.1.1이며 Gradle 9.8.1을 저장소 Wrapper로 고정한다. Docker는 로컬 DB·메일을 사용할 때 필요하다. 전역 `java`가 다른 버전이면 `AUCTION_JAVA_HOME` 또는 `-JavaHome`으로 Corretto 25 설치 위치를 지정한다. 현재 전환의 선택 이유·호환 범위·실행 결과는 [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)을 따른다.
+백엔드는 Amazon Corretto 25와 Docker Desktop을 사용한다. 최초 한 번 [backend/.env.example](backend/.env.example)을 `backend/.env`로 복사하고 `POSTGRES_PASSWORD`에 로컬 DB 비밀번호를 지정한다. 기존 `.env`가 있으면 그대로 사용한다.
 
 ```powershell
-# 계약·백엔드·프런트엔드 골격 검증
-pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25'
+# 저장소 루트에서 시작
+Set-Location backend
+$env:JAVA_HOME = 'C:\path\to\jdk-25'
+.\gradlew.bat bootRun --args='--spring.profiles.active=local-infra'
+```
 
-# Docker를 사용하는 실제 DB/HTTP/Chromium 통합 검증 (개발 DB와 분리)
-pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25' -Integration
+Spring Boot가 [backend/compose.yaml](backend/compose.yaml)의 PostgreSQL·Mailpit을 시작하고 DB 연결 정보를 자동으로 적용한다. 백엔드는 `http://localhost:8080`에서 실행된다. IntelliJ 실행 설정은 [백엔드 안내](backend/README.md)를 따른다.
 
-# 필요할 때 개발 DB·메일 준비/기동
-pwsh -NoProfile -File infra/up.ps1
-
-# 빌드한 백엔드 실행. DB 연결은 -WithInfrastructure를 지정할 때만 활성화
-pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25'
-pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25' -WithInfrastructure
-
-# 별도 터미널: 백엔드 기동/마이그레이션 완료 후 개발용 예제 회차 추가
+```powershell
+# 별도 터미널, 저장소 루트에서: 백엔드 기동 후 개발용 예제 회차 추가
 pwsh -NoProfile -File infra/seed-demo.ps1
 
-# 별도 터미널: http://localhost:5173/ (목록); /?roundId=demo-round (직접 상세)
+# 프런트엔드: http://localhost:5173/
 Set-Location frontend
 npm ci
 npm run dev
-
-# 개발 DB·메일 중지, 데이터 보존
-Set-Location ..
-pwsh -NoProfile -File infra/stop.ps1
 ```
 
-위 명령은 저장소 루트에서 시작하며 서비스는 별도 터미널로 실행한다. `infra/stop.ps1`도 루트에서 실행한다. 예제 회차는 2099년 일정의 합성 데이터다. 시각으로 공개 여부를 추정하지 않고 DB에 기록된 실제 공개 여부를 사용한다. 기본 프로필은 health만 기동 가능하며 회차 조회에는 503을 반환한다. DB 조회에는 `-WithInfrastructure`가 필요하다.
+백엔드를 종료해도 개발 서비스는 유지된다. 모두 중지하려면 `backend`에서 `docker compose stop`을 실행한다. DB 데이터는 보존된다. 예제 회차는 [infra/fixtures](infra/README.md)의 합성 데이터이며 자동으로 생성되지 않는다.
 
-백엔드 실행은 [backend/README](backend/README.md), 프런트엔드 화면은 [frontend/README](frontend/README.md), DB·메일·사진 경로는 [infra/README](infra/README.md)를 따른다. 공개 GET은 익명 접근을 허용하며 그 외 업무 경로는 기본 거부한다. health와 조회 성공은 입찰·실제 인증 세션·운영 readiness의 증거가 아니다.
+검증에는 Node/npm([지원 버전](frontend/package.json)), Python 3.12 이상, PowerShell 7도 필요하다. 저장소 루트에서 실행한다.
+
+```powershell
+pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25'
+# 별도 임시 DB·HTTP·Chromium 통합 검증. Docker 필요.
+pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25' -Integration
+```
+
+기본 프로필은 DB 없이 실행하고 회차 조회에 503을 반환한다. 로컬 DB 조회에는 `local-infra` 프로필을 사용한다. 프런트엔드 화면은 [frontend/README](frontend/README.md)를 따른다. health와 조회 성공은 입찰·실제 인증 세션·운영 readiness의 증거가 아니다.
 
 ## 공통 계약 보호
 
