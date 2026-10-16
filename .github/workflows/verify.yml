@@ -1,0 +1,53 @@
+name: Foundation checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m pip install -r contracts/requirements-validation.txt
+      - run: python scripts/test-baseline-guard.py
+      - run: python scripts/verify-contracts.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: contract-static-report
+          path: .artifacts/contracts/validation-report.json
+  backend:
+    needs: contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: '25'
+          cache: gradle
+          cache-dependency-path: |
+            backend/*.gradle.kts
+            backend/gradle.lockfile
+            backend/gradle/wrapper/gradle-wrapper.properties
+      - working-directory: backend
+        run: bash ./gradlew --no-daemon --console=plain clean build
+  frontend:
+    needs: contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.node-version
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - working-directory: frontend
+        run: npm ci --no-fund --no-audit
+      - working-directory: frontend
+        run: npm test
+      - working-directory: frontend
+        run: npm run build
