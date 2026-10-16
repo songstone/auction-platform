@@ -2,7 +2,7 @@ package com.auctionplatform.bootstrap;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration;
 
 /** Process bootstrap only; business use cases and contract endpoints are not implemented. */
 @SpringBootApplication(

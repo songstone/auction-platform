@@ -3,20 +3,21 @@ spring:
     name: auction-platform-backend
   main:
     banner-mode: "off"
+  web:
+    error:
+      include-message: never
+      include-stacktrace: never
+      include-binding-errors: never
+      include-exception: false
   autoconfigure:
     # The default bootstrap is independent of DB/mail/photo infrastructure.
     # local-infra explicitly overrides this exclusion and requires DB_PASSWORD.
     exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
 
 server:
   address: ${SERVER_ADDRESS:127.0.0.1}
   port: ${SERVER_PORT:8080}
-  error:
-    include-message: never
-    include-stacktrace: never
-    include-binding-errors: never
-    include-exception: false
 
 management:
   endpoints:
@@ -27,3 +28,6 @@ management:
     health:
       show-details: never
       show-components: never
+      # This scaffold exposes summary health only; readiness is a later implementation task.
+      probes:
+        enabled: false

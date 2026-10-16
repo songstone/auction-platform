@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     java
-    id("org.springframework.boot") version "3.5.16"
+    id("org.springframework.boot") version "4.1.1"
 }
 
 group = "com.auctionplatform"
@@ -12,6 +12,7 @@ description = "Implementation scaffold for the approved auction architecture; no
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
+        vendor = JvmVendorSpec.AMAZON
     }
 }
 
@@ -20,9 +21,9 @@ repositories {
 }
 
 dependencies {
-    // Preserve the versions managed by the former Spring Boot parent without another plugin.
+    // Use Boot's tested dependency set without a separate dependency-management plugin.
     implementation(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -33,6 +34,8 @@ dependencies {
         exclude(group = "org.mockito", module = "mockito-core")
         exclude(group = "org.mockito", module = "mockito-junit-jupiter")
     }
+    testImplementation("org.springframework.boot:spring-boot-resttestclient")
+    testRuntimeOnly("org.springframework.boot:spring-boot-restclient")
     testImplementation("com.tngtech.archunit:archunit:1.5.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
