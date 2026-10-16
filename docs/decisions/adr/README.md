@@ -4,6 +4,8 @@
 
 채택 기준선은 SYSTEM-DESIGN 1.0(출발 검토본 0.2), 공통 계약 0.1.0(출발 검토본 0.1.0-draft.2)이다. 승인 이력·범위는 [DECISION-LOG](../DECISION-LOG.md), 대상 파일·hash 식별은 [계약 기준선 안내](../../../contracts/README.md)가 연결하는 기록이 원본이다.
 
+2026-10-16 추가 채택: D-096·ADR-006이 JPA 엔티티·도메인 통합과 Spring Data Repository 사용을 확정했다. SYSTEM-DESIGN 1.1 / DOMAIN-MODEL 1.3이며 공통 계약은 0.1.0을 유지한다. 이전 D-095 기준선은 이력으로 보존하고 현재 파일 식별은 계약 안내의 새 아키텍처 기준선을 따른다.
+
 ## 검토 순서와 공식 원본
 
 | 순서 | 문서 | 이 문서가 소유할 기술 판단 |
@@ -12,6 +14,7 @@
 | P0-2 | [ADR-002 — 영속 접수와 순서](ADR-002-DURABLE-RECEIPT-AND-ORDERING.md) | 공식 접수 저장 경계, 범위별 순번, 원판정·중복·앱 확인, 접수 실험 |
 | P0-3 | [ADR-003 — 장애 진행 권한과 복구](ADR-003-FAILURE-AUTHORITY-AND-RECOVERY.md) | 단일 진행 주체, 장애 증거·진행 중 작업·중단 발생 건, 복구 실험 |
 | 구조 | [ADR-004 — MVP 구조](ADR-004-MVP-STRUCTURE.md) | 초기 스택·토폴로지·조건부 C·참여 상태 분리·공개 확정 시 Auction 생성의 채택 이유 |
+| 영속화 | [ADR-006 — JPA 도메인 엔티티](ADR-006-JPA-DOMAIN-ENTITIES.md) | 엔티티·도메인 통합, Spring Data Repository, BIGINT 적용·동적 조회·명시 SQL 병용과 검증 경계 |
 | 계약 | [ADR-005 — 공통 계약 기준선과 변경](ADR-005-CONTRACT-BASELINE.md) | HTTP·이벤트 원본 분리, 승인·버전·호환성·구현자 변경 절차 |
 
 이 목록은 탐색용이다. 선택지·추천·채택 조건·시나리오는 각 ADR이 원본이며 여기에 복제하지 않는다. 승인된 요구사항·AC는 [PRD](../../product/MVP-PRD.md), 불변식·도메인 책임·TV는 [DOMAIN-MODEL](../../architecture/DOMAIN-MODEL.md), 승인 이력과 OPEN은 [DECISION-LOG](../DECISION-LOG.md), 기존 관측은 [SPIKE-001](../../spikes/SPIKE-001.md)이 원본이다. 제품·도메인 기준선은 현행 승인 상태를 유지한다.

@@ -4,7 +4,7 @@
 
 - Read the current `docs/implementation/IMPLEMENTATION-PLAN.md` and the relevant approved contract before implementing a feature.
 - Product/architecture/decision/contract files are the approved baseline. Check `python scripts/check-approved-baseline.py --strict-evidence`. Follow ADR-005 for semantic changes; never update hashes to hide a mismatch.
-- Current stack: Amazon Corretto 25, Spring Boot 4.1.1, Gradle Wrapper 9.8.1, Spring MVC/JDBC, PostgreSQL, React/TypeScript. Logical module rules are in `backend/MODULE-BOUNDARIES.md`.
+- Current stack: Amazon Corretto 25, Spring Boot 4.1.1, Gradle Wrapper 9.8.1, Spring MVC/JDBC, PostgreSQL, React/TypeScript. D-096/ADR-006 adopts domain entities with JPA mappings and direct Spring Data JPA Repository use; runtime dependency/schema conversion is planned in `docs/implementation/JPA-ADOPTION-PLAN.md`. Do not introduce duplicate persistence models, mappers, or pass-through CRUD adapters by default. Logical module rules are in `backend/MODULE-BOUNDARIES.md`.
 - Keep existing uncommitted work. Do not copy SPIKE code or experimental guarantees into the application without checking its evidence and the approved design.
 
 ## Branch workflow

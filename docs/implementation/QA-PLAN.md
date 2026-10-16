@@ -4,8 +4,8 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.7 |
-| 입력 | D-095, SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, 공통 계약 0.1.0 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.8 |
+| 입력 | D-095·D-096, SYSTEM-DESIGN 1.1, DOMAIN-MODEL 1.3, 제품 1.6, 공통 계약 0.1.0 |
 | 현재 범위 | M-01 목록·상세·동일 열린 Page의 DB 복구 검증과 문서 통합 완료. M-02 인계는 정책/계약 준비이며 실제 계정·세션·메일 인수는 NOT_RUN |
 | 새 실행 상태 | 공개 회차 조회 실행은 [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md) 참조. [Boot 전환](BOOT4-MIGRATION-VERIFICATION.md)은 이전 실행 이력이며 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
 | 관련 작업 카드 | [IMPLEMENTATION-PLAN](IMPLEMENTATION-PLAN.md), [M-01 작업 기록](../tasks/README.md), 리드 관리 [STATE](../STATE.md) |
@@ -17,6 +17,8 @@
 기능 기대값의 원본은 [MVP-PRD](../product/MVP-PRD.md)의 AC이며, 불변식·도메인 사례·기술 주장은 [DOMAIN-MODEL](../architecture/DOMAIN-MODEL.md)의 INV/TS/TV다. API 스키마는 [OpenAPI](../../contracts/openapi.yaml), 전달·복구 의미는 [auction-events](../../contracts/auction-events.md), 현재 미정의 공식 원본은 [DECISION-LOG](../decisions/DECISION-LOG.md)다. 여기서 새 정책이나 성공 응답 스키마를 정의하지 않는다.
 
 기존 `CONTRACT_STATIC_ONLY / PASS`, `DOCUMENT_STRUCTURE_ONLY / PASS`와 [SPIKE-001](../spikes/SPIKE-001.md)의 지정 관측은 기존 증거로만 참조한다. 새 제품의 health·컴파일·fixture 관측·합성 경계 사례를 실제 입찰·동시성·장애·성능 인수 통과로 확대하지 않는다.
+
+JPA 전환의 추가 검증은 [JPA 적용 계획 §6](JPA-ADOPTION-PLAN.md#6-검증인계)을 따른다. JPA 매핑 허용·domain의 직접 I/O 금지·Repository 기능 경계, BIGINT fresh/upgrade·데이터 보존, JPA/JDBC 동시 rollback·flush·stale context, 동적 조건·N+1·실행계획과 기존 HTTP/브라우저 회귀를 구분한다. 현재는 계획이며 실제 JPA·DDL 전환 및 신규 runtime 증거는 NOT_RUN이다.
 
 ## 2. 증거를 분리하는 단위
 
@@ -44,7 +46,7 @@
 
 | 항목 | 실행·관측 | 기대값과 증거 | 제외 범위 |
 | --- | --- | --- | --- |
-| FND-01 승인 원본 | [승인 manifest](../../contracts/approved-baseline-0.1.0.json)의 보호 파일을 실제 bytes로 비교 | 승인된 파일 hash 불변. 불일치 파일·기대/실제 hash·명령 exit code를 기록 | 승인 전 snapshot·과거 증거와 현재 approvedFiles의 역할을 구별. 새 hash 자동 승인 금지 |
+| FND-01 승인 원본 | [승인 manifest](../../contracts/approved-baseline-0.1.0-architecture-1.1.json)의 보호 파일을 실제 bytes로 비교 | 승인된 파일 hash 불변. 불일치 파일·기대/실제 hash·명령 exit code를 기록 | 승인 전 snapshot·과거 증거와 현재 approvedFiles의 역할을 구별. 새 hash 자동 승인 금지 |
 | FND-02 개발 진입 | 필요한 JDK/빌드/Node/패키지 도구 확인, 로컬 인프라 구성과 시작/종료 명령 실행 여부 확인 | 선택한 정확 버전·환경 변수 이름·의존 서비스 상태 기록. 비밀 원문 출력 없음 | 컨테이너 시작을 migration·세션·입찰의 성공으로 판정하지 않음 |
 | FND-03 BE 빌드 | backend의 실제 빌드·검사 명령 | Java 25/Spring 골격이 빌드됨. 결과·로그·시험 범위·실패/skip 수 보존 | 제품 command/query·전체 AC 완료 아님 |
 | FND-04 BE 의존성 | 모듈/계층 아키텍처 검사 | 도메인의 Spring/JDBC/HTTP 직접 의존과 순환 등 구현된 규칙 확인. 빈 패키지/미검사 규칙도 명시 | 비어 있는 도메인의 PASS로 미래 업무 코드의 경계 준수를 보장하지 않음 |

@@ -10,6 +10,8 @@
 | 새 실행 | **NOT_RUN — 제품 코드·서비스·실험·부하·배포를 새로 실행하지 않음** |
 | 관련 문서 | [SYSTEM-DESIGN](../../architecture/SYSTEM-DESIGN.md), [ADR-001](ADR-001-TRANSITION-TIME.md), [ADR-002](ADR-002-DURABLE-RECEIPT-AND-ORDERING.md), [ADR-003](ADR-003-FAILURE-AUTHORITY-AND-RECOVERY.md) |
 
+2026-10-16 변경: D-096·[ADR-006](ADR-006-JPA-DOMAIN-ENTITIES.md)으로 JDBC 단독 기본 선택을 JPA+명시 SQL 병용으로, framework-free 도메인을 업무 JPA 엔티티 통합으로 대체했다. Spring Data Repository를 서비스에서 직접 사용하며 별도 매퍼·위임 저장 어댑터를 기본으로 만들지 않는다. 아래 D-095 선택표는 최초 결정 이력이며 현재 영속화 기준은 ADR-006·SYSTEM-DESIGN 1.1을 따른다. 제품 구현·실행 상태는 별도다.
+
 ## 1. 결정 목적과 원본의 범위
 
 백엔드·프런트엔드·QA가 독립적으로 설계·구현할 구조·기술·소유권을 정의한다.
@@ -103,9 +105,9 @@ Aggregate를 나눴다는 이유로 각각 commit한 뒤 이벤트로 핵심 경
 
 기능 모듈은 `identity`, `listing`, `auction`, `query`, `realtime`, `bootstrap`을 사용하며 책임·의존성 표는 SYSTEM-DESIGN만 원본으로 둔다.
 모듈 내부는 순수 규칙, 애플리케이션 조정, 포트·어댑터를 구분하되 모든 작은 기능에 동일한 파일 수·접미사를 강제하지 않는다.
-순수 도메인 규칙은 HTTP·Spring·JDBC·현재 시각 조회·네트워크 발행에 의존하지 않고 검증된 행위자·공식 시각·상태를 입력받는다.
+업무 엔티티는 D-096에 따라 JPA 매핑을 겸한다. 업무 메서드는 HTTP·Spring 서비스·Repository 호출·JDBC·현재 시각 조회·네트워크 발행에 의존하지 않고 검증된 행위자·공식 시각·상태를 입력받는다.
 애플리케이션은 권한 맥락·원키·정합 상태 확보·도메인 호출·저장·원결과 응답을 조정하고 필요한 트랜잭션 경계를 소유한다.
-포트는 업무가 요구하는 저장·조회·시계·전파 협력을 표현하고 어댑터가 JDBC·HTTP·SSE 등 외부 기술을 연결한다.
+기능별 서비스가 같은 기능의 Spring Data Repository를 직접 사용한다. 시계·파일·메일·명시 SQL 등 별도 기술 협력은 필요에 맞게 유지하며 단순 CRUD를 위한 매퍼·위임 어댑터는 두지 않는다.
 
 출품의 회차 귀속·배정·공개·진행 취소처럼 여러 기능이 필요한 조정은 auction 애플리케이션에서 listing의 공개 포트를 호출하는 안을 사용한다.
 listing의 순수 Lot 규칙은 listing에 두며, 이 조정을 위해 listing이 auction 내부로 되호출하는 순환 의존을 만들지 않는다.

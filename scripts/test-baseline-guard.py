@@ -23,7 +23,7 @@ class BaselineMutationChecks(unittest.TestCase):
         if not self.root.is_relative_to(Path(tempfile.gettempdir()).resolve()):
             raise RuntimeError("Unexpected temporary directory.")
         manifest = json.loads((ROOT / guard.MANIFEST).read_text(encoding="utf-8"))
-        paths = [guard.MANIFEST] + [entry["path"] for group in ("approvedFiles", "sourceFiles", "staticEvidenceFiles") for entry in manifest[group]]
+        paths = [guard.MANIFEST, guard.PREDECESSOR_MANIFEST] + [entry["path"] for group in ("approvedFiles", "sourceFiles", "staticEvidenceFiles") for entry in manifest[group]]
         for relative in paths:
             source = (ROOT / relative).resolve()
             target = (self.root / relative).resolve()
@@ -54,6 +54,14 @@ class BaselineMutationChecks(unittest.TestCase):
     def test_replacing_manifest_cannot_self_approve(self):
         self.change(guard.MANIFEST)
         self.assertEqual(guard.check(self.root)["failures"][0]["reason"], "APPROVAL_MANIFEST_CHANGED")
+
+    def test_previous_sealed_manifest_is_preserved(self):
+        self.change(guard.PREDECESSOR_MANIFEST)
+        self.assertEqual(guard.check(self.root)["failures"][0]["reason"], "PREDECESSOR_MANIFEST_CHANGED")
+
+    def test_changed_jpa_decision_fails(self):
+        self.change("docs/decisions/adr/ADR-006-JPA-DOMAIN-ENTITIES.md")
+        self.assertEqual(guard.check(self.root)["status"], "FAIL")
 
     def test_approval_evidence_is_distinct_from_contract_and_strictly_preserved(self):
         relative = self.manifest["staticEvidenceFiles"][0]["path"]

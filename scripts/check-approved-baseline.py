@@ -6,8 +6,10 @@ import hashlib
 import json
 from pathlib import Path
 
-MANIFEST = "contracts/approved-baseline-0.1.0.json"
-PINNED_MANIFEST_SHA256 = "1f3f6d5be1896304b5d72ede521717d6ff6440f7b10a84ff338e3bd6d3b2d795"
+MANIFEST = "contracts/approved-baseline-0.1.0-architecture-1.1.json"
+PINNED_MANIFEST_SHA256 = "5bec532c04fad79927eadb5219d937685e544a3b78a52f298ee8d3b008573ac8"
+PREDECESSOR_MANIFEST = "contracts/approved-baseline-0.1.0.json"
+PINNED_PREDECESSOR_SHA256 = "1f3f6d5be1896304b5d72ede521717d6ff6440f7b10a84ff338e3bd6d3b2d795"
 
 
 def check(root: Path, strict_evidence: bool = False) -> dict:
@@ -20,6 +22,15 @@ def check(root: Path, strict_evidence: bool = False) -> dict:
     if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != PINNED_MANIFEST_SHA256:
         return {"scope": "APPROVED_BASELINE_INTEGRITY", "status": "FAIL", "failures": [{"path": MANIFEST, "reason": "APPROVAL_MANIFEST_CHANGED"}]}
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    predecessor_path = root / PREDECESSOR_MANIFEST
+    if (not predecessor_path.is_file()
+            or hashlib.sha256(predecessor_path.read_bytes()).hexdigest() != PINNED_PREDECESSOR_SHA256):
+        failures.append({"path": PREDECESSOR_MANIFEST, "reason": "PREDECESSOR_MANIFEST_CHANGED"})
+    if (manifest.get("predecessor") != {
+            "manifest": PREDECESSOR_MANIFEST, "sha256": PINNED_PREDECESSOR_SHA256}
+            or manifest.get("architectureApprovalDecision") != "D-096"
+            or manifest.get("systemDesignVersion") != "1.1"):
+        failures.append({"path": MANIFEST, "reason": "ARCHITECTURE_APPROVAL_MISMATCH"})
     if (manifest["status"], manifest["sealingState"], manifest["contractVersion"]) != ("USER_APPROVED", "SEALED", "0.1.0"):
         failures.append({"path": MANIFEST, "reason": "UNAPPROVED_BASELINE"})
     checked = 0

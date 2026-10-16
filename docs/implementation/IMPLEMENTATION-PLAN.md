@@ -4,9 +4,9 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.7 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.8 |
 | 성격 | 구현 작업 분할·의존성·완료 조건. 새 제품 정책이나 계약의 원본이 아님 |
-| 입력 기준선 | SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, DECISION-LOG 1.8, 공통 계약 0.1.0, D-095 |
+| 입력 기준선 | SYSTEM-DESIGN 1.1, DOMAIN-MODEL 1.3, 제품 1.6, DECISION-LOG 1.9, 공통 계약 0.1.0, D-095·D-096 |
 | 현재 실행 범위 | M-01 공개 목록·페이지·상세·복귀/동일 화면 복구와 최종 문서 dev 통합 완료. 다음 M-02는 계정 정책·계약 구체화부터 준비하며 기능 구현 READY 아님 |
 | 후속 기능 범위 | 아래 기능 카드는 계획이다. 이번 골격 생성만으로 구현·연동·제품 인수 완료 처리하지 않음 |
 | 통합 기준 | 최신 `dev`에서 작업 브랜치 생성 → 검증/CI → `dev` 병합·푸시 → 완료 작업 브랜치 로컬·원격 삭제. `main` 병합은 사용자 주도로 별도 수행 |
@@ -28,7 +28,7 @@
 | 모듈·계층·소유권·의존성·필수 업무 트랜잭션 | [SYSTEM-DESIGN](../architecture/SYSTEM-DESIGN.md), §3~§7 |
 | 경로·요청/응답·오류·이벤트 payload·예제 | [OpenAPI](../../contracts/openapi.yaml) |
 | SSE·순서·중복·재동기화 의미 | [auction-events](../../contracts/auction-events.md) |
-| 승인 파일 식별 | [approved-baseline-0.1.0.json](../../contracts/approved-baseline-0.1.0.json) |
+| 승인 파일 식별 | [approved-baseline-0.1.0-architecture-1.1.json](../../contracts/approved-baseline-0.1.0-architecture-1.1.json) |
 | 계약 변경 절차 | [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md) |
 | QA의 증거 분류·우선순위·보류 사례 | [QA-PLAN](QA-PLAN.md) |
 | 초기 골격의 실제 명령·결과·미실행 | [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md). Maven으로 수행한 초기 통합 실행 이력 원본 |
@@ -36,7 +36,9 @@
 | Spring Boot 4 전환 이력 | [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md). 당시 전환 실행 결과 원본 |
 | 현재 공개 회차 목록·상세 탐색의 실행 결과 | [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md). DB·HTTP·브라우저와 미실행 범위 |
 
-담당자는 같은 승인 manifest와 계약 버전을 입력으로 사용한다. 생성 타입·mock·화면 모델은 파생물이며 별도 계약 원본으로 취급하지 않는다. 일반 구현 담당은 `docs/product/**`, `docs/architecture/**`, `docs/decisions/**`, `contracts/**`를 임의 수정하지 않는다. M-02 준비 중 필요한 변경은 Contract Owner가 ADR-005의 구체 승인·봉인 절차를 거쳐 반영하며 이번 인계 문서 작업은 이 원본을 변경하지 않았다. 기존 검사 재실행 시 봉인된 결과 파일을 덮어쓰지 않고 구현 증거 위치로 출력한다.
+담당자는 같은 승인 manifest와 계약 버전을 입력으로 사용한다. 생성 타입·mock·화면 모델은 파생물이며 별도 계약 원본으로 취급하지 않는다. 일반 구현 담당은 `docs/product/**`, `docs/architecture/**`, `docs/decisions/**`, `contracts/**`를 임의 수정하지 않는다. M-02 준비 중 필요한 변경은 Contract Owner가 ADR-005의 구체 승인·봉인 절차를 거쳐 반영하며 0.7의 인계 문서 작업은 이 원본을 변경하지 않았다. 0.8은 D-096의 사용자 지시에 따라 관련 설계 원본과 새 아키텍처 기준선을 함께 반영한다. 기존 검사 재실행 시 봉인된 결과 파일을 덮어쓰지 않고 구현 증거 위치로 출력한다.
+
+JPA 기반 전환과 후속 기능의 구체 수정 범위·순서는 [JPA 적용 계획](JPA-ADOPTION-PLAN.md)을 따른다. 엔티티·도메인 통합, Spring Data Repository 직접 사용, 별도 영속 모델·매퍼·CRUD 래퍼 생략이 현재 구조다. JPA-10/20의 기반·DB 전환과 경계/회귀 검증은 PLANNED / NOT_RUN이며 실제 identity 적용은 M-02 정책·계약 확정 후 진행한다. 기존 공개 조회는 query SQL projection을 유지한다.
 
 ## 3. 병렬 작업 DAG
 
@@ -154,8 +156,8 @@ fixture는 공개 허용 필드와 계약에 정의된 상태만 쓴다. 유찰 
 
 | 카드 / 소유 | 입력 → 출력 | 선행·병렬 조건 | AC·INV·TS 연결 | DoD와 남은 경계 |
 | --- | --- | --- | --- | --- |
-| BE-10 / BE 도메인 | 승인 불변식·시각 맥락 → 순수 도메인·유효 전이·명확한 거절 | BE-00 이후. BE-20과 병렬 | AC-R08-01, AC-R10-01, AC-R21-03, AC-R46-03; INV-06/10~16/22/23; TS-01~13 | 정확한 버튼 금액·최고가/결과 일관성·현재 마감·거절 무변경을 독립 기대값으로 검증. 합성 시각 통과를 실제 S/N/R 보장으로 확대하지 않음 |
-| BE-20 / BE 기반 | 인증/권한 계약·같은 DB 원칙 → identity와 저장/트랜잭션·행위자 경계 | BE-00 이후. 미정 보안 수명·계정 동일성 경로는 OPEN-06 대기 | AC-R45-01, AC-R50-01, AC-R52-01, AC-R52-02; INV-10/27; TS-05/31 | 실제 PostgreSQL·세션·쿠키/CSRF·당사자 범위의 별도 증거. 운영자에게 회원 역할/포괄 조회를 부여하지 않음 |
+| BE-10 / BE 도메인 | 승인 불변식·시각 맥락 → 업무 JPA 엔티티·유효 전이·명확한 거절 | BE-00 이후. BE-20과 병렬, DB 매핑은 JPA 기반 전환과 통합 | AC-R08-01, AC-R10-01, AC-R21-03, AC-R46-03; INV-06/10~16/22/23; TS-01~13 | 정확한 버튼 금액·최고가/결과 일관성·현재 마감·거절 무변경을 독립 기대값으로 검증. 합성 시각 통과를 실제 S/N/R 보장으로 확대하지 않음 |
+| BE-20 / BE 기반 | 인증/권한 계약·같은 DB 원칙 → identity와 저장/트랜잭션·행위자 경계 | BE-00 이후. 미정 보안 수명·계정 동일성 경로는 OPEN-06 대기 | AC-R45-01, AC-R50-01, AC-R52-01, AC-R52-02; INV-10/27; TS-05/31 | 업무 엔티티·Spring Data Repository·실제 PostgreSQL·세션·쿠키/CSRF·당사자 범위의 별도 증거. 운영자에게 회원 역할/포괄 조회를 부여하지 않음 |
 | BE-30 / BE 회차·출품 | 일정/등록/공개 계약 → 모집·Lot·배정·공개 Auction·회차 시작/취소 | BE-10/20. listing 공개 포트와 auction 조정, 동일 업무 tx | AC-R28-02, AC-R28-03, AC-R30-03, AC-R34-03, AC-R41-02, AC-R41-03; INV-03~09/47~51; TS-24~29/71~82 | 회차/일정 보호·공개 직전 요청·배정 순번·취소 미진행 표시·동시 완료를 검증. OPEN-01/05 입력값과 파일 제한은 임의 설정하지 않음 |
 | BE-40 / BE 입찰 | 등록/제출/조회/ACK·명령 계약 → 원키·내구 접수·순번 판정·원결과·outbox | BE-10/20/30. 실제 원자성은 DB 검증 필요 | AC-R21-01, AC-R21-05, AC-R23-02, AC-R23-03, AC-R23-10, AC-R23-12; INV-13~19/29~32/42~46; TS-10~16/41~48/63~70 | 등록≠접수≠판정≠ACK, 동일 키 경합·원판정 불변·rollback/commit 불명·옛 ACK를 검증. Round 순서와 Lane 순서를 각각 확인하며 HTTP 도착순을 약속하지 않음 |
 | BE-50 / BE 조회·전파 | 권한별 DTO·outbox·snapshot → 공개/본인 조회·SSE 재생/복구 | 순수 DTO·전송은 조기 병렬. 실제 상태 통합은 BE-30/40 이후 | AC-R02-01, AC-R38-03, AC-R39-01, AC-R51-01; INV-18/26/27; TS-30/31/32 | 동일 snapshot/watermark·scope/세대·중복/gap·마지막 유실·private REST 복구 검증. OPEN-07의 필드/관리 조회와 OPEN-10/12 재생 수치는 추가하지 않음 |
@@ -206,4 +208,4 @@ QA-10의 전체 TS 참조는 이번에 83개를 자동화한다는 범위 선언
 
 결과 원본에서는 실행한 대상만 갱신한다. `scripts/check-approved-baseline.py`의 해시 확인, `scripts/verify-contracts.py`의 임시 복사 검사, `scripts/verify.ps1`의 빌드 확인과 실제 앱/브라우저 관측은 각각 판정한다. 로컬 인프라·JDBC 연결·health·개발 미리보기의 관측을 제품 인증 세션·입찰·경합·재접속·장애·성능 인수 통과로 확대하지 않는다. 승인 원본의 과거 NOT_RUN/PASS 기록도 소급 수정하지 않는다.
 
-공개 상세만 수행한 이전 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)에 그대로 보존한다. 0.6은 M-01 실행 안내를 반영했고 이번 0.7은 M-02 인계와 M-01 최종 완료 안내를 반영했다. 제품/설계/계약 기준선·후속 QA 승인 범위는 변경하지 않았다.
+공개 상세만 수행한 이전 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)에 그대로 보존한다. 0.6은 M-01 실행 안내, 0.7은 M-02 인계와 M-01 최종 완료 안내를 반영했다. 이번 0.8은 D-096·ADR-006의 JPA 적용 계획을 연결한다. 제품·wire 계약·후속 QA 인수 범위는 변경하지 않았다.

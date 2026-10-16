@@ -16,6 +16,7 @@
 | [전체 로드맵 검토 기록](docs/implementation/ROADMAP-REVIEW-2026-10-16.md) | 문서 범위의 검사·독립 검토·미실행 경계 |
 | [M-01 작업 기록](docs/tasks/README.md) | 실제 착수·소유권·검증·dev 통합 기록 |
 | [M-01 작업 분해 검토 이력](docs/implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md) | 기존 최소 흐름 계획의 정적 검사·독립 리뷰·미실행 경계 |
+| [JPA 적용 계획](docs/implementation/JPA-ADOPTION-PLAN.md) | 업무 엔티티·Spring Data Repository·BIGINT PK·동적 조회/복잡 SQL의 수정 범위와 검증 순서 |
 | [작업 계획](docs/implementation/IMPLEMENTATION-PLAN.md) | BE·FE·QA 작업 카드와 의존성 |
 | [QA 계획](docs/implementation/QA-PLAN.md) | 검증 종류와 실제 증거의 구분 |
 | [초기 골격 실행 이력](docs/implementation/FOUNDATION-VERIFICATION.md) | 최초 Maven 골격의 실행·미실행 범위 |

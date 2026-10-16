@@ -4,13 +4,15 @@
 
 루트는 `com.auctionplatform`이다. 기능은 `identity`, `listing`, `auction`, `query`, `realtime`, `bootstrap`으로 구분한다. `bootstrap`은 조립·HTTP·보안·오류/추적을 담당한다. 공개 회차 목록·상세 조회는 `query.application.PublicRoundQuery`와 `PublicRoundReader` 포트, `query.infrastructure.JdbcPublicRoundReader`, `query.publicapi.PublicRoundState`·`PublicRoundPage`로 구성한다. 나머지 기능의 업무 클래스는 아직 없다.
 
+D-096·[ADR-006](../docs/decisions/adr/ADR-006-JPA-DOMAIN-ENTITIES.md)에 따라 기능의 domain 업무 엔티티가 JPA 매핑을 겸하고 application 서비스가 같은 기능의 `JpaRepository<Entity, Long>`를 직접 사용한다. Repository 인터페이스는 해당 기능 application에 두며 별도 순수 모델·영속 엔티티·매퍼·단순 위임 어댑터를 기본으로 두지 않는다. custom fragment/명시 SQL은 infrastructure에 둔다. publicapi에는 엔티티·Repository·Specification을 노출하지 않는다. 실제 JPA 의존성·엔티티·PK 전환·새 경계 시험은 [적용 계획](../docs/implementation/JPA-ADOPTION-PLAN.md)의 후속 작업이다.
+
 첫 migration의 `auction.rounds`는 auction 소유 저장이며 query adapter는 승인된 읽기 SQL 예외로 SELECT만 수행한다. query가 회차 생성·공개·시각 전이를 수행하지 않는다. JDBC 조회 메서드는 읽기 전용 트랜잭션이며 단일 상세 또는 정렬된 공개 상태 페이지를 반환한다. 목록 cursor는 목록 전용 keyset이며 stream cursor와 구분한다. snapshot·watermark·SSE 커서 의미는 이 API에 추가하지 않는다.
 
 기능을 구현할 때 내부에 `domain`, `application`, `publicapi`, `infrastructure`를 책임에 맞게 둔다. 작은 기능에도 빈 클래스·저장소·인터페이스를 기계적으로 만들 필요는 없다.
 
 | 검사 규칙 | 코드에서 차단할 의존성 |
 | --- | --- |
-| `DOMAIN_IS_PURE` | domain → Spring/JDBC/Servlet 또는 application/infrastructure/bootstrap |
+| `DOMAIN_IS_PURE` (기존 검사 이름) | domain → Spring/JDBC/Servlet 또는 application/infrastructure/bootstrap 금지. Jakarta Persistence 매핑은 허용. JPA 도입 때 허용/위반 fixture를 보강하고 이름을 의미에 맞게 정리 |
 | `APPLICATION_AVOIDS_ADAPTERS` | application/publicapi → infrastructure/bootstrap |
 | `NO_AUCTION_CALLBACK` | listing/identity → auction |
 | `NO_FEATURE_TO_BOOTSTRAP` | 업무 기능 → bootstrap |
@@ -19,7 +21,7 @@
 
 공개 API를 사용한다는 사실만으로 새 의존성이 승인되는 것은 아니다. 시스템 설계가 허용한 조정 방향을 함께 지킨다. 특히 출품·공개·취소의 교차 기능 조정은 auction.application → listing.publicapi이며 반대 callback은 금지다. 읽기 전용 query SQL의 예외를 타 모듈 상태 변경 통로로 확대하지 않는다.
 
-도메인은 승인된 원시각·행위자·상태를 입력받고 현재 시각·인증 토큰·저장·네트워크를 직접 해석하지 않는다. 애플리케이션은 필요한 transaction을 조정하고 infrastructure가 포트를 구현한다. publicapi에 내부 엔티티·저장소를 노출하지 않는다.
+도메인 엔티티는 JPA 매핑을 허용하고 승인된 원시각·행위자·상태를 입력받고 현재 시각·인증 토큰·저장·네트워크를 직접 해석하지 않는다. 애플리케이션은 필요한 transaction과 Spring Data Repository 호출을 조정하며 infrastructure는 별도 기술 구현이 필요한 협력을 담당한다. publicapi에 내부 엔티티·저장소를 노출하지 않는다.
 
 원접수·공식 순번·원판정/ACK·단계·마감·결과·outbox를 구현할 때 [ADR-001~005](../docs/decisions/adr/README.md)의 채택 범위와 미완성 메커니즘을 함께 따른다. DB gate·old transaction·replay/live 안전성은 패키지 검사로 증명되지 않는다.
 

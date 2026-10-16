@@ -12,6 +12,8 @@
 
 **목표 사용자 흐름:** 비회원 → 이메일 검증 가입 → 로그인·현재 세션 확인 → 로그아웃 → 검증 이메일을 통한 비밀번호 재설정 → 새 비밀번호로 로그인. 사전 지정 운영자는 운영 전용 계정으로 로그인하며 일반 가입으로 운영 권한을 얻을 수 없다. PC와 개발 모바일에서 같은 실제 서버 흐름을 확인한다.
 
+2026-10-16 추가 입력: D-096·[ADR-006](../decisions/adr/ADR-006-JPA-DOMAIN-ENTITIES.md)과 [JPA 적용 계획](../implementation/JPA-ADOPTION-PLAN.md)을 먼저 반영한다. 현재 설계는 SYSTEM 1.1 / DOMAIN 1.3 / DECISION 1.9이며 계약 0.1.0은 유지한다. 업무 엔티티가 JPA를 겸하고 서비스가 Spring Data Repository를 직접 사용한다. 별도 매퍼·영속 모델·CRUD 래퍼를 만들지 않는다. JPA/DDL 전환과 계정 기능은 아직 미구현이며 계정 정책·계약의 기존 시작 조건은 유지한다. 아래 최초 인계의 조사 SHA·버전·검증 수치는 당시 이력이다.
+
 ## 2. 반드시 읽을 원본
 
 | 순서 | 원본과 확인할 내용 |
@@ -21,7 +23,7 @@
 | 3 | [IMPLEMENTATION-PLAN](../implementation/IMPLEMENTATION-PLAN.md), [QA-PLAN](../implementation/QA-PLAN.md), [MODULE-BOUNDARIES](../../backend/MODULE-BOUNDARIES.md): 작업 경계·최대 2명 구현·독립 증거 |
 | 4 | [MVP-PRD](../product/MVP-PRD.md), [AUCTION-RULES](../product/AUCTION-RULES.md), [DOMAIN-MODEL](../architecture/DOMAIN-MODEL.md): R-16/23/37/45/50/52, INV-26/27 정보·역할 경계, INV-46 원기록 보존 및 실제 적용 AC/TS |
 | 5 | [DECISION-LOG](../decisions/DECISION-LOG.md), [CONTRACT-REVIEW-001](../decisions/CONTRACT-REVIEW-001.md): D-045/046/048·D-092/095, OPEN-06 및 CR-10·SEC-01~04 미승인 경계 |
-| 6 | [SYSTEM-DESIGN](../architecture/SYSTEM-DESIGN.md) §3~§7·§10, [OpenAPI](../../contracts/openapi.yaml), [계약 안내](../../contracts/README.md), [승인 manifest](../../contracts/approved-baseline-0.1.0.json), [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md): identity 소유·검증된 행위자·쿠키/CSRF·계약 변경 |
+| 6 | [SYSTEM-DESIGN](../architecture/SYSTEM-DESIGN.md) §3~§7·§10, [OpenAPI](../../contracts/openapi.yaml), [계약 안내](../../contracts/README.md), [승인 manifest](../../contracts/approved-baseline-0.1.0-architecture-1.1.json), [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md): identity 소유·검증된 행위자·쿠키/CSRF·계약 변경 |
 | 7 | [M-01 검증 보고서](../implementation/ROUND-DISCOVERY-VERIFICATION.md), [M-01 작업 기록](../tasks/README.md), [이번 인계 검토](../implementation/M-02-HANDOFF-REVIEW-2026-10-16.md): 재사용 가능한 증거와 NOT_RUN |
 
 인계 조사 입력은 제품 1.6 / DOMAIN 1.2 / SYSTEM 1.0 / DECISION 1.8 / 계약 0.1.0이다. 현재 계획·QA 0.7은 실행 안내 갱신이며 정책 승인이 아니다. 다음 세션은 최신 버전과 승인 이력을 다시 읽는다. 보호 원본·봉인 결과를 먼저 고치거나 hash를 갱신하여 불일치를 숨기지 않는다.

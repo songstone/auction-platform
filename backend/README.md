@@ -1,6 +1,6 @@
 # Backend 개발 골격
 
-승인된 [SYSTEM-DESIGN 1.0](../docs/architecture/SYSTEM-DESIGN.md)과 [공통 계약 0.1.0](../contracts/README.md)을 구현하는 단일 Gradle 앱이다. 현재 업무 흐름은 **공개 회차 목록 `GET /api/v1/rounds` 및 상세 `GET /api/v1/rounds/{roundId}` → PostgreSQL 읽기 전용 projection**이다. Actuator 요약 health·공통 오류·요청 추적·마이그레이션과 패키지 경계 검사를 제공한다. 계정·출품·입찰·원판정·ACK·SSE·업무 진행 복구·진행 권한은 구현하지 않았다. 공개 조회의 DB 단절/복귀 증거는 [M-01 실행 기록](../docs/implementation/ROUND-DISCOVERY-VERIFICATION.md)에 있다.
+승인된 [SYSTEM-DESIGN 1.1](../docs/architecture/SYSTEM-DESIGN.md)과 [공통 계약 0.1.0](../contracts/README.md)을 구현하는 단일 Gradle 앱이다. 현재 업무 흐름은 **공개 회차 목록 `GET /api/v1/rounds` 및 상세 `GET /api/v1/rounds/{roundId}` → PostgreSQL 읽기 전용 projection**이다. Actuator 요약 health·공통 오류·요청 추적·마이그레이션과 패키지 경계 검사를 제공한다. D-096의 JPA 업무 엔티티·Spring Data Repository 적용은 [전환 계획](../docs/implementation/JPA-ADOPTION-PLAN.md)을 따르며 아직 의존성·DDL·업무 저장 경로를 전환하지 않았다. 계정·출품·입찰·원판정·ACK·SSE·업무 진행 복구·진행 권한은 구현하지 않았다. 공개 조회의 DB 단절/복귀 증거는 [M-01 실행 기록](../docs/implementation/ROUND-DISCOVERY-VERIFICATION.md)에 있다.
 
 ## 고정 도구
 

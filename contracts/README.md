@@ -11,7 +11,9 @@
 
 사용자가 남은 OPEN과 미검증 위험을 유지한 채 현재 시스템 설계와 정의된 API·이벤트를 구현 기준선으로 승인했다(D-095). 기존 `0.1.0-draft.2`의 wire 정의를 바꾸지 않고 계약 버전을 `0.1.0`으로 식별한다. 설계·계약 채택 승인, 정적 검사, 실제 구현 검증, 운영 적용은 따로 판단한다. 미정 입력 제한·보안 수명·deferred 표면까지 모두 완성됐다는 승인은 아니다.
 
-[CONTRACT REVIEW 001](../docs/decisions/CONTRACT-REVIEW-001.md)은 제품 결정·기술 채택·구현 검증의 승인 범위를 기록한다. CR-01~03은 **D-092 운영자/회원 계정 분리, D-093 최저낙찰가 단위 정렬 미요구, D-094 유찰 최고입찰가 미노출**로 승인됐다. D-095는 기존 시스템·계약 원칙과 정의된 부분을 채택하며, **CR-04~10·SEC-01~04와 남은 OPEN의 제안값은 승인하지 않는다.** 현재 승인 기준선의 파일별 hash는 [approved-baseline-0.1.0.json](approved-baseline-0.1.0.json)이 원본이다. [review-baseline.json](review-baseline.json)은 승인 전 검토 이력이며 현재 승인 파일 식별로 사용하지 않는다. 승인 상태·버전·manifest 동기화의 새 정적 검사와 독립 문서 검토를 통과했다.
+[CONTRACT REVIEW 001](../docs/decisions/CONTRACT-REVIEW-001.md)은 제품 결정·기술 채택·구현 검증의 승인 범위를 기록한다. CR-01~03은 **D-092 운영자/회원 계정 분리, D-093 최저낙찰가 단위 정렬 미요구, D-094 유찰 최고입찰가 미노출**로 승인됐다. D-095는 기존 시스템·계약 원칙과 정의된 부분을 채택하며, **CR-04~10·SEC-01~04와 남은 OPEN의 제안값은 승인하지 않는다.** 현재 승인 기준선의 파일별 hash는 [approved-baseline-0.1.0-architecture-1.1.json](approved-baseline-0.1.0-architecture-1.1.json)이 원본이다. [review-baseline.json](review-baseline.json)은 승인 전 검토 이력이며 현재 승인 파일 식별로 사용하지 않는다. D-095 당시 승인 상태·버전·manifest 동기화의 정적 검사와 독립 문서 검토를 통과했다. D-096의 새 검토 범위·실행 결과는 JPA 설계 반영 검토에 별도로 기록한다.
+
+2026-10-16 D-096: SYSTEM-DESIGN 1.1 / DOMAIN-MODEL 1.3의 JPA 엔티티·도메인 통합 및 Spring Data Repository 구조를 채택했다. 현재 manifest는 아키텍처 개정 1.1이며 계약 0.1.0의 OpenAPI·이벤트 bytes와 의미는 그대로다. [이전 sealed manifest](approved-baseline-0.1.0.json)는 D-095 승인 이력으로 보존한다. [ADR-006](../docs/decisions/adr/ADR-006-JPA-DOMAIN-ENTITIES.md)과 [적용 계획](../docs/implementation/JPA-ADOPTION-PLAN.md)을 따르며 JPA/DDL 런타임은 NOT_RUN이다.
 
 ## 1. 공식 원본과 읽는 순서
 
@@ -20,7 +22,7 @@
 | HTTP 경로·메서드·보안 요구·상태 코드·요청/응답·오류 코드·전체 JSON 스키마·예제 | [openapi.yaml](openapi.yaml). 이벤트 payload도 이 파일의 스키마를 참조 |
 | SSE 프레임·이벤트 의미·순서·중복·커서·재생·재동기화 절차 | [auction-events.md](auction-events.md). 필드 스키마를 별도로 복제하지 않음 |
 | 계약 채택·버전·소유자·변경 절차 | [ADR-005](../docs/decisions/adr/ADR-005-CONTRACT-BASELINE.md) |
-| 현재 승인 범위·대상 파일·SHA-256 | [approved-baseline-0.1.0.json](approved-baseline-0.1.0.json). 승인 전 review-baseline과 구별 |
+| 현재 승인 범위·대상 파일·SHA-256 | [approved-baseline-0.1.0-architecture-1.1.json](approved-baseline-0.1.0-architecture-1.1.json). 승인 전 review-baseline과 구별 |
 | 모듈·트랜잭션·실행 구조 | [SYSTEM-DESIGN](../docs/architecture/SYSTEM-DESIGN.md) |
 | 요구사항·인수 조건 / 승인 이력·현재 OPEN | [MVP-PRD](../docs/product/MVP-PRD.md) / [DECISION-LOG](../docs/decisions/DECISION-LOG.md) |
 | 불변식·업무 책임 / 실험 관측 | [DOMAIN-MODEL](../docs/architecture/DOMAIN-MODEL.md) / [SPIKE-001](../docs/spikes/SPIKE-001.md) |

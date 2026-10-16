@@ -1,0 +1,240 @@
+{
+  "status": "USER_APPROVED",
+  "sealingState": "SEALED",
+  "approvalDecision": "D-096",
+  "approvedOn": "2026-10-16",
+  "approvedBy": "user",
+  "contractVersion": "0.1.0",
+  "systemDesignVersion": "1.1",
+  "domainDocumentVersion": "1.3",
+  "createdAtUtc": "2026-10-16T08:19:58.891779+00:00",
+  "approvalRecordSource": "docs/decisions/DECISION-LOG.md",
+  "approvedScope": {
+    "description": "Current system architecture and defined HTTP/event contracts as implementation baseline; remaining OPEN and unverified risks retained. D-096 revises persistence architecture only; HTTP/event definitions remain unchanged.",
+    "operations": [
+      "getCsrfToken",
+      "getSession",
+      "logout",
+      "registerMember",
+      "verifyEmail",
+      "login",
+      "requestPasswordReset",
+      "completePasswordReset",
+      "listPublicRounds",
+      "getPublicRound",
+      "listPublishedLots",
+      "getPublishedLot",
+      "getPublishedPhoto",
+      "getPublicAuction",
+      "getAuctionSnapshot",
+      "subscribeAuctionEvents",
+      "getListingContext",
+      "listMyLots",
+      "createLot",
+      "getMyLot",
+      "updateLot",
+      "listMyParticipations",
+      "uploadPhoto",
+      "getOwnedPhoto",
+      "cancelOwnLot",
+      "getMyActionRequest",
+      "registerBidIntent",
+      "getCurrentBidIntent",
+      "submitBid",
+      "getBidRequest",
+      "acknowledgeBidOutcome",
+      "getTradeContact",
+      "listOperatorRounds",
+      "createRound",
+      "getOperatorRound",
+      "updateRoundSchedule",
+      "updateRoundLanes",
+      "updateRoundTiming",
+      "cancelRound",
+      "getOperatorLane",
+      "pauseLane",
+      "resumeLane",
+      "confirmRecovery",
+      "cancelCurrentAuction",
+      "getOperatorCommand"
+    ],
+    "perOperationRule": "Only the explicitly defined parts of each listed operation. x-open-decisions and deferred surfaces remain excluded from policy completion.",
+    "wireSchemasSource": "contracts/openapi.yaml",
+    "eventSemanticsSource": "contracts/auction-events.md",
+    "architectureSource": "docs/architecture/SYSTEM-DESIGN.md",
+    "acceptedDecisions": [
+      "ADR-001",
+      "ADR-002",
+      "ADR-003",
+      "ADR-004",
+      "ADR-005",
+      "ADR-006"
+    ]
+  },
+  "excludedScope": [
+    "Unselected values and policy proposals under remaining OPEN, CR-04 through CR-10 and SEC-01 through SEC-04",
+    "Deferred endpoints or additional private/admin access",
+    "Completeness or correctness of unfinished effective-transition and old-transaction authority mechanisms",
+    "Exact library versions, DDL/indexes/classes/SQL algorithms and unselected runtime configuration",
+    "Runtime concurrency, security, recovery, browser, load, deployment or production guarantees",
+    "Actual JPA dependency/entity/schema conversion and completion of JPA-specific runtime verification"
+  ],
+  "reviewedSource": {
+    "manifest": "contracts/approved-baseline-0.1.0.json",
+    "sha256": "1f3f6d5be1896304b5d72ede521717d6ff6440f7b10a84ff338e3bd6d3b2d795",
+    "contractVersion": "0.1.0",
+    "systemDesignVersion": "1.0"
+  },
+  "approvalTransitionCheck": {
+    "scope": "PERSISTENCE_ARCHITECTURE_REVISION",
+    "approvalDecision": "D-096",
+    "contractVersionUnchanged": true,
+    "openApiBytesUnchanged": true,
+    "eventSemanticsBytesUnchanged": true,
+    "openAndDeferredUnchanged": true,
+    "runtimeVerification": "NOT_RUN",
+    "reviewReport": "docs/implementation/JPA-PLAN-REVIEW-2026-10-16.md"
+  },
+  "approvedFiles": [
+    {
+      "path": "docs/architecture/SYSTEM-DESIGN.md",
+      "sha256": "44ace300919f4b6159e59761233132ec100c5490c3bf2386fd6d293efe5971c0"
+    },
+    {
+      "path": "docs/decisions/CONTRACT-REVIEW-001.md",
+      "sha256": "29ebd65885b4333e0b74ec1563c6c705466903edca6af93d4718b7b15e9749c4"
+    },
+    {
+      "path": "contracts/openapi.yaml",
+      "sha256": "4cad0ae25cb48ef7891176594093374ae5007587d28ac5563fc644e21aaa527d"
+    },
+    {
+      "path": "contracts/auction-events.md",
+      "sha256": "09ed2876d0bf0db82f6802623ff18451d14f9afb87e1cc22ef4b43a0776130e4"
+    },
+    {
+      "path": "contracts/README.md",
+      "sha256": "7cf5f590a34e9d872c245214b53835dd6cc0b8871abfdd0c2ac3533e36995f4a"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-001-TRANSITION-TIME.md",
+      "sha256": "2f7bcf49d7eb3b3a5cbd4d5f49c6b2ecd00ce26fec9524dce53858038dc9c275"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-002-DURABLE-RECEIPT-AND-ORDERING.md",
+      "sha256": "0a0ce8f5303e0b9f50af9fa60f985f9c601ae59d464ea722a4ff902d21c07309"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-003-FAILURE-AUTHORITY-AND-RECOVERY.md",
+      "sha256": "58bf271f5712e7eb99fdd0a13635fe074b7e985abe6153a4730a5f892d38bd26"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-004-MVP-STRUCTURE.md",
+      "sha256": "6715fa40e5cd36c9a7e24293ed1f2a0def764654ea7a419a36c4ffa54ce5b764"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-005-CONTRACT-BASELINE.md",
+      "sha256": "69d7d004d9bdc677c486845e09523e0fa71f5cfdab660af59a1469f1f82bbec1"
+    },
+    {
+      "path": "docs/decisions/adr/README.md",
+      "sha256": "d8e177a19f2551254d2e09b0f30397195e86864bb3fbed997c1fde794f5b07a2"
+    },
+    {
+      "path": "docs/decisions/adr/ADR-006-JPA-DOMAIN-ENTITIES.md",
+      "sha256": "4b1446870ae22149f2e70034a094504d6e6c790fbad335ff5750117816ca638c"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "docs/product/MVP-PRD.md",
+      "sha256": "c7ba619580a90836190a453ec3904b93ca5ebb306ceecdf7a54871f12663cbf9"
+    },
+    {
+      "path": "docs/product/AUCTION-RULES.md",
+      "sha256": "9abaeee9f8a893ecf7c691ed05457b964a5fe5dc65bd4cd7292a48f19e93ddc6"
+    },
+    {
+      "path": "docs/architecture/DOMAIN-MODEL.md",
+      "sha256": "3fa960f5f263d8e343c6cd0f443da040ca5e7a300f318728006699bfac4a9b1a"
+    },
+    {
+      "path": "docs/spikes/SPIKE-001.md",
+      "sha256": "4bb990cdb73a601e0d7a28869ebd7538272af8ca2207e1d6b1cbdc2f417a28a8"
+    },
+    {
+      "path": "docs/decisions/DECISION-LOG.md",
+      "sha256": "739f6c26004238d7ccbbb9ecee66dd506ad31cb22b06bad797e414fa04d519d0"
+    },
+    {
+      "path": "docs/product/PRODUCT-BRIEF.md",
+      "sha256": "9b3ad1287ee1cbf6494718ad48d2612dde0a7cd08e975e5419771d84b168c7a9"
+    }
+  ],
+  "staticEvidenceFiles": [
+    {
+      "path": "contracts/validate_contracts.py",
+      "sha256": "6628b08c928564caa61b83dcdc251da1cb0924f95334e32084faba84bdaaa47e"
+    },
+    {
+      "path": "contracts/requirements-validation.txt",
+      "sha256": "74caff813759a4e51ce945174e2c76d861403c4bfd8410409c7ea85aa1bfbbeb"
+    },
+    {
+      "path": "contracts/validation-report.json",
+      "sha256": "1267dedf61496e8b122865b0f65520526350fbc6f46c0e1dd3ff444d7d30c8ab"
+    }
+  ],
+  "remainingOpenDecisions": [
+    "OPEN-01",
+    "OPEN-05",
+    "OPEN-06",
+    "OPEN-07",
+    "OPEN-09",
+    "OPEN-10",
+    "OPEN-12",
+    "OPEN-02",
+    "OPEN-08",
+    "OPEN-13",
+    "OPEN-14"
+  ],
+  "contractStaticVerification": "PASS",
+  "independentDocumentReview": "NOT_RUN_FOR_ARCHITECTURE_REVISION",
+  "runtimeVerification": "NOT_RUN",
+  "gitHead": "915f495d60e1238cfbe12c3ccfaf804bf3b65622",
+  "workingTreeHasUncommittedChanges": true,
+  "changeRule": "Do not overwrite a sealed approved baseline after semantic or scope changes. Follow ADR-005, assign a new baseline and preserve the predecessor.",
+  "integrityRule": "approvedFiles hashes identify the exact approved document bytes. sourceFiles and staticEvidenceFiles hashes identify the approval-time snapshots; later evidence reruns do not by themselves change wire meaning. Any semantic/scope delta follows ADR-005 with a new matching baseline.",
+  "documentStructureVerification": {
+    "scope": "DOCUMENT_STRUCTURE_ONLY",
+    "status": "PASS",
+    "markdownFiles": 17,
+    "localLinks": 228,
+    "anchorsOrJsonPointers": 33,
+    "tables": 159,
+    "canonicalIds": {
+      "AC": 136,
+      "D": 95,
+      "R": 52,
+      "INV": 51,
+      "TS": 83,
+      "TV": 10
+    },
+    "operationScopeMapping": "PASS"
+  },
+  "sealedAtUtc": "2026-10-15T08:58:03.256300+00:00",
+  "architectureApprovalDecision": "D-096",
+  "contractApprovalDecision": "D-095",
+  "originalContractApprovedOn": "2026-10-15",
+  "predecessor": {
+    "manifest": "contracts/approved-baseline-0.1.0.json",
+    "sha256": "1f3f6d5be1896304b5d72ede521717d6ff6440f7b10a84ff338e3bd6d3b2d795"
+  },
+  "architectureApprovalSource": {
+    "userInstruction": "매퍼없이 순수 도메인모델말고 엔티티랑 혼용해서 사용해줘. repository는 Spring Data Repository를 사용해줘.",
+    "followupInstruction": "수정해줘",
+    "record": "docs/decisions/DECISION-LOG.md#영속-모델repository-변경-2026-10-16",
+    "decision": "docs/decisions/adr/ADR-006-JPA-DOMAIN-ENTITIES.md",
+    "scope": "Domain entities with JPA mappings; direct Spring Data Repository use; no duplicate persistence model, mapper, or pass-through CRUD adapter. Document BIGINT adoption and query/transaction plan. Runtime conversion remains planned."
+  }
+}

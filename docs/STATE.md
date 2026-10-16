@@ -8,6 +8,8 @@
 
 M-01 착수 입력은 제품 1.6 / DOMAIN 1.2 / SYSTEM 1.0 / DECISION 1.8 / 계획·QA 0.5 / 계약 0.1.0이다. 보호 파일 20개 strict-evidence PASS, 승인 원본과 manifest 불변. 현재 계획·QA 0.7은 M-01 실행 기록과 M-02 인계 안내를 갱신한 문서이며 새로운 정책 승인이 아니다.
 
+2026-10-16 D-096 추가: 업무 JPA 엔티티·Spring Data Repository를 직접 사용하는 구조와 [적용 계획](implementation/JPA-ADOPTION-PLAN.md)을 반영했다. SYSTEM 1.1 / DOMAIN 1.3 / DECISION 1.9 / 계약 0.1.0이며 이전 sealed 기준선은 보존한다. 실제 의존성·BIGINT DDL·JPA 업무 저장은 PLANNED / NOT_RUN이다. 이번 정적 검토는 [설계 반영 검토](implementation/JPA-PLAN-REVIEW-2026-10-16.md)로 연결한다.
+
 ## 작업 현황
 
 제품 구현 활성 **0/2**, **T-001~004 모두 MERGED**. M-02 인계 문서는 준비됐으며 관련 정책 결정·계약 구체화부터 시작한다. M-02 기능 구현 READY는 아직 아니다.
