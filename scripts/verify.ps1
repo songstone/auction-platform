@@ -10,8 +10,15 @@ $originalJavaHome = $env:JAVA_HOME
 $originalPath = $env:PATH
 $originalPythonEncoding = $env:PYTHONIOENCODING
 $originalLocation = Get-Location
+. (Join-Path $PSScriptRoot 'verification-environment.ps1')
+$removedVerificationEnvironment = Clear-VerificationEnvironment
 try {
     Set-Location $repoPath
+    New-Item -ItemType Directory -Force (Join-Path $repoPath '.artifacts') | Out-Null
+    @{ status = 'ISOLATED'; removedNames = @($removedVerificationEnvironment.Keys | Sort-Object); valuesRecorded = $false } |
+        ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $repoPath '.artifacts/verification-environment.json')
+    & $PythonExe -X utf8 scripts/test-verification-environment.py
+    if ($LASTEXITCODE -ne 0) { throw 'Verification environment isolation probe failed.' }
     & $PythonExe -X utf8 scripts/check-approved-baseline.py --strict-evidence
     if ($LASTEXITCODE -ne 0) { throw 'Approved baseline drift; use the contract change procedure.' }
     & $PythonExe -X utf8 scripts/test-baseline-guard.py
@@ -62,5 +69,6 @@ try {
     $env:JAVA_HOME = $originalJavaHome
     $env:PATH = $originalPath
     $env:PYTHONIOENCODING = $originalPythonEncoding
+    Restore-VerificationEnvironment $removedVerificationEnvironment
     Set-Location $originalLocation
 }

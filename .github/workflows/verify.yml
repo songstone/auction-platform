@@ -99,7 +99,7 @@ jobs:
           path: frontend/dist/
       - run: python scripts/verify-integration.py --skip-build
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && hashFiles('.artifacts/integration/**/SAFE_TO_UPLOAD') != ''
         with:
           name: public-round-integration-evidence
           path: |

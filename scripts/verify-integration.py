@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -22,6 +23,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import ProxyHandler, build_opener
 import uuid
 import zipfile
+from verification_environment import blocked, isolated_environment
 
 import yaml
 
@@ -37,6 +39,8 @@ def require(condition: bool, message: str) -> None:
 
 def run(command: list[str], *, cwd: Path = ROOT, env: dict | None = None,
         stdin: str | None = None, timeout: int = 600, log: Path | None = None) -> str:
+    if env is None:
+        env = isolated_environment(os.environ.copy())
     process = subprocess.Popen(command, cwd=cwd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace",
                                creationflags=subprocess.CREATE_NO_WINDOW if IS_WINDOWS else 0,
@@ -156,7 +160,9 @@ def main() -> int:
                      "status": "FAIL", "baseCommit": run(["git", "rev-parse", "HEAD"]), "checks": [],
                      "browserRuns": [], "httpRuns": [], "notRun": ["authentication_sessions", "bidding",
                      "official_receipt_order", "SSE", "performance_acceptance", "production_readiness"]}
-    environment = os.environ.copy()
+    environment = isolated_environment(os.environ.copy())
+    summary["environmentIsolation"] = {"removedNames": sorted(name for name in os.environ if blocked(name)),
+                                       "valuesRecorded": False, "scope": "all child builds/tests/apps"}
     environment["JAVA_HOME"] = str(java_home)
     environment["PATH"] = str(java_home / "bin") + os.pathsep + environment["PATH"]
     backend = frontend = recovery_process = None
@@ -177,26 +183,28 @@ def main() -> int:
                                   "node": run([node, "--version"]), "npm": run([npm, "--version"]),
                                   "docker": run(["docker", "info", "--format", "{{.ServerVersion}}"], timeout=30),
                                   "viewports": [1280, 390], "databaseScope": "runner-owned disposable only"}
-        version = subprocess.run([java, "-version"], capture_output=True, text=True, check=True)
+        version = subprocess.run([java, "-version"], env=environment, capture_output=True, text=True, check=True)
         java_description = version.stdout + version.stderr
         if 'version "25.' not in java_description or "Corretto" not in java_description:
             raise RuntimeError("Corretto 25 is required for the integration runtime")
         (artifacts / "java-version.log").write_text(java_description, encoding="utf-8")
         run(["docker", "info", "--format", "{{.ServerVersion}}"], timeout=30)
         run([sys.executable, "scripts/check-approved-baseline.py", "--strict-evidence"], log=artifacts / "baseline.log")
+        run([sys.executable, "scripts/test-verification-environment.py"], env=environment, log=artifacts / "environment-isolation.log")
         if not args.skip_build:
             gradle = [str(ROOT / "backend/gradlew.bat")] if IS_WINDOWS else ["bash", "./gradlew"]
             run(gradle + ["--no-daemon", "--console=plain", "clean", "build", "integrationTest"],
                 cwd=ROOT / "backend", env=environment, log=artifacts / "backend-build.log")
-            run([npm, "ci", "--no-fund", "--no-audit"], cwd=ROOT / "frontend", log=artifacts / "npm-ci.log")
-            run([npm, "test"], cwd=ROOT / "frontend", log=artifacts / "frontend-test.log")
-            run([npm, "run", "build"], cwd=ROOT / "frontend", log=artifacts / "frontend-build.log")
+            run([npm, "ci", "--no-fund", "--no-audit"], cwd=ROOT / "frontend", env=environment, log=artifacts / "npm-ci.log")
+            run([npm, "test"], cwd=ROOT / "frontend", env=environment, log=artifacts / "frontend-test.log")
+            run([npm, "run", "build"], cwd=ROOT / "frontend", env=environment, log=artifacts / "frontend-build.log")
         jar = ROOT / "backend/build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar"
         if not jar.is_file() or not (ROOT / "frontend/dist/index.html").is_file():
             raise RuntimeError("Build the backend and frontend before using --skip-build")
         summary["jarSha256"] = hashlib.sha256(jar.read_bytes()).hexdigest()
         summary["frontendDist"] = dist_fingerprint()
-        summary["buildInput"] = "same-workflow-artifacts" if os.environ.get("GITHUB_ACTIONS") else "local-current-checkout"
+        summary["buildInput"] = ("same-workflow-artifacts" if os.environ.get("GITHUB_ACTIONS") else
+                                 "prebuilt-artifacts-caller-responsibility" if args.skip_build else "built-in-this-run-from-clean-checkout")
         summary["environment"]["playwright"] = run([node, str(ROOT / "frontend/node_modules/playwright/cli.js"), "--version"])
         markers = [b"discovery-hidden-no-fact", b"discovery-000", b"QA/", b"DEV_CONTRACT_PREVIEW_ONLY"]
         with zipfile.ZipFile(jar) as archive:
@@ -230,7 +238,7 @@ def main() -> int:
         def wait_database() -> None:
             deadline = time.monotonic() + 45
             while time.monotonic() < deadline:
-                ready = subprocess.run(["docker", "exec", container, "pg_isready", "-U", "auction_test", "-d", "auction_test"], capture_output=True)
+                ready = subprocess.run(["docker", "exec", container, "pg_isready", "-U", "auction_test", "-d", "auction_test"], capture_output=True, timeout=5)
                 if ready.returncode == 0:
                     return
                 time.sleep(0.5)
@@ -249,9 +257,7 @@ def main() -> int:
             ui_port = free_port()
         api_url, ui_url = f"http://127.0.0.1:{api_port}", f"http://127.0.0.1:{ui_port}"
         ports = [api_port, ui_port]
-        app_env = {key: value for key, value in environment.items()
-                   if not key.startswith(("SPRING_", "DB_", "SERVER_", "MANAGEMENT_", "MAIL_", "PHOTO_"))
-                   and key not in ("JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS")}
+        app_env = environment.copy()
         app_env.update(SERVER_ADDRESS="127.0.0.1", SERVER_PORT=str(api_port))
 
         def http_check(phase: str, label: str | None = None, cursor_file: Path | None = None) -> None:
@@ -435,22 +441,54 @@ def main() -> int:
                                       "anonymousVolumes": volumes, "listenerPortsClosed": not cleanup_errors}
         # Scan captured application/runner artifacts, including browser trace members, for the actual injected secret.
         leaks = []
+        scan_errors = []
+        safe_to_upload = True
         needles = [b"qa-do-not-log-cursor"] + ([password.encode()] if password else [])
+        def redact(payload: bytes) -> bytes:
+            for needle in needles:
+                payload = payload.replace(needle, b"[REDACTED]")
+            return payload
+        # Error text is also an artifact; sanitize before serializing or printing the final summary.
+        safe_summary = redact(json.dumps(summary, ensure_ascii=False).encode("utf-8"))
+        if safe_summary != json.dumps(summary, ensure_ascii=False).encode("utf-8"):
+            leaks.append("summary.json")
+            summary = json.loads(safe_summary)
         for directory in [artifacts, *browser_directories]:
             for path in directory.rglob("*"):
                 if not path.is_file():
                     continue
-                payloads = [path.read_bytes()]
-                if path.suffix == ".zip":
-                    try:
+                raw = path.read_bytes()
+                try:
+                    if path.suffix == ".zip":
                         with zipfile.ZipFile(path) as archive:
-                            payloads += [archive.read(name) for name in archive.namelist()]
-                    except (OSError, zipfile.BadZipFile):
-                        cleanup_errors.append("ArtifactScanIncomplete")
-                if any(needle in payload for payload in payloads for needle in needles):
-                    leaks.append(path.relative_to(ROOT).as_posix())
-        summary["secretScan"] = {"status": "FAIL" if leaks else "PASS", "leakingFiles": leaks,
-                                  "scope": "captured logs/HTTP reports/browser artifacts including trace contents"}
+                            entries = [(entry, archive.read(entry)) for entry in archive.infolist()]
+                            comment = archive.comment
+                        changed = any(redact(payload) != payload for _, payload in entries) or redact(comment) != comment
+                        if changed:
+                            rewritten = io.BytesIO()
+                            with zipfile.ZipFile(rewritten, "w") as archive:
+                                for entry, payload in entries:
+                                    archive.writestr(entry, redact(payload))
+                                archive.comment = redact(comment)
+                            path.write_bytes(rewritten.getvalue())
+                    else:
+                        changed = redact(raw) != raw
+                        if changed:
+                            path.write_bytes(redact(raw))
+                    if changed:
+                        leaks.append(path.relative_to(ROOT).as_posix())
+                except (OSError, zipfile.BadZipFile):
+                    cleanup_errors.append("ArtifactScanOrRedactionFailed")
+                    scan_errors.append(path.relative_to(ROOT).as_posix())
+                    # Never let an unscanned/unsanitized owned artifact reach always-upload.
+                    try:
+                        path.unlink()
+                    except OSError:
+                        safe_to_upload = False
+        summary["secretScan"] = {"status": "FAIL" if leaks or scan_errors else "PASS", "leakingFiles": leaks,
+                                  "scanFailures": scan_errors,
+                                  "scope": "captured logs/HTTP reports/browser artifacts including trace contents and summary",
+                                  "detectedValuesRedacted": bool(leaks), "safeToUpload": safe_to_upload}
         summary["cleanup"] = "PASS" if not cleanup_errors else cleanup_errors
         if cleanup_errors:
             summary["status"] = "FAIL"
@@ -461,12 +499,15 @@ def main() -> int:
             record = next(item for item in summary["browserRuns"] if item["phase"] == "recovery")
             if record["status"] == "NOT_RUN":
                 record.update(status="FAIL", executedCases=browser_cases(json.loads((recovery_output / "report.json").read_text(encoding="utf-8"))))
+        summary = json.loads(redact(json.dumps(summary, ensure_ascii=False).encode("utf-8")))
         (artifacts / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         task_artifacts = ROOT / ".artifacts/tasks/T-003" / run_id
         task_artifacts.mkdir(parents=True, exist_ok=True)
         (task_artifacts / "evidence-index.json").write_text(json.dumps({"candidateCommit": summary["baseCommit"],
             "status": summary["status"], "summary": artifacts.relative_to(ROOT).as_posix() + "/summary.json",
             "browserArtifacts": [path.relative_to(ROOT).as_posix() for path in browser_directories]}, indent=2) + "\n", encoding="utf-8")
+        if safe_to_upload:
+            (artifacts / "SAFE_TO_UPLOAD").write_text("Captured artifacts scanned; any detected known secret redacted and run marked FAIL.\n", encoding="utf-8")
         print(json.dumps(summary, ensure_ascii=False, indent=2))
         print("Evidence: " + str(artifacts.relative_to(ROOT)))
     return 0 if summary["status"] == "PASS" else 1
