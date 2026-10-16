@@ -3,14 +3,7 @@ import { createRoundLoader } from './round-client.ts';
 import type { RoundError, RoundState } from './round-client.ts';
 import { formatSeoul } from './round-contract.ts';
 import type { PublicRound } from './round-contract.ts';
-
-const labels: Record<PublicRound['status'], { label: string; description: string }> = {
-  PUBLISHED: { label: '공개 · 시작 전', description: '공개된 회차입니다. 경매 시작을 기다리고 있습니다.' },
-  WAITING: { label: '시작 대기', description: '예약 시각이 지났으며 시작 조건을 기다리고 있습니다.' },
-  ACTIVE: { label: '진행 중', description: '시작된 회차입니다. 개별 레인의 중단·보류 상태는 이 화면에 표시되지 않습니다.' },
-  COMPLETED: { label: '종료', description: '회차의 경매 진행이 종료되었습니다.' },
-  CANCELLED: { label: '취소', description: '취소된 회차입니다.' },
-};
+import { roundStatusLabels } from './round-presentation.ts';
 
 const errors: Record<RoundError, { title: string; message: string }> = {
   'not-found': { title: '회차를 찾을 수 없습니다.', message: '회차가 없거나 아직 공개되지 않았습니다. 전달받은 링크를 확인해 주세요.' },
@@ -25,7 +18,7 @@ function TimeValue({ value, empty }: { value: string | null; empty: string }) {
 }
 
 function RoundDetails({ round, refresh }: { round: PublicRound; refresh: () => void }) {
-  const status = labels[round.status];
+  const status = roundStatusLabels[round.status];
   return <>
     <section className="round-hero panel" aria-labelledby="round-title">
       <div className="round-hero-top"><span className="badge">{status.label}</span><button type="button" onClick={refresh}>새로고침</button></div>

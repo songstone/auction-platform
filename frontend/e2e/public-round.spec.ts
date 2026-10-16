@@ -46,14 +46,33 @@ if (phase === 'up') {
     });
   }
 
-  test('entry without a round link makes no API request', async ({ page }) => {
-    const requests: string[] = [];
-    page.on('request', (request) => { if (new URL(request.url()).pathname.startsWith('/api/')) requests.push(request.url()); });
-    await page.goto('/');
-    await expect(page.getByRole('heading', { name: '회차 링크로 접속해 주세요.' })).toBeVisible();
-    await page.waitForLoadState('networkidle');
-    expect(requests).toEqual([]);
-  });
+  for (const width of [1280, 390]) {
+    test(`entry discovers a real round and supports detail, reload, list return and history at ${width}px`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width, height: 844 });
+      const list = page.waitForResponse((response) => new URL(response.url()).pathname === '/api/v1/rounds');
+      await page.goto('/');
+      const received = await list;
+      expect(received.status()).toBe(200);
+      expect(received.headers()['cache-control']).toBe('no-store');
+      await expect(page.getByRole('heading', { name: '공개 회차 목록', exact: true })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'demo-round', exact: true })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'demo-hidden', exact: true })).toHaveCount(0);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      await page.screenshot({ path: testInfo.outputPath(`round-list-${width}.png`), fullPage: true });
+      await page.getByRole('link', { name: 'demo-round', exact: true }).click();
+      await expect(page).toHaveURL(/\?roundId=demo-round$/);
+      await expect(page.getByTestId('round-version')).toHaveText('9007199254740993');
+      await page.reload();
+      await expect(page.getByTestId('lane-count')).toHaveText('4개 레인');
+      await page.goBack();
+      await expect(page.getByRole('heading', { name: '공개 회차 목록', exact: true })).toBeVisible();
+      await page.goForward();
+      await expect(page.getByTestId('lane-count')).toHaveText('4개 레인');
+      await page.getByRole('link', { name: '← 공개 회차 목록', exact: true }).click();
+      await expect(page.getByRole('link', { name: 'demo-round', exact: true })).toBeVisible();
+      await expect(page).toHaveURL(/\/$/);
+    });
+  }
 
   test('mobile viewport shows public state and permits refresh without horizontal overflow', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -70,7 +89,7 @@ if (phase === 'up') {
 
   test('production bundle does not expose the development contract preview', async ({ page }) => {
     await page.goto('/?preview=contract');
-    await expect(page.getByRole('heading', { name: '회차 링크로 접속해 주세요.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '공개 회차 목록', exact: true })).toBeVisible();
     await expect(page.locator('[data-preview]')).toHaveCount(0);
     await expect(page.getByRole('link', { name: '개발용 계약 예제 열기' })).toHaveCount(0);
   });

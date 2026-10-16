@@ -1,6 +1,7 @@
 import type { components } from '../generated/api.d.ts';
 
 export type PublicRound = components['schemas']['PublicRoundState'];
+export type PublicRoundPage = components['schemas']['PublicRoundPage'];
 export type Problem = components['schemas']['Problem'];
 
 export class InvalidResponse extends Error {
@@ -37,9 +38,9 @@ export function isUtcInstant(value: unknown): value is string {
 
 const statuses = { PUBLISHED: true, WAITING: true, ACTIVE: true, COMPLETED: true, CANCELLED: true } satisfies Record<PublicRound['status'], true>;
 
-export function parsePublicRound(value: unknown, requestedId: string): PublicRound {
+export function parsePublicRound(value: unknown, requestedId?: string): PublicRound {
   const round = closedObject(value, ['roundId', 'roundVersion', 'status', 'recruitmentOpensAt', 'publicationAt', 'scheduledStartsAt', 'actualStartedAt', 'completedAt', 'cancelledAt', 'laneCount', 'durations', 'durationsFrozen']);
-  requireValue(isOpaqueId(round.roundId) && round.roundId === requestedId);
+  requireValue(isOpaqueId(round.roundId) && (requestedId === undefined || round.roundId === requestedId));
   requireValue(typeof round.roundVersion === 'string' && /^(0|[1-9][0-9]*)$/.test(round.roundVersion));
   requireValue(typeof round.status === 'string' && Object.hasOwn(statuses, round.status));
   for (const field of ['recruitmentOpensAt', 'publicationAt', 'scheduledStartsAt']) requireValue(isUtcInstant(round[field]));
@@ -50,6 +51,14 @@ export function parsePublicRound(value: unknown, requestedId: string): PublicRou
   // Safe integer is a JS representation check, not an approved product duration limit.
   for (const duration of Object.values(durations)) requireValue(typeof duration === 'number' && Number.isSafeInteger(duration));
   return value as PublicRound;
+}
+
+export function parsePublicRoundPage(value: unknown): PublicRoundPage {
+  const page = closedObject(value, ['items', 'nextCursor']);
+  requireValue(Array.isArray(page.items));
+  for (const item of page.items) parsePublicRound(item);
+  requireValue(page.nextCursor === null || isOpaqueId(page.nextCursor));
+  return value as PublicRoundPage;
 }
 
 const problemCodes = {
