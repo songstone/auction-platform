@@ -10,11 +10,12 @@
 | [작업 계획](docs/implementation/IMPLEMENTATION-PLAN.md) | BE·FE·QA 작업 카드와 의존성 |
 | [QA 계획](docs/implementation/QA-PLAN.md) | 검증 종류와 실제 증거의 구분 |
 | [초기 골격 실행 이력](docs/implementation/FOUNDATION-VERIFICATION.md) | 최초 Maven 골격의 실행·미실행 범위 |
-| [Gradle 전환 검증](docs/implementation/GRADLE-MIGRATION-VERIFICATION.md) | 현재 백엔드 빌드 전환의 실행·미실행 범위 |
+| [Gradle 전환 실행 이력](docs/implementation/GRADLE-MIGRATION-VERIFICATION.md) | Spring Boot 3.5.16에서 수행한 빌드 도구 전환의 실행·미실행 범위 |
+| [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md) | 현재 백엔드 기준인 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1의 실행·미실행 범위 |
 
 ## 로컬 실행
 
-Java 25, Node/npm([frontend/package.json](frontend/package.json)의 engines), Python 3.12 이상과 PowerShell 7을 사용한다. Gradle은 백엔드 wrapper로 고정한다. Docker는 로컬 DB·메일을 사용할 때 필요하다. 전역 `java`가 다른 버전이면 `AUCTION_JAVA_HOME` 또는 `-JavaHome`으로 JDK 25를 지정한다. 현재 빌드 전환의 선택 이유·호환 범위·실행 결과는 [Gradle 전환 검증](docs/implementation/GRADLE-MIGRATION-VERIFICATION.md)을 따른다.
+Amazon Corretto 25, Node/npm([frontend/package.json](frontend/package.json)의 engines), Python 3.12 이상과 PowerShell 7을 사용한다. 백엔드는 Spring Boot 4.1.1이며 Gradle 9.8.1을 저장소 Wrapper로 고정한다. Docker는 로컬 DB·메일을 사용할 때 필요하다. 전역 `java`가 다른 버전이면 `AUCTION_JAVA_HOME` 또는 `-JavaHome`으로 Corretto 25 설치 위치를 지정한다. 현재 전환의 선택 이유·호환 범위·실행 결과는 [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)을 따른다.
 
 ```powershell
 # 계약·백엔드·프런트엔드 골격 검증

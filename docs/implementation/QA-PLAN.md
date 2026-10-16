@@ -4,13 +4,14 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.1 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.2 |
 | 입력 | D-095, SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, 공통 계약 0.1.0 |
 | 현재 범위 | 이번 BE/FE/로컬 실행 골격의 검증 범위를 정의하고 후속 기능·정합성·복구 인수 사례를 준비 |
-| 새 실행 상태 | 현재 Gradle 전환의 실제 실행은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md) 참조. 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
+| 새 실행 상태 | Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1 전환의 실제 실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md) 참조. 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
 | 관련 작업 카드 | [IMPLEMENTATION-PLAN](IMPLEMENTATION-PLAN.md) |
 | 초기 골격의 실행 이력 원본 | [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md). 당시 Maven으로 수행한 실제 명령·관측·결과를 보존 |
-| 현재 빌드 도구 전환의 결과 원본 | [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md). Gradle의 실제 명령·관측·결과를 별도로 기록 |
+| Gradle 전환의 실행 이력 원본 | [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md). Spring Boot 3.5.16에서 수행한 실제 명령·관측·결과를 보존 |
+| 현재 Spring Boot 4 전환의 결과 원본 | [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md). 현재 조합의 실제 명령·관측·결과를 별도로 기록 |
 | 승인 경계 | 남은 OPEN·CR-04~10·SEC-01~04 제안값은 미승인. 정의된 계약과 승인 정책을 다시 미정으로 만들지 않음 |
 
 기능 기대값의 원본은 [MVP-PRD](../product/MVP-PRD.md)의 AC이며, 불변식·도메인 사례·기술 주장은 [DOMAIN-MODEL](../architecture/DOMAIN-MODEL.md)의 INV/TS/TV다. API 스키마는 [OpenAPI](../../contracts/openapi.yaml), 전달·복구 의미는 [auction-events](../../contracts/auction-events.md), 현재 미정의 공식 원본은 [DECISION-LOG](../decisions/DECISION-LOG.md)다. 여기서 새 정책이나 성공 응답 스키마를 정의하지 않는다.
@@ -39,7 +40,7 @@
 
 ## 3. 이번 골격의 초기 검증 범위
 
-다음 `FND-*`는 이 QA 계획의 실행 항목 ID이며 제품 AC를 추가하지 않는다. 현재 빌드 도구 전환의 실행·관측·미실행은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md), 초기 Maven 골격 실행은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)을 따른다. 실제 파일명·명령·산출물은 생성한 모듈의 실행 안내와 통합 스크립트에서 가져온다.
+다음 `FND-*`는 이 QA 계획의 실행 항목 ID이며 제품 AC를 추가하지 않는다. 현재 Spring Boot 4 전환의 실행·관측·미실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)을 따른다. 초기 Maven 골격 실행은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md), Spring Boot 3.5.16의 Gradle 전환은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 실제 파일명·명령·산출물은 생성한 모듈의 실행 안내와 통합 스크립트에서 가져온다.
 
 | 항목 | 실행·관측 | 기대값과 증거 | 제외 범위 |
 | --- | --- | --- | --- |
@@ -53,7 +54,7 @@
 | FND-08 브라우저 미리보기 | 실제 브라우저에서 고정 fixture 미리보기 진입 | fixture 표시, 공개 상태/유찰 필드 경계, 렌더링·콘솔 오류 관측을 기록 | 실제 서버 연동·반응형 전체·지원 브라우저 인수 아님. 브라우저 미실행이면 NOT_RUN |
 | FND-09 문서 추적 | 두 계획 UTF-8·로컬 링크·표·AC/INV/TS 참조·공백 | 참조한 공식 ID 존재, 카드와 QA 범위 연결, 오래된 PASS 전용 방지 | 제품 실행 검증 아님 |
 
-Gradle 전환에서는 FND-03/04/05를 새 빌드 도구와 `build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar`로 구분해 확인한다. Windows 명령은 `backend/`에서 `.\gradlew.bat --no-daemon clean build`, Unix 명령은 `bash ./gradlew --no-daemon clean build`다. `build/test-results/test/`의 XML·`build/reports/tests/test/`의 보고서·패키징 JAR 관측을 새 실행에 연결하고 Maven의 과거 보고서/시험 수로 재사용하지 않는다. Boot 3.5.16의 공식 Gradle 7/8 지원 표와 JDK 25 실행에 필요한 Gradle 9.1 이상을 구분하며, 선택한 Gradle 9.8.1의 실제 성공이 Boot의 공식 지원을 확대하지 않는다. 근거와 설정은 [backend 안내](../../backend/README.md)를 따른다.
+Spring Boot 4 전환에서는 FND-03/04/05를 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1과 `build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar`로 구분해 확인한다. Windows 명령은 `backend/`에서 `.\gradlew.bat --no-daemon clean build`, Unix 명령은 `bash ./gradlew --no-daemon clean build`다. `build/test-results/test/`의 XML·`build/reports/tests/test/`의 보고서·패키징 JAR 관측을 새 실행에 연결하고 Maven·Boot 3.5.16의 과거 보고서/시험 수를 현재 결과로 재사용하지 않는다. Boot 4.1.1의 Java·Gradle 공식 지원 범위, 실제 의존성 해석, 기본·로컬 인프라 프로필의 기동 및 HTTP 경계 검증을 구분한다. 근거와 설정은 [backend 안내](../../backend/README.md)를 따른다.
 
 FND-06~08에서 사용하는 금액·시각·상태는 계약의 기존 예제 또는 승인 스키마에 맞는 합성 자료다. 예시 값을 금액 상한·입찰 단위 후보 목록·일정 입력 정밀도·사진 제한·세션 수명으로 채택하지 않는다. 실제 DB가 없는 골격에서도 실행 가능한 검사와 DB가 있어야 하는 검사를 명령/보고에서 구별한다.
 
@@ -161,6 +162,6 @@ R-48/49의 목표는 기존 승인 그대로다. 기본 구성은 4레인·동�
 
 실행물/명령/원시 증거가 없는 항목은 PASS로 바꾸지 않는다. 하나의 버그 수정 뒤 영향 검사를 수행하고, 새 변경·실패·미해결 우려가 없는 상태에서 전체 시험을 반복하는 것을 완료 조건으로 추가하지 않는다.
 
-현재 Gradle 전환의 수행 여부·정확 명령·증거·검사 수·미실행은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 기록하며, 초기 Maven 실행은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)에 이력으로 보존한다. 여기에는 별도의 현재 상태 표나 결과 숫자를 복제하지 않는다. 골격의 실제 DB 연결 관측은 제품 트랜잭션·인증 세션 검증과 구별하고, 개발 fixture의 브라우저 관측도 실제 경매 연동·재접속·장애·성능 인수와 구별한다. 기존 승인 문서/계약 정적 검사와 SPIKE는 기존 범위의 증거이며 새 제품 QA 통과로 합산하지 않는다.
+현재 Spring Boot 4 전환의 수행 여부·정확 명령·증거·검사 수·미실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에 기록하며, 초기 Maven 실행과 Spring Boot 3.5.16의 Gradle 전환은 각각 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)·[GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 여기에는 별도의 현재 상태 표나 결과 숫자를 복제하지 않는다. 골격의 실제 DB 연결 관측은 제품 트랜잭션·인증 세션 검증과 구별하고, 개발 fixture의 브라우저 관측도 실제 경매 연동·재접속·장애·성능 인수와 구별한다. 기존 승인 문서/계약 정적 검사와 SPIKE는 기존 범위의 증거이며 새 제품 QA 통과로 합산하지 않는다.
 
 현재 범위 완료는 FND 실행 결과와 남은 미실행을 구분해 기록하는 것이다. 제품 전체 완료는 구현된 기능별 AC·불변식·경합/복구·권한·브라우저·성능 증거와 미정/제외 범위를 별도로 대조해야 한다. 계약 불일치는 구현에서만 보정하지 않고 [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md)의 변경 절차로 인계한다.

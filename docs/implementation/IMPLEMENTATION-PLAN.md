@@ -4,12 +4,12 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.1 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.2 |
 | 성격 | 구현 작업 분할·의존성·완료 조건. 새 제품 정책이나 계약의 원본이 아님 |
 | 입력 기준선 | SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, DECISION-LOG 1.8, 공통 계약 0.1.0, D-095 |
 | 현재 실행 범위 | BE 패키지·실행/health·아키텍처 검사, FE 계약 생성 타입·개발 전용 고정 fixture 미리보기, 로컬 인프라/실행 도구·승인 해시 무결성 확인, 이 작업 분할·QA 계획 |
 | 후속 기능 범위 | 아래 기능 카드는 계획이다. 이번 골격 생성만으로 구현·연동·제품 인수 완료 처리하지 않음 |
-| 현재 새 검증 | 현재 빌드 도구 전환의 실제 실행·관측·미실행은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md) 참조. 초기 골격·기존 정적 PASS·SPIKE 관측 및 후속 제품 인수와 구별 |
+| 현재 새 검증 | Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1 전환의 실제 실행·관측·미실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md) 참조. 초기 골격·Gradle 전환·기존 정적 PASS·SPIKE 관측 및 후속 제품 인수와 구별 |
 | 남은 결정 | 현행 OPEN, CR-04~10·SEC-01~04의 미승인 제안값, 미완성 전이/장애 메커니즘 유지 |
 
 승인된 설계의 정의된 부분에서 작업을 시작한다. 전체 기능·추가 SPIKE·성능 실험 통과를 골격 작성의 선행조건으로 두지 않는다. 영향 경로에 남은 정책은 그 경로의 구현/인수 전에 결정하고, 기술 위험은 실제 구현과 함께 검증한다. 골격이나 fixture가 그 보장을 제공한다고 보고하지 않는다.
@@ -29,7 +29,8 @@
 | 계약 변경 절차 | [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md) |
 | QA의 증거 분류·우선순위·보류 사례 | [QA-PLAN](QA-PLAN.md) |
 | 초기 골격의 실제 명령·결과·미실행 | [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md). Maven으로 수행한 초기 통합 실행 이력 원본 |
-| 현재 Gradle 전환의 실제 명령·결과·미실행 | [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md). 통합 담당이 기록하는 새 실행 결과 원본 |
+| Gradle 전환의 실제 명령·결과·미실행 | [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md). Spring Boot 3.5.16에서 수행한 빌드 도구 전환 이력 원본 |
+| 현재 Spring Boot 4 전환의 실제 명령·결과·미실행 | [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md). 통합 담당이 기록하는 새 실행 결과 원본 |
 
 담당자는 같은 승인 manifest와 계약 버전을 입력으로 사용한다. 생성 타입·mock·화면 모델은 파생물이며 별도 계약 원본으로 취급하지 않는다. 현재 작업에서 `docs/product/**`, `docs/architecture/**`, `docs/decisions/**`, `contracts/**`를 수정하지 않는다. 기존 검사 재실행 시 봉인된 결과 파일을 덮어쓰지 않고 구현 증거 위치로 출력한다.
 
@@ -82,7 +83,7 @@ BE-50의 공개 DTO 매핑·SSE 어댑터, BE-60의 복구 포트, QA-20의 시�
 | FE | `frontend/**` | 생성 타입·계약 버전 식별·개발 전용 fixture·화면/상태 소비 코드·브라우저 증거 |
 | 통합/인프라 | `infra/**`, `scripts/**`, 루트 개발 설정·실행 안내 | 로컬 의존 서비스·명령·환경 변수 예시·manifest 무결성 검사와 결과 |
 | QA/검토 | 이 계획과 `QA-PLAN.md`; 후속 시험 코드·증거의 위치는 착수 시 소유자와 지정 | 독립 기대값·추적성·증거 목록·미검증/보류 사유 |
-| 통합 결과 기록 | `docs/implementation/FOUNDATION-VERIFICATION.md`, `GRADLE-MIGRATION-VERIFICATION.md` | 초기 골격과 Gradle 전환의 실제 실행을 구분. 계획 작성 담당과 동시 편집하지 않음 |
+| 통합 결과 기록 | `docs/implementation/BOOT4-MIGRATION-VERIFICATION.md` | 현재 Spring Boot 4 전환의 실제 실행 기록. 과거 `FOUNDATION-VERIFICATION.md`·`GRADLE-MIGRATION-VERIFICATION.md`는 당시 이력으로 보존하며 계획 작성 담당과 동시 편집하지 않음 |
 | Contract Owner | 현재 봉인 원본은 읽기 전용 | 계약 불일치의 영향 판단·변경안·승인된 새 기준선 |
 
 BE 카드들은 하나의 `backend/**` 소유 아래 순차 반영하거나, 기능별 패키지/시험 파일의 전담자를 정한 뒤 병렬화한다. 같은 설정·migration·원판정 저장소·공개 DTO 파일을 둘이 동시에 수정하지 않는다. FE의 생성 파일은 생성 명령만으로 변경하고 컴포넌트 담당자가 손으로 필드를 추가하지 않는다. 공통 설정 변경은 통합 담당에게 diff로 인계한다.
@@ -117,7 +118,7 @@ BE 카드들은 하나의 `backend/**` 소유 아래 순차 반영하거나, 기
 
 아직 구현하지 않은 업무 경로에 가짜 `200`·`202`·승인 판정을 넣지 않는다. 선택한 정확 라이브러리 버전은 해당 빌드 파일과 lock/해석 결과에 기록하고 승인 기술 조합과의 호환성을 확인한다.
 
-현재 백엔드 빌드는 Gradle Wrapper 9.8.1·Kotlin DSL이다. `backend/`에서 Windows는 `.\gradlew.bat --no-daemon clean build`, Unix는 `bash ./gradlew --no-daemon clean build`를 사용한다. 실행물은 `backend/build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar`이며 테스트 결과는 `backend/build/test-results/test/`와 `backend/build/reports/tests/test/`다. [backend 실행 안내](../../backend/README.md)의 공식 지원 범위와 실제 검증 구분을 따른다. 이 빌드 도구 전환으로 제품·계약·모듈 책임을 바꾸지 않는다.
+현재 백엔드 실행·빌드 기준은 Amazon Corretto 25·Spring Boot 4.1.1·Gradle Wrapper 9.8.1이며 빌드 선언은 Kotlin DSL이다. `backend/`에서 Windows는 `.\gradlew.bat --no-daemon clean build`, Unix는 `bash ./gradlew --no-daemon clean build`를 사용한다. 실행물은 `backend/build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar`이며 테스트 결과는 `backend/build/test-results/test/`와 `backend/build/reports/tests/test/`다. [backend 실행 안내](../../backend/README.md)의 공식 지원 범위와 실제 검증 구분을 따른다. 이번 Spring Boot 전환의 범위는 기존 골격의 호환성 적용과 검증이며 후속 기반·업무 기능 구현은 별도 카드로 진행한다.
 
 ### FE-00 — 계약 생성 타입과 개발 전용 fixture 미리보기
 
@@ -196,6 +197,6 @@ QA-10의 전체 TS 참조는 이번에 83개를 자동화한다는 범위 선언
 
 ## 10. 이번 실행 결과와 인계
 
-현재 Gradle 전환의 실행 상태·정확 명령·환경·관측·검사 수·미실행은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)이 원본이다. 초기 Maven 실행 이력은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)에 보존한다. 이 계획에는 실행 결과 숫자나 별도의 현재 상태 표를 복제하지 않는다. 후속 기능 카드는 실제 기능 구현·인수 증거가 생기기 전까지 PLANNED / NOT_RUN으로 구분한다.
+현재 Spring Boot 4 전환의 실행 상태·정확 명령·환경·관측·검사 수·미실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)이 원본이다. 초기 Maven 실행 이력은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md), Spring Boot 3.5.16의 Gradle 전환 이력은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 보존한다. 이 계획에는 실행 결과 숫자나 별도의 현재 상태 표를 복제하지 않는다. 후속 기능 카드는 실제 기능 구현·인수 증거가 생기기 전까지 PLANNED / NOT_RUN으로 구분한다.
 
 결과 원본에서는 실행한 대상만 갱신한다. `scripts/check-approved-baseline.py`의 해시 확인, `scripts/verify-contracts.py`의 임시 복사 검사, `scripts/verify.ps1`의 빌드 확인과 실제 앱/브라우저 관측은 각각 판정한다. 로컬 인프라·JDBC 연결·health·개발 미리보기의 관측을 제품 인증 세션·입찰·경합·재접속·장애·성능 인수 통과로 확대하지 않는다. 승인 원본의 과거 NOT_RUN/PASS 기록도 소급 수정하지 않는다.
