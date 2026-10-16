@@ -3,7 +3,9 @@
 - 작성일: 2026-10-16
 - 입력: D-095, 승인 계약 0.1.0 및 저장소의 승인 manifest. 승인 원본과 생성 타입은 변경하지 않았다.
 - 작업 기준: `f5f5a5c3b95e23b63957952237d462b0f58d1416`에서 `feat/public-round-query`로 분기.
-- 검증 대상 커밋·원격 CI: 최종 실행 후 아래에 기록한다.
+- 검증 대상 구현 커밋: `39fb9e147c6e9b04dc5f763f164b6e2c349c4dca`.
+- 원격 실행: [GitHub Actions 38833750047](https://github.com/songstone/auction-platform/actions/runs/38833750047), **SUCCESS**. `contracts`, `backend`, `frontend`, `integration` 4개 작업 모두 성공.
+- 통합 기준 브랜치: `main`. 위 검증 구현과 이 실행 기록을 fast-forward 방식으로 통합한다.
 
 ## 구현 범위
 
@@ -84,7 +86,11 @@ npm run dev
 | 시각 검토 | desktop 1280px / mobile 390px PNG 실제 확인. 잘림·겹침 없고 서울 일정·미시작·4레인·시간 설정·큰 버전 표시 일치 |
 | 정리 | 실행기가 만든 프로세스·컨테이너·임시 DB 볼륨만 종료/삭제. 개발 DB와 분리 |
 
-로컬 전체 명령 `pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\Users\jitin81\.jdks\corretto-25.0.3' -Integration`은 **PASS**다. 위 BE 17개·FE 21개·브라우저 9개에 실패/오류/건너뜀이 없고, 실제 HTTP 6개 및 모든 데이터/정리 검사가 통과했다. `.artifacts/public-round-final-verify.log`, `.artifacts/integration/20261016T100942-9b6d843a/summary.json`, 같은 폴더의 `http-up.json`/`http-down.json` 및 `output/playwright/round-query/20261016T100942-9b6d843a/`에 결과가 남는다. 이 로컬 실행은 위 분기 기준에 현재 변경을 적용한 커밋 전 작업 트리에서 수행했다. JAR SHA-256은 `3d66fd458b77576a114fdf7e7dc578a8e50f65376d947f1943d6c75ac2e18a8d`다. 원격에서는 아래 검증 커밋으로 다시 실행한다.
+로컬 전체 명령 `pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\Users\jitin81\.jdks\corretto-25.0.3' -Integration`은 **PASS**다. 위 BE 17개·FE 21개·브라우저 9개에 실패/오류/건너뜀이 없고, 실제 HTTP 6개 및 모든 데이터/정리 검사가 통과했다. `.artifacts/public-round-final-verify.log`, `.artifacts/integration/20261016T100942-9b6d843a/summary.json`, 같은 폴더의 `http-up.json`/`http-down.json` 및 `output/playwright/round-query/20261016T100942-9b6d843a/`에 결과가 남는다. 이 로컬 실행은 위 분기 기준에 현재 변경을 적용한 커밋 전 작업 트리에서 수행했다. JAR SHA-256은 `3d66fd458b77576a114fdf7e7dc578a8e50f65376d947f1943d6c75ac2e18a8d`다.
+
+원격 GitHub Actions는 구현 커밋 `39fb9e1`을 Ubuntu runner에 checkout해 계약 검사, Corretto 25의 `clean build integrationTest`, FE 설치/검사/빌드, 별도 PostgreSQL·Chromium 통합 실행을 모두 통과했다. 통합 job은 해당 실행의 BE JAR·FE dist artifact를 받아 사용한다. 원격 증거는 위 실행의 `contract-static-report`, `backend-test-reports`, `public-round-integration-evidence` artifact에서 확인한다. 문서 마감 커밋은 이 검증 대상의 애플리케이션·테스트·CI 코드를 변경하지 않는다.
+
+문서의 개발 명령도 별도로 실행했다. `infra/up.ps1` → `scripts/run-backend.ps1 -WithInfrastructure`에서 기존 전용 개발 DB에 V1이 처음 적용되고 앱이 기동했다. `infra/seed-demo.ps1`의 첫 실행은 2행, 두 번째 실행은 0행 추가였으며 실제 HTTP `up` 5/5가 PASS다(`.artifacts/public-round-dev-http.json`). 이후 이번 앱 프로세스와 개발 서비스만 중지했고 DB 볼륨·로컬 비밀번호·합성 2행은 보존했다.
 
 중간 실패도 구별한다. Testcontainers는 digest가 붙은 공식 postgres 이미지의 호환 이름을 명시해야 했고, 첫 초기화 실패 후 해당 선언을 추가해 실제 검사를 수행했다. 첫 브라우저 변경 검사는 실행 도중 fixture를 승인 규칙에 맞게 수정하면서 구 실행기의 레인 변경과 새 기대값이 불일치했다. 이후 입력과 검사를 일치시켰다. 복구 검사에서는 Docker가 재시작 시 자동 할당 포트를 바꾸는 현상을 확인해 생성 시 선택한 임시 포트를 실행 동안 고정했다. 각 실패 실행의 cleanup은 성공했고 최종 검사는 수정본에서 다시 실행했다.
 
