@@ -1,6 +1,6 @@
 # 현재 상태와 다음 마일스톤
 
-> 2026-10-16 M-01 실행 착수: fetch한 `origin/dev=fa4dac5c106cb114c1919aec2bdc6021f79f1958`, clean 및 worktree/환경/strict-evidence PASS 확인 후 T-001 BE A(`/root/be`)·T-002 FE B(`/root/fe`)를 별도 worktree에 배정했다. T-001은 검증·CI 후 dev 통합했고 T-002 실제 연동이 진행 중이다. 구현 활성 1/2. QA C(`/root/qa`)는 선행 통합 전 읽기 전용 기대값 검토만 수행한다. 아래 계획 세션의 조사·승인 이력은 당시 기록이며 최신 실행 상태는 이 문단과 작업 표를 따른다.
+> 2026-10-16 M-01 실행 착수: fetch한 `origin/dev=fa4dac5c106cb114c1919aec2bdc6021f79f1958`, clean 및 worktree/환경/strict-evidence PASS 확인 후 T-001 BE A(`/root/be`)·T-002 FE B(`/root/fe`)를 별도 worktree에 배정했다. T-001/T-002는 실제 검증·CI 후 dev 통합했고 T-003의 독립 검증 READY를 확인했다. 구현 활성 1/2 예정. QA C(`/root/qa`)는 선행 통합 전 읽기 전용 기대값 검토만 수행한다. 아래 계획 세션의 조사·승인 이력은 당시 기록이며 최신 실행 상태는 이 문단과 작업 표를 따른다.
 
 - 관리 책임: Engineering Lead. 구현자는 결과를 제출하고 리드만 상태를 갱신한다.
 - 확인일: 2026-10-16. 이 문서는 실행 현황과 작업 승인 상태를 관리한다. 제품·설계·계약의 원본을 대체하지 않는다.
@@ -37,8 +37,8 @@
 | 작업 | 책임 역할 | 상태 | 실제 시작 커밋 | 검증 커밋 / 통합 커밋 |
 | --- | --- | --- | --- | --- |
 | [T-001](tasks/T-001.md) 공개 회차 목록 API | BE A `/root/be` | MERGED | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | `658a486c1b5bc68e0cc32e92de34f1fe3234061f` / `658a486c1b5bc68e0cc32e92de34f1fe3234061f` |
-| [T-002](tasks/T-002.md) 목록 탐색·상세 이동 화면 | FE B `/root/fe` | IN_PROGRESS (실제 연동) | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | mock `dd622110c518b381b42f6699983f0b03d671b859` / 없음 |
-| [T-003](tasks/T-003.md) 실제 탐색 흐름의 독립 통합 검증 | QA/통합 구현자 C | DRAFT | 선행 병합 후 배정 | 없음 / 없음 |
+| [T-002](tasks/T-002.md) 목록 탐색·상세 이동 화면 | FE B `/root/fe` | MERGED | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | `2720ed4a6cfa84608f842f3b709002ccf5204fc2` / `2720ed4a6cfa84608f842f3b709002ccf5204fc2` |
+| [T-003](tasks/T-003.md) 실제 탐색 흐름의 독립 통합 검증 | QA C `/root/qa` | READY | `2720ed4a6cfa84608f842f3b709002ccf5204fc2` | 신규 독립 검증 대기 / 없음 |
 | [T-004](tasks/T-004.md) 마일스톤 검토·인수·상태 마감 | Engineering Lead | DRAFT | 선행 병합 후 배정 | 없음 / 없음 |
 
 ## 상태 전이와 착수 통제
