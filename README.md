@@ -22,7 +22,6 @@
 | [Gradle 전환 실행 이력](docs/implementation/GRADLE-MIGRATION-VERIFICATION.md) | Spring Boot 3.5.16에서 수행한 빌드 도구 전환의 실행·미실행 범위 |
 | [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md) | 현재 백엔드 기준인 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1의 실행·미실행 범위 |
 | [현재 M-01 탐색 검증](docs/implementation/ROUND-DISCOVERY-VERIFICATION.md) | 목록·상세·동일 화면 복구, 정확 SHA·CI·실패/정리·NOT_RUN |
-| [로컬 Docker 연동 검증](docs/implementation/LOCAL-BACKEND-COMPOSE-VERIFICATION.md) | 백엔드 실행 시 Compose 준비·DB 연결과 실제 실행/미실행 범위 |
 | [기존 공개 회차 상세 검증](docs/implementation/PUBLIC-ROUND-VERIFICATION.md) | 당시 상세 조회의 실행 이력 |
 | [공통 구현 지침](AGENTS.md) | 공유 파일 소유권·마이그레이션·계약·검증 규칙 |
 
@@ -43,13 +42,21 @@
 
 ## 로컬 실행
 
-Amazon Corretto 25, Node/npm([frontend/package.json](frontend/package.json)의 engines), Python 3.12 이상과 PowerShell 7을 사용한다. 백엔드는 Spring Boot 4.1.1이며 Gradle 9.8.1을 저장소 Wrapper로 고정한다. 로컬 DB와 연결하려면 Docker Desktop을 먼저 실행한다. Gradle 실행에는 `JAVA_HOME`, 저장소 PowerShell 실행 도구에는 `AUCTION_JAVA_HOME` 또는 `-JavaHome`으로 Corretto 25 설치 위치를 지정할 수 있다. 현재 전환의 선택 이유·호환 범위·실행 결과는 [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)을 따른다.
-
-**백엔드와 Docker 인프라를 한 번에 실행하려면** 저장소 루트에서 아래 명령을 사용한다. `bootRunLocal`은 현재 소스를 컴파일하고 PostgreSQL·Mailpit 기동과 준비 확인 후 백엔드를 연결한다. DB 이름/사용자는 `auction`이며 비밀번호는 자동 생성·재사용하므로 직접 입력하지 않는다.
+Amazon Corretto 25, Node/npm([frontend/package.json](frontend/package.json)의 engines), Python 3.12 이상과 PowerShell 7을 사용한다. 백엔드는 Spring Boot 4.1.1이며 Gradle 9.8.1을 저장소 Wrapper로 고정한다. Docker는 로컬 DB·메일을 사용할 때 필요하다. 전역 `java`가 다른 버전이면 `AUCTION_JAVA_HOME` 또는 `-JavaHome`으로 Corretto 25 설치 위치를 지정한다. 현재 전환의 선택 이유·호환 범위·실행 결과는 [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)을 따른다.
 
 ```powershell
-$env:JAVA_HOME = 'C:\path\to\jdk-25'
-.\backend\gradlew.bat -p backend --no-daemon bootRunLocal
+# 계약·백엔드·프런트엔드 골격 검증
+pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25'
+
+# Docker를 사용하는 실제 DB/HTTP/Chromium 통합 검증 (개발 DB와 분리)
+pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25' -Integration
+
+# 필요할 때 개발 DB·메일 준비/기동
+pwsh -NoProfile -File infra/up.ps1
+
+# 빌드한 백엔드 실행. DB 연결은 -WithInfrastructure를 지정할 때만 활성화
+pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25'
+pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25' -WithInfrastructure
 
 # 별도 터미널: 백엔드 기동/마이그레이션 완료 후 개발용 예제 회차 추가
 pwsh -NoProfile -File infra/seed-demo.ps1
@@ -59,26 +66,12 @@ Set-Location frontend
 npm ci
 npm run dev
 
-# 앱 종료 후에도 DB·메일은 유지된다. 필요할 때 중지하고 데이터는 보존한다.
+# 개발 DB·메일 중지, 데이터 보존
 Set-Location ..
 pwsh -NoProfile -File infra/stop.ps1
 ```
 
-IntelliJ에서는 저장소 루트를 열고 `backend/build.gradle.kts`를 Gradle 프로젝트로 연결한 뒤 Gradle JVM을 **Amazon Corretto 25**로 지정한다. 제공된 **`Backend (local Docker)`** 실행 구성을 선택하면 같은 `bootRunLocal` 작업을 실행한다. main 클래스 옆 실행 버튼으로 새로 만든 구성은 이 자동 준비 경로를 사용하지 않는다. IDE 화면·디버깅을 포함한 실제 확인 범위는 [로컬 Docker 연동 검증](docs/implementation/LOCAL-BACKEND-COMPOSE-VERIFICATION.md)을 따른다.
-
-이미 빌드한 JAR은 `pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25' -WithInfrastructure`로 실행할 수 있다. 이 명령도 Compose를 자동 기동하고 연결하지만, 먼저 백엔드 빌드가 필요하다. `-WithInfrastructure`를 생략한 기본 프로필은 DB를 연결하지 않으며 회차 조회에는 503을 반환한다.
-
-위 명령은 저장소 루트에서 시작하며 예제 데이터 추가와 프런트엔드는 별도 터미널에서 실행한다. 예제 회차는 2099년 일정의 합성 데이터다. 시각으로 공개 여부를 추정하지 않고 DB에 기록된 실제 공개 여부를 사용한다. DB 비밀번호는 Git에서 제외한 `infra/.runtime/db-password`에 보존한다. 포트를 바꾸려면 `infra/.env.example`을 `infra/.env`로 복사해 수정한다. 실행기는 Compose의 실제 포트를 앱에 전달한다.
-
-검증은 개발 앱 실행과 별도로 수행한다.
-
-```powershell
-# 계약·백엔드·프런트엔드 검사
-pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25'
-
-# 임시 DB·HTTP·Chromium 통합 검증 (개발 DB와 분리)
-pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25' -Integration
-```
+위 명령은 저장소 루트에서 시작하며 서비스는 별도 터미널로 실행한다. `infra/stop.ps1`도 루트에서 실행한다. 예제 회차는 2099년 일정의 합성 데이터다. 시각으로 공개 여부를 추정하지 않고 DB에 기록된 실제 공개 여부를 사용한다. 기본 프로필은 health만 기동 가능하며 회차 조회에는 503을 반환한다. DB 조회에는 `-WithInfrastructure`가 필요하다.
 
 백엔드 실행은 [backend/README](backend/README.md), 프런트엔드 화면은 [frontend/README](frontend/README.md), DB·메일·사진 경로는 [infra/README](infra/README.md)를 따른다. 공개 GET은 익명 접근을 허용하며 그 외 업무 경로는 기본 거부한다. health와 조회 성공은 입찰·실제 인증 세션·운영 readiness의 증거가 아니다.
 
