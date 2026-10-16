@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: auction-platform-backend
+  main:
+    banner-mode: "off"
+  autoconfigure:
+    # The default bootstrap is independent of DB/mail/photo infrastructure.
+    # local-infra explicitly overrides this exclusion and requires DB_PASSWORD.
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+    include-exception: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+      show-components: never
