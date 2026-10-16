@@ -39,6 +39,27 @@ macOS/Linux는 같은 JDK 기준에서 `bash ./gradlew --no-daemon clean build`�
 
 Testcontainers는 Compose 개발 DB와 다른 임시 PostgreSQL 18.6 컨테이너를 생성한다. 고정한 이미지 digest는 개발 인프라와 같다. 시험 종료 때 컨테이너를 정리하며 시험 중 초기화는 이 임시 DB에만 수행한다. 결과는 `build/test-results/integrationTest/`와 `build/reports/tests/integrationTest/index.html`이다. Testcontainers 2.x의 PostgreSQL/JUnit 모듈은 Boot BOM으로 관리하고 정확 버전을 lockfile에 고정한다. [공식 PostgreSQL 모듈](https://java.testcontainers.org/modules/databases/postgres/)
 
+## Docker와 함께 로컬 실행
+
+Docker Desktop을 실행하고 PowerShell 7의 `pwsh`가 PATH에서 실행되는지 확인한다. 백엔드 디렉터리에서 다음 명령을 실행하면 현재 소스 컴파일, 개발용 PostgreSQL·Mailpit 기동과 준비 확인, DB 연결을 함께 수행한다. 별도 JAR 빌드나 DB 비밀번호 입력은 필요하지 않다.
+
+```powershell
+# backend/에서 실행. JAVA_HOME은 Amazon Corretto 25를 가리켜야 한다.
+.\gradlew.bat --no-daemon bootRunLocal
+```
+
+`bootRunLocal`은 `prepareLocalInfrastructure`를 통해 루트의 `infra/up.ps1`을 실행한다. 기본 앱 주소는 `http://127.0.0.1:8080`, DB 이름/사용자는 `auction`이다. 최초 실행에서 `infra/.runtime/db-password`를 생성하고 이후 같은 비밀번호와 데이터 볼륨을 재사용한다. Compose에 실제 배정된 포트와 비밀번호는 앱 프로세스 환경으로 전달한다. `infra/.env`의 포트 변경도 앱 연결에 반영한다. 앱을 종료해도 개발 인프라는 유지되며 저장소 루트에서 `pwsh -NoProfile -File infra/stop.ps1`로 중지한다.
+
+IntelliJ에서는 다음과 같이 실행한다.
+
+1. 저장소 루트를 열고 `backend/build.gradle.kts`를 Gradle 프로젝트로 연결한다.
+2. Gradle JVM을 **Amazon Corretto 25**로 설정한다.
+3. 공유 실행 구성 **`Backend (local Docker)`**를 선택해 실행한다. 이 구성은 `bootRunLocal` 작업을 사용한다.
+
+main 클래스 옆 실행 버튼으로 새로 만든 Application/Spring Boot 구성은 위 Gradle 준비 작업을 실행하지 않는다. IDE 동기화와 일반 `build`·`test`도 개발 Compose를 기동하지 않는다. IDE 실행 화면·디버깅의 실제 검증 여부는 [로컬 Docker 연동 검증](../docs/implementation/LOCAL-BACKEND-COMPOSE-VERIFICATION.md)에 구분한다.
+
+이미 빌드한 JAR을 실행하려면 저장소 루트에서 `pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25' -WithInfrastructure`를 사용한다. 이 명령도 Compose를 준비하고 연결하지만 현재 소스를 빌드하지 않으므로 먼저 `clean build` 또는 `scripts/verify.ps1`을 실행한다. 개발용 예제 회차는 앱 기동 후 [명시적 seed](../infra/README.md#공개-회차-개발-데이터)를 별도로 실행해야 한다.
+
 ## 외부 서비스 없는 기본 실행
 
 ```powershell
@@ -53,21 +74,23 @@ health의 `UP`은 프로세스와 활성 health indicator의 요약 상태다. �
 
 ## 준비된 로컬 인프라 연결
 
-[.env.example](.env.example)은 준비 변수의 안내이며 Spring Boot가 자동으로 읽는 비밀 파일이 아니다. 저장소 루트의 실행 도구가 환경을 주입하거나 사용자가 직접 프로세스 환경에 설정한다.
+[.env.example](.env.example)은 직접 실행 시 필요한 변수 안내이며 Spring Boot가 자동으로 읽는 파일이 아니다. `bootRunLocal` 또는 `run-backend.ps1 -WithInfrastructure`로 전용 개발 Compose를 사용할 때는 아래 값을 자동 주입하므로 비밀번호를 수동 설정하지 않는다.
 
 | 환경 | 준비 값 / 실제 연결 상태 |
 | --- | --- |
 | `SPRING_PROFILES_ACTIVE=local-infra` | 실제 DataSource·Flyway·JDBC 공개 회차 adapter 활성화 |
-| `DB_URL` | 기본 `jdbc:postgresql://127.0.0.1:55432/auction` |
-| `DB_USER` | 기본 `auction` |
-| `DB_PASSWORD` | **필수 런타임 비밀**. 예제에 비밀번호를 넣지 않으며 로그·명령 인수로 출력하지 않음 |
+| `DB_URL` | 기본 `jdbc:postgresql://127.0.0.1:55432/auction`. 로컬 실행기는 Compose의 실제 포트를 반영 |
+| `DB_USER` | 개발 Compose 사용자 `auction` |
+| `DB_PASSWORD` | **필수 런타임 비밀**. 로컬 실행기가 보존된 secret에서 주입. 예제·로그·명령 인수에 값을 넣지 않음 |
 | `DB_CONNECTION_TIMEOUT_MS` / `DB_VALIDATION_TIMEOUT_MS` | local-infra Hikari 연결/검증 timeout. 생략 시 30000/5000ms. 시험에서만 단축 가능하며 제품 응답시간 보장이 아님 |
-| `MAIL_HOST` / `MAIL_PORT` | `127.0.0.1` / `51025`, Mailpit 준비 입력. 메일 adapter·메일 발송은 미구현 |
+| `MAIL_HOST` / `MAIL_PORT` | 기본 `127.0.0.1` / `51025`. 로컬 실행기는 Compose의 실제 SMTP 포트를 반영. 메일 adapter·메일 발송은 미구현 |
 | `PHOTO_ROOT` | 루트 실행기가 `infra/.runtime/photos`의 절대 경로를 전달할 준비 입력. 파일 adapter·업로드는 미구현 |
 
-루트 인프라 도구는 자체 생성 비밀을 `infra/.runtime/db-password`에서 관리한다. 이 앱은 그 파일을 직접 읽지 않는다. [run-backend.ps1](../scripts/run-backend.ps1)의 `-WithInfrastructure` 옵션이 DB 비밀과 준비 변수를 프로세스 환경으로 전달한다. 실제 인프라 준비·실행 명령은 [infra 안내](../infra/README.md)를 따른다.
+루트 인프라 도구는 자체 생성 비밀을 `infra/.runtime/db-password`에서 관리한다. 이 앱은 그 파일을 직접 읽지 않는다. `infra/.runtime/backend.properties`에는 비밀번호를 제외한 연결 정보만 기록한다. `bootRunLocal`과 [run-backend.ps1](../scripts/run-backend.ps1)의 `-WithInfrastructure` 옵션은 이 정보와 secret을 읽어 전용 개발 Compose의 환경으로 주입하며 기존 `DB_URL`·`DB_USER`·`DB_PASSWORD` 값보다 우선한다. 외부 DB를 직접 연결하려면 이 자동 준비 경로를 사용하지 않고 `local-infra` 프로필과 해당 DB 환경변수를 별도로 설정한다. 실제 인프라 준비·실행 명령은 [infra 안내](../infra/README.md)를 따른다.
 
-`local-infra`에서 `${DB_PASSWORD}`가 해석되지 않으면 시작을 계속하지 않는다. Flyway 실패도 시작 실패다. 임의 `schema.sql`/`data.sql` 자동 초기화는 `never`이며 마이그레이션에 개발 fixture를 넣지 않는다. 이 profile의 DB health가 성공해도 경매 업무 트랜잭션·승인 조건을 검증한 것은 아니다.
+관리되는 로컬 실행은 `SPRING_DATASOURCE_URL/USERNAME/PASSWORD`와 `SPRING_FLYWAY_URL/USER/PASSWORD`도 같은 개발 DB 값으로 덮어쓴다. 실행 구성에 별도 DB 관련 JVM 옵션·Spring JSON 설정·명령 인수는 추가하지 않는다.
+
+`local-infra`에서 `${DB_PASSWORD}`가 해석되지 않으면 시작을 계속하지 않는다. Flyway 실패도 시작 실패다. 이력 테이블은 `public.flyway_schema_history`에 고정한다. DB 사용자와 업무 스키마가 모두 `auction`인 경우 재기동 때 PostgreSQL의 기본 검색 스키마가 달라져도 기존 이력을 계속 사용하기 위한 설정이다. 임의 `schema.sql`/`data.sql` 자동 초기화는 `never`이며 마이그레이션에 개발 fixture를 넣지 않는다. 이 profile의 DB health가 성공해도 경매 업무 트랜잭션·승인 조건을 검증한 것은 아니다.
 
 ## 저장·조회·오류 경계
 
