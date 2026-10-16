@@ -21,7 +21,7 @@
 
 - [정확성 480/480](../../experiments/spike-001/results/correctness/20261015T021332Z-1e76d614/summary.json): 합성 시각으로 마감 전 접수·commit 틈·경계 순서·장기 판정 지연과 콜백 지연을 구분했다. 실제 시간에서 모든 대기/시계 이상을 검증한 자료가 아니다.
 - [수정 후 회귀 100/100](../../experiments/spike-001/results/regressions/20261015T022437Z-6bae40cf/summary.json): 판정/타이머 시각이 최신 접수보다 이른 지정 사례가 포함된다. 실제 OS/DB 시계를 변경한 시험은 아니다.
-- [DB 재시작 및 시간 간격](../../experiments/spike-001/results/environment-failures/20261015T023022Z-5bd892c1/summary.json): 실제 DB KILL/start 10회에서 마감 전 중단·epoch 변경·앱 PID 유지·보류를 확인했다. 별도 재개 10회에 commit 전 500ms를 주입하자 기록→commit은 **518~561ms**, 10,000ms 설정의 commit 후 잔여 시간은 **9439~9482ms**였다. 간격 관측 성공이며 전체 시간 보장 성공이 아니다.
+- [DB 재시작 및 시간 간격](../../experiments/spike-001/results/environment-failures/20261015T023022Z-5bd892c1/summary.json): 실제 DB KILL/start 10회에서 마감 전 중단·epoch 변경·앱 PID 유지·보류를 확인했다. 별도 재개 10회의 수치와 계측 경계는 [주 보고서 §6](SPIKE-001.md#기록-시각과-postgresql-커밋-기록-시각--미해결-계약)이 원본이다. `pg_xact_commit_timestamp` 기준 간격이며 물리 내구성 완료·락 해제·COMMIT 응답 뒤 가용 시간의 직접 계측은 아니다. 간격 관측 성공이며 전체 시간 보장 성공이 아니다.
 - [JVM 종료 40/40](../../experiments/spike-001/results/crashes/20261015T021920Z-cfc74566/summary.json), [SSE 경계 종료 20/20](../../experiments/spike-001/results/stream-crashes/20261015T023341Z-65be92ac/summary.json): 두 앱의 자동 판정을 끄고 명시적 `-Recover`로 재기동했다. 생존 peer가 자동 진행 중인 장애 시험으로 확대하지 않는다. 실행 JAR은 서로 다르다.
 
 ## 2. 후속 ADR에서 비교할 선택

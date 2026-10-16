@@ -12,7 +12,7 @@
 | --- | --- |
 | 공식 접수·순번·입찰·마감 경계 | 지정 HTTP/DB 사례에서 실행 근거 확보. 합성 시각을 사용한 경계 결과이며 운영 전체 정확성 증명이 아님 |
 | 원판정·공유 의도·중단·복구 | 지정 중복·실패·JVM 종료·DB 재시작 사례 근거 확보. 발견한 중단 토큰 결함 수정 및 관련 재검증 완료 |
-| 실제 전이 시각 | **잔여 위험 확인:** 재개 시각 기록과 물리 commit 사이의 차이 때문에 commit 이후 남은 시간이 줄어듦 |
+| 실제 전이 시각 | **잔여 위험 확인:** 재개 시각 기록과 PostgreSQL 커밋 기록 시각 사이의 차이 및 그 시각 기준 잔여 시간 감소. 물리 내구성 완료 뒤 가용 시간의 직접 계측은 아님 |
 | 실시간 전달·DOM·성능 | 100연결 기본/집중 각3회, 실제 브라우저5개 표본, 20연결 재접속400표본 근거 확보. 200연결 탐색은 pool 획득 실패로 FAIL, 400은 중단 조건에 따라 NOT_RUN |
 | 운영 채택 / 종료 조건 | 최소 후보·관측 한계·후속 실험을 결정할 자료 확보. 전이 시각 계약·장애 진행 권한·조회 폭주 보호를 해결하기 전 운영 정합성/수용량을 확정하지 않음 |
 
@@ -128,11 +128,13 @@ DB 최종 시험은 전용 컨테이너 라벨을 확인하고 PostgreSQL을 실
 
 첫 DB 실행은 **9 PASS + 1 fixture 조건 FAIL**이었다. 10번째 kill 완료의 보수적 시간 상한이 마감을 넘어 “마감 전 장애” 조건을 증명하지 못했다. 이를 제품 오류나 성공으로 재분류하지 않았다. 후속 시간/중단 시간을 늘린 새 실행에서 10회를 다시 수행했다. [보존한 첫 실행](../../experiments/spike-001/results/environment-failures/20261015T022834Z-265f2363/summary.json)
 
-### 기록 시각과 물리 commit 간격 — 해결되지 않은 계약
+### 기록 시각과 PostgreSQL 커밋 기록 시각 — 미해결 계약
 
-재개 판정 commit 직전에 500ms를 주입한 10회에서, 기록된 재개 시각→실제 PostgreSQL commit 간격은 **518~561ms**였다. 설정한 단계 시간은 10,000ms지만 commit 후 남은 시간은 **9439~9482ms**였다. [실측 10건](../../experiments/spike-001/results/environment-failures/20261015T023022Z-5bd892c1/cases.jsonl)
+재개 판정 commit 직전에 500ms를 주입한 10회에서, 기록된 재개 시각→`pg_xact_commit_timestamp()`의 커밋 기록 시각 간격은 **518~561ms**였다. 설정한 단계 시간은 10,000ms지만 그 커밋 기록 시각 기준 마감까지 잔여 값은 **9439~9482ms**였다. [실측 10건](../../experiments/spike-001/results/environment-failures/20261015T023022Z-5bd892c1/cases.jsonl)
 
-이는 관측 실험 성공이지 “물리 commit부터 전체 시간 보장”의 성공이 아니다. 레인 gate가 commit 틈에 새 접수를 막더라도 이미 기록한 마감의 시간은 흐른다. 합성 시각의 재개 하한 시험으로 이 실제 commit 틈을 검증했다고 주장할 수 없다.
+2026-10-15 ADR 검토에서 계측 경계를 명확히 했다. [harness의 계산](../../experiments/spike-001/harness/environment_failures.py)은 `committedMs - windowStartMs`, `deadlineMs - committedMs`이며 `committedMs`는 [Engine.events](../../experiments/spike-001/src/main/java/spike/core/Engine.java)의 커밋 타임스탬프 조회에서 온다. PostgreSQL 18.0 공식 소스는 커밋 기록 시각을 채취한 뒤 WAL flush·후속 처리를 수행한다. 따라서 이 수치를 물리 내구성 완료·락 해제·JDBC COMMIT 반환 뒤의 실제 가용 시간으로 해석하지 않는다. 이는 소스에 근거한 경계 정정이며 새 실행 결과가 아니다. 원자료의 `physicalCommitFullDurationSatisfied` 등 당시 필드명과 수치는 수정하지 않았다. [고정 PostgreSQL 소스](https://github.com/postgres/postgres/blob/3d6a828938a5fa0444275d3d2f67b64ec3199eb7/src/backend/access/transam/xact.c#L1348)
+
+이는 간격 관측의 성공이지 “물리 commit부터 전체 시간 보장”의 성공이 아니다. 레인 gate가 commit 틈에 새 접수를 막더라도 이미 기록한 마감의 시간은 흐른다. 합성 시각의 재개 하한 시험으로 이 실제 시각 기록·저장 간격과 접수 가능성을 검증했다고 주장할 수 없다.
 
 D-067~D-070의 권위 전이 기록 시각을 어떤 기술적 확정 경계와 결합할지 후속 결정이 필요하다. commit 시각을 쓰려면 그 시각의 영속 보존·projection·재시작 복원까지 설계해야 한다. 내부 기록 시각을 쓴다면 commit 지연의 의미와 보류 조건을 명시해야 하며 현재 정책이 자동으로 바뀐 것으로 취급하지 않는다.
 
