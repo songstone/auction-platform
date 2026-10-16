@@ -104,5 +104,6 @@ jobs:
           name: public-round-integration-evidence
           path: |
             .artifacts/integration/
+            .artifacts/tasks/T-003/
             output/playwright/
           include-hidden-files: true

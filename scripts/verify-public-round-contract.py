@@ -74,11 +74,11 @@ def load_contract() -> tuple[dict, Registry, str]:
     return spec, registry, hashlib.sha256(raw).hexdigest()
 
 
-def response_validator(spec: dict, registry: Registry, status: int) -> Draft202012Validator:
+def response_validator(spec: dict, registry: Registry, status: int, route: str = ROUTE) -> Draft202012Validator:
     # Resolve only the response object. The schema itself remains a reference into
     # the canonical document, including the HTTP-status-specific code constraint.
-    pointer = "#/paths/~1rounds~1{roundId}/get/responses/" + str(status)
-    response = spec["paths"][ROUTE]["get"]["responses"][str(status)]
+    pointer = "#/paths/" + route.replace("~", "~0").replace("/", "~1") + "/get/responses/" + str(status)
+    response = spec["paths"][route]["get"]["responses"][str(status)]
     while "$ref" in response:
         pointer = response["$ref"]
         require(pointer.startswith("#/"), "Response reference must belong to the canonical document.")
@@ -102,11 +102,11 @@ def response_validator(spec: dict, registry: Registry, status: int) -> Draft2020
     )
 
 
-def fetch_response(base_url: str, path: str) -> tuple[int, object, bytes]:
+def fetch_response(base_url: str, path: str, method: str = "GET") -> tuple[int, object, bytes]:
     # No CookieJar, Authorization, or session token is installed. Redirects must
     # remain visible; a redirect to login must never become a successful GET.
     opener = build_opener(ProxyHandler({}), NoRedirects())
-    request = Request(base_url + path, headers={"Accept": "application/json"}, method="GET")
+    request = Request(base_url + path, headers={"Accept": "application/json"}, method=method)
     try:
         try:
             response = opener.open(request, timeout=10)
