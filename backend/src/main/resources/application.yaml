@@ -3,6 +3,8 @@ spring:
     name: auction-platform-backend
   main:
     banner-mode: "off"
+  flyway:
+    enabled: false
   web:
     error:
       include-message: never

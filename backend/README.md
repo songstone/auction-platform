@@ -1,6 +1,6 @@
 # Backend 개발 골격
 
-승인된 [SYSTEM-DESIGN 1.0](../docs/architecture/SYSTEM-DESIGN.md)과 [공통 계약 0.1.0](../contracts/README.md)을 구현할 단일 Gradle 앱이다. 현재 구현은 프로세스 시작, Actuator 요약 health, 나머지 경로 차단과 패키지 경계 검사다. 계정·출품·입찰·원판정·ACK·SSE·복구·진행 권한은 구현하지 않았다.
+승인된 [SYSTEM-DESIGN 1.0](../docs/architecture/SYSTEM-DESIGN.md)과 [공통 계약 0.1.0](../contracts/README.md)을 구현하는 단일 Gradle 앱이다. 첫 업무 흐름은 **공개 회차 조회 `GET /api/v1/rounds/{roundId}` → PostgreSQL 읽기 전용 projection**이다. Actuator 요약 health·공통 오류·요청 추적·마이그레이션과 패키지 경계 검사를 제공한다. 계정·출품·입찰·원판정·ACK·SSE·복구·진행 권한은 구현하지 않았다.
 
 ## 고정 도구
 
@@ -31,17 +31,25 @@ macOS/Linux는 같은 JDK 기준에서 `bash ./gradlew --no-daemon clean build`�
 
 실행 JAR은 `build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar`다. 테스트 XML은 `build/test-results/test/`, HTML 보고서는 `build/reports/tests/test/index.html`에 생성한다. 애플리케이션 버전은 개발 artifact 식별이며 제품 기능 완료나 계약 버전 변경을 뜻하지 않는다.
 
+실제 PostgreSQL 검증은 별도 명령이다. Docker가 필요하며, 없으면 실패한다. `build`는 `integration` 태그를 제외하므로 이 명령을 실행하지 않고 DB 시험 PASS로 보고하지 않는다.
+
+```powershell
+.\gradlew.bat --no-daemon integrationTest
+```
+
+Testcontainers는 Compose 개발 DB와 다른 임시 PostgreSQL 18.6 컨테이너를 생성한다. 고정한 이미지 digest는 개발 인프라와 같다. 시험 종료 때 컨테이너를 정리하며 시험 중 초기화는 이 임시 DB에만 수행한다. 결과는 `build/test-results/integrationTest/`와 `build/reports/tests/integrationTest/index.html`이다. Testcontainers 2.x의 PostgreSQL/JUnit 모듈은 Boot BOM으로 관리하고 정확 버전을 lockfile에 고정한다. [공식 PostgreSQL 모듈](https://java.testcontainers.org/modules/databases/postgres/)
+
 ## 외부 서비스 없는 기본 실행
 
 ```powershell
 & "$env:JAVA_HOME\bin\java.exe" -jar build/libs/auction-platform-backend-0.1.0-SNAPSHOT.jar
 ```
 
-기본 주소는 `127.0.0.1:8080`이며 `SERVER_ADDRESS`·`SERVER_PORT`로 바꿀 수 있다. 현재 공개하는 HTTP 기능은 `GET /actuator/health`의 상태 요약뿐이다. details·components·env/configprops 등 관리 정보는 공개하지 않는다. 자동 생성 기본 계정·HTTP Basic·로그인 폼을 설치하지 않는다. CSRF와 기본 보안 응답 헤더는 유지한다.
+기본 주소는 `127.0.0.1:8080`이며 `SERVER_ADDRESS`·`SERVER_PORT`로 바꿀 수 있다. `GET /actuator/health`는 상태 요약을 제공한다. 기본 프로필의 공개 회차 조회는 DB를 사용하지 않고 `503 SERVICE_UNAVAILABLE`로 명확히 응답한다. details·components·env/configprops 등 관리 정보는 공개하지 않는다. 자동 생성 기본 계정·HTTP Basic·로그인 폼을 설치하지 않는다. CSRF와 기본 보안 응답 헤더는 유지한다.
 
-health의 `UP`은 이 골격 프로세스의 요약 상태다. 정상 입찰 접수, DB 내구성, authority 확보, schema/migration, 메일/사진 연계, 업무 readiness를 증명하지 않는다. 차단된 `/api/v1/...`의 403이나 아직 없는 API의 404는 계약 구현 완료·인수 PASS가 아니다. 보안 차단은 실제 인증·세션 계약 구현 때 승인된 공개/개인 경계로 교체한다.
+health의 `UP`은 프로세스와 활성 health indicator의 요약 상태다. 정상 입찰 접수, authority 확보, 메일/사진 연계, 업무 readiness를 증명하지 않는다. 공개 조회 외 경로의 403은 해당 API 구현 완료·인수 PASS가 아니다. 보안 차단은 실제 인증·세션 계약 구현 때 승인된 공개/개인 경계로 교체한다.
 
-기본 profile은 DataSource auto-configuration을 명시적으로 제외한다. JDBC·PostgreSQL driver 의존성은 준비돼 있지만 기본 실행은 DB에 연결하거나 테이블을 만들지 않는다.
+기본 profile은 DataSource auto-configuration과 Flyway를 명시적으로 끈다. 기본 실행은 DB에 연결하거나 테이블을 만들지 않는다.
 
 ## 준비된 로컬 인프라 연결
 
@@ -49,23 +57,37 @@ health의 `UP`은 이 골격 프로세스의 요약 상태다. 정상 입찰 접
 
 | 환경 | 준비 값 / 실제 연결 상태 |
 | --- | --- |
-| `SPRING_PROFILES_ACTIVE=local-infra` | 명시적으로 활성화할 때만 실제 DataSource를 구성. schema·migration·업무 adapter는 없음 |
+| `SPRING_PROFILES_ACTIVE=local-infra` | 실제 DataSource·Flyway·JDBC 공개 회차 adapter 활성화 |
 | `DB_URL` | 기본 `jdbc:postgresql://127.0.0.1:55432/auction` |
 | `DB_USER` | 기본 `auction` |
 | `DB_PASSWORD` | **필수 런타임 비밀**. 예제에 비밀번호를 넣지 않으며 로그·명령 인수로 출력하지 않음 |
+| `DB_CONNECTION_TIMEOUT_MS` / `DB_VALIDATION_TIMEOUT_MS` | local-infra Hikari 연결/검증 timeout. 생략 시 30000/5000ms. 시험에서만 단축 가능하며 제품 응답시간 보장이 아님 |
 | `MAIL_HOST` / `MAIL_PORT` | `127.0.0.1` / `51025`, Mailpit 준비 입력. 메일 adapter·메일 발송은 미구현 |
 | `PHOTO_ROOT` | 루트 실행기가 `infra/.runtime/photos`의 절대 경로를 전달할 준비 입력. 파일 adapter·업로드는 미구현 |
 
 루트 인프라 도구는 자체 생성 비밀을 `infra/.runtime/db-password`에서 관리한다. 이 앱은 그 파일을 직접 읽지 않는다. [run-backend.ps1](../scripts/run-backend.ps1)의 `-WithInfrastructure` 옵션이 DB 비밀과 준비 변수를 프로세스 환경으로 전달한다. 실제 인프라 준비·실행 명령은 [infra 안내](../infra/README.md)를 따른다.
 
-`local-infra`에서 `${DB_PASSWORD}`가 해석되지 않으면 시작을 계속하지 않는다. SQL 자동 초기화도 `never`이며 데이터 파괴·개발 fixture 주입은 없다. 이 profile의 DB health가 성공해도 업무 트랜잭션·승인 조건을 검증한 것은 아니다.
+`local-infra`에서 `${DB_PASSWORD}`가 해석되지 않으면 시작을 계속하지 않는다. Flyway 실패도 시작 실패다. 임의 `schema.sql`/`data.sql` 자동 초기화는 `never`이며 마이그레이션에 개발 fixture를 넣지 않는다. 이 profile의 DB health가 성공해도 경매 업무 트랜잭션·승인 조건을 검증한 것은 아니다.
+
+## 저장·조회·오류 경계
+
+[V1 migration](src/main/resources/db/migration/V1__create_auction_round.sql)이 `auction.rounds`를 만든다. 테이블 소유 기능은 `auction`이며 query는 명시된 SELECT projection만 사용한다. Flyway 이력은 `public.flyway_schema_history`다. 적용된 migration을 수정하지 않고 다음 버전으로 변경하며 `clean`은 비활성화한다. 개발 데이터는 루트의 명시적 fixture 도구로만 넣는다.
+
+조회는 `published_at IS NOT NULL`인 공개 상태만 반환한다. 예약 공개 시각이 지났다는 이유로 공개를 추정하지 않는다. 존재하지 않는 ID와 미공개 ID는 같은 `404 RESOURCE_NOT_FOUND`다. ID는 대소문자와 앞뒤 공백을 보존하고 공백만이면 `400 VALIDATION_FAILED`다. 카운터는 DB numeric의 정수값을 10진 문자열로 반환하고 시각은 PostgreSQL의 마이크로초를 보존한 UTC `Z` 문자열이다. 아직 회차 생성·공개·진행 상태를 바꾸는 유스케이스나 worker는 없다.
+
+URL의 ID는 한 경로 segment로 percent encoding한다. Tomcat은 encoded slash를 분리자로 디코딩하지 않고 통과시킨다. `PublicRoundHttpFirewall`은 정확한 GET `/api/v1/rounds/<한 raw segment>`에서만 encoded slash/percent를 허용하고 다른 경로·메서드는 기존 strict 검사를 적용한다. 헤더·정규화·기타 공격성 경로 검사는 유지한다. Spring의 segment 디코딩 뒤 ID를 SQL 매개변수로 한 번만 전달하며 추가 URL decoding은 하지 않는다.
+
+API 성공·오류는 `Cache-Control: no-store`를 사용한다. 공통 오류는 계약의 `code/message/traceId/serverTime/fieldErrors` 다섯 필드이며 조회 DB 오류는 `503 SERVICE_UNAVAILABLE`다. 미구현 경로는 `403 ROLE_REQUIRED`, CSRF 없는 변경 요청은 `403 CSRF_INVALID`다. 인증을 완료했다는 의미는 아니며 실제 로그인·세션 수명 정책은 후속 작업이다.
+
+요청별 서버 생성 `X-Trace-Id`를 응답과 오류·요약 로그에 연결한다. 요청 raw URI·query·본문·인증 헤더·쿠키·SQL·예외 메시지를 공통 로그/오류에 기록하지 않는다. 기본 기록은 trace ID, HTTP status, 처리시간과 고정 오류 코드다. 외부 trace ID는 신뢰하거나 재사용하지 않는다.
 
 ## 패키지와 검사
 
 [MODULE-BOUNDARIES.md](MODULE-BOUNDARIES.md)는 코드 위치·검사 연결을 설명한다. 책임의 공식 원본은 시스템 설계이고 정책·계약 원본은 수정하지 않는다.
 
 - `ArchitectureRulesTest`: 실제 production bytecode의 계층·기능 의존성/순환 검사와 의도적 위반 fixture를 사용한 guard 확인.
-- `InfrastructureBoundaryTest`: 외부 서비스 없는 기본 컨텍스트·요약 health·관리/업무 경로 차단·기본 계정 부재 확인.
+- `InfrastructureBoundaryTest`: DB 없는 기본 컨텍스트·요약 health·미구현 경로 차단·기본 계정 부재·503/400/CSRF 오류 확인.
+- `PublicRoundPostgresIntegrationTest`: 빈 PostgreSQL에 Flyway 적용, 공개/미공개/없는 ID, 정확 ID·큰 카운터·마이크로초·SQL 실패, 재기동 시 데이터/마이그레이션 이력 보존.
 
 빈 기능 패키지의 경계는 앞으로 추가되는 코드에 적용할 검사다. 음성/양성 fixture 검사가 경계 규칙의 작동을 확인해도 실제 경매 구현의 정합성·완전한 모듈 구현을 입증하지 않는다. 현재 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1의 실행 결과는 [Spring Boot 4 전환 검증 기록](../docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)을 따른다.
 

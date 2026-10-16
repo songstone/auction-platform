@@ -1,6 +1,6 @@
-# 프런트엔드 실행 골격
+# 프런트엔드 실행과 공개 회차 조회
 
-승인 계약 **0.1.0 / D-095**를 소비하는 React/TypeScript 개발 셸이다. 실제 로그인·출품·입찰·HTTP 조회·SSE·재접속·서버 ACK는 아직 구현하지 않았다. 기본 화면은 이 상태를 표시한다. 남은 OPEN과 미검증 위험을 유지하며 제품 정책·입력 제한·세션 수명·지원 브라우저를 추가로 결정하지 않는다.
+승인 계약 **0.1.0 / D-095**를 소비하는 React/TypeScript 앱이다. `/?roundId=...`에서 실제 `GET /api/v1/rounds/{roundId}`를 호출해 공개 회차 상태·일정·레인 수·시간 설정을 표시한다. 회차 식별자가 없는 기본 주소에서는 링크 안내를 표시하고 API 요청을 보내지 않는다. 로그인·출품·입찰·SSE·재접속·서버 ACK는 후속 구현이며 남은 OPEN과 지원 브라우저 인수 범위를 유지한다.
 
 ## 실행
 
@@ -13,9 +13,9 @@ npm run check:generated
 npm run dev
 ```
 
-기본 화면: <http://127.0.0.1:5173/>. 개발용 예제: <http://127.0.0.1:5173/?preview=contract>. 개발 서버는 loopback에 바인딩하고 5173이 사용 중이면 다른 포트로 자동 이동하지 않는다. 프로세스는 `Ctrl+C`로 종료한다. 개발 미리보기는 백엔드 없이 실행하며 네트워크 요청을 만들지 않는다.
+기본 화면: <http://127.0.0.1:5173/>. 합성 회차를 명시적으로 준비한 로컬/테스트 DB의 조회 진입점은 <http://127.0.0.1:5173/?roundId=demo-round>다. DB와 백엔드 준비는 [루트 실행 안내](../README.md)를 따른다. 개발용 고정 예제는 <http://127.0.0.1:5173/?preview=contract>에서 백엔드 없이 실행하며 API 요청을 만들지 않는다. 개발 서버는 loopback에 바인딩하고 5173이 사용 중이면 다른 포트로 자동 이동하지 않는다. 프로세스는 `Ctrl+C`로 종료한다.
 
-`vite.config.ts`는 향후 `/api` 요청을 `http://127.0.0.1:8080`으로 전달하도록 준비했다. 실제 API 기준 경로는 `/api/v1`이다. 프록시 설정은 API 구현 완료나 인증·CSRF 집행을 뜻하지 않는다. 배포 시 동일 출처 라우팅은 별도 구성한다.
+브라우저는 같은 출처의 `/api/v1`만 호출한다. `vite.config.ts`의 개발 서버와 로컬 production preview는 `/api`를 `AUCTION_API_TARGET`으로 전달하며 기본값은 `http://127.0.0.1:8080`이다. 예를 들어 백엔드가 18080에서 실행 중이면 Vite를 시작하기 전에 `$env:AUCTION_API_TARGET = 'http://127.0.0.1:18080'`을 설정한다. 이 변수는 Vite 서버의 테스트/개발 설정이며 브라우저 번들에 비밀을 넣는 용도가 아니다. 운영 배포의 동일 출처 라우팅은 별도 구성한다.
 
 ```powershell
 npm run typecheck
@@ -25,6 +25,35 @@ npm run preview
 ```
 
 `preview`는 빌드 결과를 4173에서 확인하는 로컬 서버다. 개발 예제 진입 기능은 배포 번들에서 제거한다. `build`의 후속 검사는 배포 JavaScript에 개발 마커·선택한 합성 ID가 포함되지 않는지 확인한다. 이 문자열 검사는 전체 보안 검증을 대신하지 않는다.
+
+## 공개 회차 흐름과 응답 경계
+
+`src/rounds/round-client.ts`는 ID를 trim·분해하지 않고 정확히 `encodeURIComponent`하여 GET을 보낸다. 응답은 `application/json`·`no-store`를 확인한 뒤 `round-contract.ts`에서 승인된 닫힌 객체 구조를 검사한다. 예상하지 못한 필드, 다른 회차 ID, 숫자로 바뀐 counter, 레인 범위 위반, 잘못된 달력 날짜·UTC 형식·6자리를 넘는 소수 시각, 안전하게 표현할 수 없는 JS 정수 시간은 표시하지 않는다. 시간 설정의 safe-integer 검사는 표현 손실 방지이며 OPEN-05의 제품 상한을 승인하는 의미가 아니다. 미정 최소/최대 시간을 추가하지 않는다.
+
+생성된 `PublicRoundState`·`Problem` 타입을 사용하며 런타임 검사는 이 조회 경계의 필요한 필드만 다룬다. counter 원문과 최대 마이크로초 정밀도 문자열을 보존한다. 일정은 `Asia/Seoul`로 표시하고 `<time dateTime>`에는 원문 UTC 값을 둔다. 브라우저 현재 시각으로 회차 상태나 시작·종료를 판정하지 않는다. null인 실제 시작·종료·취소는 각 기록 부재로 표시한다.
+
+화면은 loading·성공·404·503·연결 실패·잘못된 응답과 수동 재시도를 구분한다. `Problem.message`, fieldErrors, 예외 원문은 화면에 출력하지 않으며 안전한 고정 안내를 사용한다. 새 조회는 기존 요청을 취소하고, 취소를 무시한 옛 응답도 요청 세대 검사로 폐기한다. 새로고침과 조회 실패 때 이전 성공 상태를 현재 정보처럼 유지하지 않는다. 자동 polling·SSE·로그인은 추가하지 않았다.
+
+## 자동 브라우저 통합 검사
+
+사용자가 요청한 자동 테스트 파일을 위해 `@playwright/test` **1.64.1**을 dev dependency로 정확 고정했다. 공식 npm metadata의 Node 요구는 `>=20`이며 저장소 Node 24.19.0으로 도구를 실행한다. 브라우저 실행기·assertion·trace가 필요한 범위에 사용하고 제품 runtime dependency에는 추가하지 않는다. [Playwright 설정](https://playwright.dev/docs/test-configuration), [Vite preview proxy](https://vite.dev/config/preview-options.html#preview-proxy).
+
+`e2e/public-round.spec.ts`는 외부에서 실행한 실제 백엔드와 production preview를 사용한다. API route mocking이나 mock 서버를 만들지 않는다. `E2E_BASE_URL`은 필수이며 없으면 실행이 실패한다. 실행기는 서비스를 자동으로 생성하거나 기존 프로세스를 재사용하지 않는다. 아래는 `frontend/`에서 수동으로 실행하는 명령이며 통합 서비스 준비·정리는 루트 안내를 따른다.
+
+```powershell
+npm exec -- playwright install chromium
+$env:E2E_BASE_URL = 'http://127.0.0.1:4173'
+$env:E2E_PHASE = 'up'
+npm run test:e2e
+```
+
+| phase | 외부 준비 상태 | 선택되는 검사 |
+| --- | --- | --- |
+| `up` | 격리 DB의 `demo-round`: 4레인·version `9007199254740993`, `demo-hidden`: 미공개, `demo-missing`: 없음 | 실제 공개 화면·404/재시도·ID 없는 진입의 무요청·모바일 viewport·배포 fixture 제외 |
+| `changed` | 같은 공개 레코드의 최초 입찰 시간을 15초·version을 `9007199254740994`로 변경, 4레인 유지 | 바뀐 DB 값의 HTTP 응답·DOM 반영 |
+| `down` (`database-down`도 허용) | 백엔드를 유지한 채 해당 격리 DB 중지 | 실제 503·안전한 안내·재시도·이전 성공 상태 부재 |
+
+기본 결과 경로는 ignored `output/playwright/public-round/<phase>/report.json`이며 screenshot·실패 trace는 같은 경로의 `results/` 아래에 남긴다. 통합 실행기가 `E2E_ARTIFACT_DIR`을 전달하면 해당 디렉터리에 보고서와 결과를 모은다. timeout은 시험 실행 도구 설정이며 제품 장애 감지 기준이 아니다. Chromium 한 환경과 390px viewport smoke는 전체 지원 브라우저·모바일 인수를 뜻하지 않는다. 오류 원문 차단·response parser·옛 요청 폐기는 Node 단위 검사에서도 독립 검증한다.
 
 ## 계약 생성과 원본
 
@@ -40,7 +69,7 @@ npm run check:generated
 
 `scripts/generate-contract.mjs`는 승인 manifest의 상태·버전·OpenAPI SHA-256 일치를 확인한 뒤 `openapi-typescript` 공식 Node API로 `src/generated/api.d.ts`를 생성한다. 같은 OpenAPI의 `components/examples`에서 11개 예제를 추출해 `src/generated/contract-examples.ts`를 만든다. 각 예제는 원본의 `x-schema-ref`를 따라 생성 타입에 `satisfies`로 연결한다. 파일에 원본 hash를 기록하고 freshness 검사는 두 생성물의 정확한 일치를 확인한다. 생성물은 독립 계약 원본이 아니며 직접 편집하지 않는다.
 
-추출 대상은 `SnapshotFourLanes`, `RoundChanged`, `LaneChanged`, `Heartbeat`, `ResyncRequired`, `NoSaleLaneChanged`, `RegisteredIntent`, `PendingBid`, `ApprovedBid`, `RejectedBid`, `AcknowledgedBid`다. 미리보기는 이 원문을 수정하지 않는다. 생성 타입은 정규식·JSON Schema 조건식·권한·런타임 응답을 전부 검증하지 않는다. 실제 네트워크 경계에는 후속 런타임 검증과 HTTP/SSE 통합 검증이 필요하다. 승인 계약은 프런트엔드 구현자가 변경하지 않는다.
+추출 대상은 `SnapshotFourLanes`, `RoundChanged`, `LaneChanged`, `Heartbeat`, `ResyncRequired`, `NoSaleLaneChanged`, `RegisteredIntent`, `PendingBid`, `ApprovedBid`, `RejectedBid`, `AcknowledgedBid`다. 미리보기는 이 원문을 수정하지 않는다. 생성 타입은 정규식·JSON Schema 조건식·권한·런타임 응답을 전부 검증하지 않는다. 공개 회차 조회에는 위의 별도 응답 검사를 적용했으며 후속 HTTP/SSE 경계에도 해당 계약 검증이 필요하다. 승인 계약은 프런트엔드 구현자가 변경하지 않는다.
 
 실제 생성에서 `openapi-typescript 7.13.0`은 mapping 없는 discriminator의 literal을 분기 schema 이름으로 추론했다. 예를 들어 `round.state.changed` 대신 `RoundStateEvent`, `NO_SALE` 대신 `NoSaleResult`를 생성해 예제 타입 검사가 실패했다. `scripts/generator-input.mjs`는 **메모리상의 도구 입력 복제본**에 각 분기의 기존 필수 `properties.const`에서만 explicit mapping을 도출한다. 원본 OAS·const·예제·검증 제약은 수정하지 않으며 새 wire 값을 만들지 않는다. 필수 const 부재·중복·상충하는 기존 mapping은 추측하지 않고 실패한다. 이 어댑터와 원문 hash를 버전 관리하고 공식 도구 교체/업데이트 때 재검토한다. 관련 도구 동작은 [공식 discriminator 생성 코드](https://github.com/openapi-ts/openapi-typescript/blob/openapi-typescript%407.13.0/packages/openapi-typescript/src/lib/utils.ts)를 참고한다.
 
@@ -70,7 +99,7 @@ npm run check:generated
 
 ## 검증 기록
 
-이번 골격의 최신 실행 결과·증거·미실행 범위의 원본은 [FOUNDATION-VERIFICATION](../docs/implementation/FOUNDATION-VERIFICATION.md)이다. 아래는 프런트엔드 담당자가 2026-10-16에 이 디렉터리에서 실행한 **당시 결과 이력**이며 최신 통합 검증표의 복제본이 아니다. 계약 정적 검사의 기존 PASS는 실제 제품 HTTP/SSE·DB·동시성·권한·장애·브라우저·운영 성공으로 확대하지 않는다.
+현재 공개 회차의 실제 DB→HTTP→화면·장애 응답·CI 실행과 미실행 범위는 [PUBLIC-ROUND-VERIFICATION](../docs/implementation/PUBLIC-ROUND-VERIFICATION.md)에 기록한다. 초기 골격의 실행 원본은 [FOUNDATION-VERIFICATION](../docs/implementation/FOUNDATION-VERIFICATION.md)에 보존한다. 아래는 프런트엔드 담당자가 2026-10-16에 이 디렉터리에서 실행한 **초기 골격의 당시 결과 이력**이며 현재 통합 검증표의 복제본이 아니다. 계약 정적 검사의 기존 PASS는 실제 제품 HTTP/SSE·DB·동시성·권한·장애·브라우저·운영 성공으로 확대하지 않는다.
 
 | 검사 | 결과 |
 | --- | --- |

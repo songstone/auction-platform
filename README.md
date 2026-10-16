@@ -1,6 +1,6 @@
 # Auction Platform
 
-최대 4개 레인이 독립 진행하는 실시간 경매 MVP다. 현재 구현은 **개발 골격**이며 실제 출품·입찰·자동 경매·인증·복구 기능은 후속 작업이다.
+최대 4개 레인이 독립 진행하는 실시간 경매 MVP다. 현재는 **공개 회차 조회**를 PostgreSQL → REST API → React 화면까지 연결했다. 출품·입찰·자동 경매·회원 인증·SSE는 후속 작업이다.
 
 | 원본 | 내용 |
 | --- | --- |
@@ -12,6 +12,8 @@
 | [초기 골격 실행 이력](docs/implementation/FOUNDATION-VERIFICATION.md) | 최초 Maven 골격의 실행·미실행 범위 |
 | [Gradle 전환 실행 이력](docs/implementation/GRADLE-MIGRATION-VERIFICATION.md) | Spring Boot 3.5.16에서 수행한 빌드 도구 전환의 실행·미실행 범위 |
 | [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md) | 현재 백엔드 기준인 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1의 실행·미실행 범위 |
+| [공개 회차 조회 검증](docs/implementation/PUBLIC-ROUND-VERIFICATION.md) | DB·API·브라우저·장애/복구와 CI 실행 증거 |
+| [공통 구현 지침](AGENTS.md) | 공유 파일 소유권·마이그레이션·계약·검증 규칙 |
 
 ## 로컬 실행
 
@@ -21,6 +23,9 @@ Amazon Corretto 25, Node/npm([frontend/package.json](frontend/package.json)의 e
 # 계약·백엔드·프런트엔드 골격 검증
 pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25'
 
+# Docker를 사용하는 실제 DB/HTTP/Chromium 통합 검증 (개발 DB와 분리)
+pwsh -NoProfile -File scripts/verify.ps1 -JavaHome 'C:\path\to\jdk-25' -Integration
+
 # 필요할 때 개발 DB·메일 준비/기동
 pwsh -NoProfile -File infra/up.ps1
 
@@ -28,11 +33,22 @@ pwsh -NoProfile -File infra/up.ps1
 pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25'
 pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25' -WithInfrastructure
 
+# 별도 터미널: 백엔드 기동/마이그레이션 완료 후 개발용 예제 회차 추가
+pwsh -NoProfile -File infra/seed-demo.ps1
+
+# 별도 터미널: http://localhost:5173/?roundId=demo-round
+Set-Location frontend
+npm ci
+npm run dev
+
 # 개발 DB·메일 중지, 데이터 보존
+Set-Location ..
 pwsh -NoProfile -File infra/stop.ps1
 ```
 
-백엔드 실행은 [backend/README](backend/README.md), 프런트엔드 개발 미리보기는 [frontend/README](frontend/README.md), DB·메일·사진 경로는 [infra/README](infra/README.md)를 따른다. 프런트엔드의 개발용 fixture 미리보기와 백엔드의 health는 실제 경매 성공·현재 상태·운영 readiness를 뜻하지 않는다.
+위 명령은 저장소 루트에서 시작하며 서비스는 별도 터미널로 실행한다. `infra/stop.ps1`도 루트에서 실행한다. 예제 회차는 2099년 일정의 합성 데이터다. 시각으로 공개 여부를 추정하지 않고 DB에 기록된 실제 공개 여부를 사용한다. 기본 프로필은 health만 기동 가능하며 회차 조회에는 503을 반환한다. DB 조회에는 `-WithInfrastructure`가 필요하다.
+
+백엔드 실행은 [backend/README](backend/README.md), 프런트엔드 화면은 [frontend/README](frontend/README.md), DB·메일·사진 경로는 [infra/README](infra/README.md)를 따른다. 공개 GET은 익명 접근을 허용하며 그 외 업무 경로는 기본 거부한다. health와 조회 성공은 입찰·실제 인증 세션·운영 readiness의 증거가 아니다.
 
 ## 공통 계약 보호
 

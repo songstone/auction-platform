@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration;
 
-/** Process bootstrap only; business use cases and contract endpoints are not implemented. */
+/** Composition root for the first public round read flow. */
 @SpringBootApplication(
         scanBasePackages = "com.auctionplatform",
         exclude = UserDetailsServiceAutoConfiguration.class)

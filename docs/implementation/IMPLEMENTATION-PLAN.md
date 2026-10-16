@@ -4,12 +4,12 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.2 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.3 |
 | 성격 | 구현 작업 분할·의존성·완료 조건. 새 제품 정책이나 계약의 원본이 아님 |
 | 입력 기준선 | SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, DECISION-LOG 1.8, 공통 계약 0.1.0, D-095 |
-| 현재 실행 범위 | BE 패키지·실행/health·아키텍처 검사, FE 계약 생성 타입·개발 전용 고정 fixture 미리보기, 로컬 인프라/실행 도구·승인 해시 무결성 확인, 이 작업 분할·QA 계획 |
+| 현재 실행 범위 | 공통 골격과 공개 회차 GET의 PostgreSQL → API → React 연결, Flyway·공통 오류/추적·별도 DB/브라우저 통합 검사. 출품·입찰·SSE·실제 인증은 후속 카드 |
 | 후속 기능 범위 | 아래 기능 카드는 계획이다. 이번 골격 생성만으로 구현·연동·제품 인수 완료 처리하지 않음 |
-| 현재 새 검증 | Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1 전환의 실제 실행·관측·미실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md) 참조. 초기 골격·Gradle 전환·기존 정적 PASS·SPIKE 관측 및 후속 제품 인수와 구별 |
+| 현재 새 검증 | 공개 회차 조회의 실제 실행·관측·미실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md) 참조. [Boot 전환](BOOT4-MIGRATION-VERIFICATION.md) 및 기존 정적 PASS·SPIKE 관측·후속 제품 인수와 구별 |
 | 남은 결정 | 현행 OPEN, CR-04~10·SEC-01~04의 미승인 제안값, 미완성 전이/장애 메커니즘 유지 |
 
 승인된 설계의 정의된 부분에서 작업을 시작한다. 전체 기능·추가 SPIKE·성능 실험 통과를 골격 작성의 선행조건으로 두지 않는다. 영향 경로에 남은 정책은 그 경로의 구현/인수 전에 결정하고, 기술 위험은 실제 구현과 함께 검증한다. 골격이나 fixture가 그 보장을 제공한다고 보고하지 않는다.

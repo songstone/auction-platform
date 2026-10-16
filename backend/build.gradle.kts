@@ -7,7 +7,7 @@ plugins {
 
 group = "com.auctionplatform"
 version = "0.1.0-SNAPSHOT"
-description = "Implementation scaffold for the approved auction architecture; no business endpoints yet."
+description = "Public round query foundation for the approved auction architecture."
 
 java {
     toolchain {
@@ -25,9 +25,11 @@ dependencies {
     implementation(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         // Existing tests use actual HTTP and architecture fixtures, not an agent-based mock maker.
@@ -37,6 +39,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-resttestclient")
     testRuntimeOnly("org.springframework.boot:spring-boot-restclient")
     testImplementation("com.tngtech.archunit:archunit:1.5.1")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers-postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -51,6 +55,19 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+}
+
+tasks.test {
+    useJUnitPlatform { excludeTags("integration") }
+}
+
+tasks.register<Test>("integrationTest") {
+    description = "Runs actual PostgreSQL integration tests; Docker is required and absence is a failure."
+    group = "verification"
+    testClassesDirs = sourceSets.test.get().output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    useJUnitPlatform { includeTags("integration") }
+    shouldRunAfter(tasks.test)
 }
 
 springBoot {

@@ -4,10 +4,10 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.2 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.3 |
 | 입력 | D-095, SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, 공통 계약 0.1.0 |
-| 현재 범위 | 이번 BE/FE/로컬 실행 골격의 검증 범위를 정의하고 후속 기능·정합성·복구 인수 사례를 준비 |
-| 새 실행 상태 | Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1 전환의 실제 실행은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md) 참조. 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
+| 현재 범위 | 공통 골격과 공개 회차 조회의 DB·HTTP·브라우저·DB 연결 단절/복구 검사. 후속 기능·정합성·복구 인수 사례는 계획으로 유지 |
+| 새 실행 상태 | 공개 회차 조회 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md) 참조. [Boot 전환](BOOT4-MIGRATION-VERIFICATION.md)은 이전 실행 이력이며 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
 | 관련 작업 카드 | [IMPLEMENTATION-PLAN](IMPLEMENTATION-PLAN.md) |
 | 초기 골격의 실행 이력 원본 | [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md). 당시 Maven으로 수행한 실제 명령·관측·결과를 보존 |
 | Gradle 전환의 실행 이력 원본 | [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md). Spring Boot 3.5.16에서 수행한 실제 명령·관측·결과를 보존 |

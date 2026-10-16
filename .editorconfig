@@ -1,0 +1,19 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.{ts,tsx,js,mjs,json,yaml,yml}]
+indent_size = 2
+
+[*.bat]
+end_of_line = crlf
+
+# Approved files are byte-sealed. Preserve their existing format when opening them.
+[{contracts,docs/product,docs/architecture,docs/decisions}/**]
+end_of_line = unset
+insert_final_newline = unset

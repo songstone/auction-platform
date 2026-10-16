@@ -1,6 +1,6 @@
 # 로컬 개발 서비스
 
-승인 구조를 구현할 개발용 PostgreSQL·메일 수신기만 준비한다. 경매 테이블·회원·운영자·업무 API·자동 진행은 생성하지 않는다. 실제 운영 배포 설정은 아니다.
+승인 구조를 구현할 개발용 PostgreSQL·메일 수신기를 준비한다. 백엔드 `local-infra` 기동 시 Flyway가 `auction.rounds`를 생성하며, 아래 명시적 seed를 실행해야 예제 회차가 생긴다. 회원·운영자·자동 진행은 생성하지 않는다. 실제 운영 배포 설정은 아니다.
 
 ```powershell
 pwsh -NoProfile -File infra/up.ps1
@@ -25,3 +25,15 @@ pwsh -NoProfile -File infra/stop.ps1
 이미지 버전과 digest의 원본은 [compose.yaml](compose.yaml)이다. PostgreSQL 18의 데이터 볼륨은 `/var/lib/postgresql`에 마운트한다. 비밀번호 파일과 초기화 변수의 동작도 공식 이미지 안내를 따른다. [PostgreSQL 공식 이미지](https://github.com/docker-library/docs/blob/master/postgres/README.md#pgdata), [Compose secrets](https://docs.docker.com/compose/how-tos/use-secrets/)
 
 Mailpit은 제품 메일 전송과 분리된 개발 수신기로 선택했다. UI·SMTP 연결을 재현하기 위한 구성으로, 이메일 검증·재설정 기능이 구현됐다는 증거는 아니다. [Mailpit Docker 안내](https://mailpit.axllent.org/docs/install/docker/)
+
+## 공개 회차 개발 데이터
+
+`up.ps1` → 백엔드 `scripts/run-backend.ps1 -JavaHome <Corretto25> -WithInfrastructure` → 아래 seed 순서로 실행한다. 백엔드 최초 기동은 빈 업무 테이블과 Flyway 이력만 만든다.
+
+```powershell
+pwsh -NoProfile -File infra/seed-demo.ps1
+```
+
+[fixtures/public-rounds.sql](fixtures/public-rounds.sql)은 전용 개발 Compose의 DB에만 실행한다. `demo-round`는 공개된 합성 회차, `demo-hidden`은 미공개 회차다. 재실행은 기존 행을 덮어쓰지 않는다. 운영 데이터·회원·비밀번호를 포함하지 않으며 애플리케이션 리소스나 마이그레이션에 포함하지 않는다.
+
+`scripts/verify.ps1 -Integration`은 별도의 임시 PostgreSQL 컨테이너·난수 포트·메모리 비밀번호를 사용한다. 개발 DB/볼륨을 이용하지 않으며 실행 후 자신이 만든 프로세스·컨테이너·임시 DB 볼륨을 정리한다. 결과와 로그는 `.artifacts/integration`, 브라우저 결과는 `output/playwright`에 남긴다. Docker 미기동은 검사 실패다.

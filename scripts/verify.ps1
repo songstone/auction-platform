@@ -1,7 +1,8 @@
 #requires -Version 7.0
 param(
     [string]$JavaHome = $env:AUCTION_JAVA_HOME,
-    [string]$PythonExe = 'python'
+    [string]$PythonExe = 'python',
+    [switch]$Integration
 )
 $ErrorActionPreference = 'Stop'
 $repoPath = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
@@ -36,7 +37,9 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Contract validation failed.' }
     Push-Location (Join-Path $repoPath 'backend')
     try {
-        & .\gradlew.bat --no-daemon --console=plain clean build
+        $gradleTasks = @('clean', 'build')
+        if ($Integration) { $gradleTasks += 'integrationTest' }
+        & .\gradlew.bat --no-daemon --console=plain @gradleTasks
         if ($LASTEXITCODE -ne 0) { throw 'Backend verification failed.' }
     } finally { Pop-Location }
     Push-Location (Join-Path $repoPath 'frontend')
@@ -48,6 +51,10 @@ try {
         & npm.cmd run build
         if ($LASTEXITCODE -ne 0) { throw 'Frontend build failed.' }
     } finally { Pop-Location }
+    if ($Integration) {
+        & $contractPython -X utf8 scripts/verify-integration.py --java-home $JavaHome --skip-build --install-browser
+        if ($LASTEXITCODE -ne 0) { throw 'Public round integration verification failed.' }
+    }
     & $PythonExe -X utf8 scripts/check-approved-baseline.py --strict-evidence
     if ($LASTEXITCODE -ne 0) { throw 'Verification modified approved files.' }
     Write-Output 'FOUNDATION_CHECKS / PASS. Business, session, auction concurrency, SSE recovery and performance acceptance are separate.'
