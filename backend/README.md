@@ -1,6 +1,6 @@
 # Backend 개발 골격
 
-승인된 [SYSTEM-DESIGN 1.0](../docs/architecture/SYSTEM-DESIGN.md)과 [공통 계약 0.1.0](../contracts/README.md)을 구현하는 단일 Gradle 앱이다. 첫 업무 흐름은 **공개 회차 조회 `GET /api/v1/rounds/{roundId}` → PostgreSQL 읽기 전용 projection**이다. Actuator 요약 health·공통 오류·요청 추적·마이그레이션과 패키지 경계 검사를 제공한다. 계정·출품·입찰·원판정·ACK·SSE·복구·진행 권한은 구현하지 않았다.
+승인된 [SYSTEM-DESIGN 1.0](../docs/architecture/SYSTEM-DESIGN.md)과 [공통 계약 0.1.0](../contracts/README.md)을 구현하는 단일 Gradle 앱이다. 현재 업무 흐름은 **공개 회차 목록 `GET /api/v1/rounds` 및 상세 `GET /api/v1/rounds/{roundId}` → PostgreSQL 읽기 전용 projection**이다. Actuator 요약 health·공통 오류·요청 추적·마이그레이션과 패키지 경계 검사를 제공한다. 계정·출품·입찰·원판정·ACK·SSE·업무 진행 복구·진행 권한은 구현하지 않았다. 공개 조회의 DB 단절/복귀 증거는 [M-01 실행 기록](../docs/implementation/ROUND-DISCOVERY-VERIFICATION.md)에 있다.
 
 ## 고정 도구
 
@@ -73,7 +73,7 @@ health의 `UP`은 프로세스와 활성 health indicator의 요약 상태다. �
 
 [V1 migration](src/main/resources/db/migration/V1__create_auction_round.sql)이 `auction.rounds`를 만든다. 테이블 소유 기능은 `auction`이며 query는 명시된 SELECT projection만 사용한다. Flyway 이력은 `public.flyway_schema_history`다. 적용된 migration을 수정하지 않고 다음 버전으로 변경하며 `clean`은 비활성화한다. 개발 데이터는 루트의 명시적 fixture 도구로만 넣는다.
 
-조회는 `published_at IS NOT NULL`인 공개 상태만 반환한다. 예약 공개 시각이 지났다는 이유로 공개를 추정하지 않는다. 존재하지 않는 ID와 미공개 ID는 같은 `404 RESOURCE_NOT_FOUND`다. ID는 대소문자와 앞뒤 공백을 보존하고 공백만이면 `400 VALIDATION_FAILED`다. 카운터는 DB numeric의 정수값을 10진 문자열로 반환하고 시각은 PostgreSQL의 마이크로초를 보존한 UTC `Z` 문자열이다. 아직 회차 생성·공개·진행 상태를 바꾸는 유스케이스나 worker는 없다.
+목록과 상세는 같은 predicate로 `published_at IS NOT NULL`인 허용 공개 상태만 반환한다. 목록은 `scheduled_starts_at`, `round_id`(C collation) 순서의 keyset이며 내부 20행 단위와 lookahead를 사용한다. cursor는 opaque 목록 전용 값으로 전달하고 마지막은 null이다. 잘못된/다른 scope cursor는 400이며 고정 snapshot·제품 총수 상한을 추가하지 않는다. 예약 공개 시각이 지났다는 이유로 공개를 추정하지 않는다. 존재하지 않는 ID와 미공개 ID는 같은 `404 RESOURCE_NOT_FOUND`다. ID는 대소문자와 앞뒤 공백을 보존하고 공백만이면 `400 VALIDATION_FAILED`다. 카운터는 DB numeric의 정수값을 10진 문자열로 반환하고 시각은 PostgreSQL의 마이크로초를 보존한 UTC `Z` 문자열이다. 아직 회차 생성·공개·진행 상태를 바꾸는 유스케이스나 worker는 없다.
 
 URL의 ID는 한 경로 segment로 percent encoding한다. Tomcat은 encoded slash를 분리자로 디코딩하지 않고 통과시킨다. `PublicRoundHttpFirewall`은 정확한 GET `/api/v1/rounds/<한 raw segment>`에서만 encoded slash/percent를 허용하고 다른 경로·메서드는 기존 strict 검사를 적용한다. 헤더·정규화·기타 공격성 경로 검사는 유지한다. Spring의 segment 디코딩 뒤 ID를 SQL 매개변수로 한 번만 전달하며 추가 URL decoding은 하지 않는다.
 
@@ -87,8 +87,8 @@ API 성공·오류는 `Cache-Control: no-store`를 사용한다. 공통 오류�
 
 - `ArchitectureRulesTest`: 실제 production bytecode의 계층·기능 의존성/순환 검사와 의도적 위반 fixture를 사용한 guard 확인.
 - `InfrastructureBoundaryTest`: DB 없는 기본 컨텍스트·요약 health·미구현 경로 차단·기본 계정 부재·503/400/CSRF 오류 확인.
-- `PublicRoundPostgresIntegrationTest`: 빈 PostgreSQL에 Flyway 적용, 공개/미공개/없는 ID, 정확 ID·큰 카운터·마이크로초·SQL 실패, 재기동 시 데이터/마이그레이션 이력 보존.
+- `PublicRoundPostgresIntegrationTest`: 빈 PostgreSQL에 Flyway 적용, 공개/미공개/없는 ID, 정확 ID·큰 카운터·마이크로초·SQL 실패, 재기동 시 데이터/마이그레이션 이력 보존. 공개 목록 필터·동률 정렬·복수/끝 페이지·cursor 경계·DB down/up 및 읽기 무변경도 포함.
 
-빈 기능 패키지의 경계는 앞으로 추가되는 코드에 적용할 검사다. 음성/양성 fixture 검사가 경계 규칙의 작동을 확인해도 실제 경매 구현의 정합성·완전한 모듈 구현을 입증하지 않는다. 현재 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1의 실행 결과는 [Spring Boot 4 전환 검증 기록](../docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)을 따른다.
+빈 기능 패키지의 경계는 앞으로 추가되는 코드에 적용할 검사다. 음성/양성 fixture 검사가 경계 규칙의 작동을 확인해도 실제 경매 구현의 정합성·완전한 모듈 구현을 입증하지 않는다. 현재 M-01 실행 결과는 [공개 회차 탐색 검증](../docs/implementation/ROUND-DISCOVERY-VERIFICATION.md)을 따른다. Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1 전환 당시 결과는 [Spring Boot 4 전환 검증 기록](../docs/implementation/BOOT4-MIGRATION-VERIFICATION.md)에 보존한다.
 
 초기 Maven 골격의 실제 명령·산출물·검증 범위는 [2026-10-16 백엔드 실행 이력](verification/2026-10-16-scaffold.md)과 [초기 통합 실행 이력](../docs/implementation/FOUNDATION-VERIFICATION.md)에 보존한다. Spring Boot 3.5.16에서 수행한 빌드 도구 전환은 [Gradle 전환 실행 이력](../docs/implementation/GRADLE-MIGRATION-VERIFICATION.md)에 보존한다. 각 기록은 당시 버전의 실행 사실이며 현재 Spring Boot 4 실행 결과로 치환하지 않는다.

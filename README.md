@@ -1,6 +1,6 @@
 # Auction Platform
 
-최대 4개 레인이 독립 진행하는 실시간 경매 MVP다. 현재는 **공개 회차 조회**를 PostgreSQL → REST API → React 화면까지 연결했다. 출품·입찰·자동 경매·회원 인증·SSE는 후속 작업이다.
+최대 4개 레인이 독립 진행하는 실시간 경매 MVP다. 현재는 **공개 회차 목록·다음 페이지 → 상세 → 목록 복귀**를 PostgreSQL → REST API → React 화면까지 연결했다. DB 장애 후 같은 열린 화면의 재시도 복구도 검증했다. 출품·입찰·자동 경매·회원 인증·SSE는 후속 작업이다.
 
 | 원본 | 내용 |
 | --- | --- |
@@ -13,14 +13,15 @@
 | [M-01 실행 리드 컨텍스트](docs/handoffs/M-01-LEAD-CONTEXT.md) | 별도 실행 세션의 진입점: 승인 범위·착수 확인·기존 카드·배정/통합·인수 조건 |
 | [승인·인계 문서 검토](docs/implementation/M-01-HANDOFF-REVIEW-2026-10-16.md) | 승인 반영과 인계 문서의 검사·미실행 범위 |
 | [전체 로드맵 검토 기록](docs/implementation/ROADMAP-REVIEW-2026-10-16.md) | 문서 범위의 검사·독립 검토·미실행 경계 |
-| [다음 마일스톤 작업안](docs/tasks/README.md) | 공개 회차 탐색 M-01 범위 승인, 실제 배정 전 DRAFT 카드·의존성·소유권 |
+| [M-01 작업 기록](docs/tasks/README.md) | 실제 착수·소유권·검증·dev 통합 기록 |
 | [M-01 작업 분해 검토 이력](docs/implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md) | 기존 최소 흐름 계획의 정적 검사·독립 리뷰·미실행 경계 |
 | [작업 계획](docs/implementation/IMPLEMENTATION-PLAN.md) | BE·FE·QA 작업 카드와 의존성 |
 | [QA 계획](docs/implementation/QA-PLAN.md) | 검증 종류와 실제 증거의 구분 |
 | [초기 골격 실행 이력](docs/implementation/FOUNDATION-VERIFICATION.md) | 최초 Maven 골격의 실행·미실행 범위 |
 | [Gradle 전환 실행 이력](docs/implementation/GRADLE-MIGRATION-VERIFICATION.md) | Spring Boot 3.5.16에서 수행한 빌드 도구 전환의 실행·미실행 범위 |
 | [Spring Boot 4 전환 검증](docs/implementation/BOOT4-MIGRATION-VERIFICATION.md) | 현재 백엔드 기준인 Corretto 25·Spring Boot 4.1.1·Gradle 9.8.1의 실행·미실행 범위 |
-| [공개 회차 조회 검증](docs/implementation/PUBLIC-ROUND-VERIFICATION.md) | DB·API·브라우저·장애/복구와 CI 실행 증거 |
+| [현재 M-01 탐색 검증](docs/implementation/ROUND-DISCOVERY-VERIFICATION.md) | 목록·상세·동일 화면 복구, 정확 SHA·CI·실패/정리·NOT_RUN |
+| [기존 공개 회차 상세 검증](docs/implementation/PUBLIC-ROUND-VERIFICATION.md) | 당시 상세 조회의 실행 이력 |
 | [공통 구현 지침](AGENTS.md) | 공유 파일 소유권·마이그레이션·계약·검증 규칙 |
 
 ## 브랜치 운영
@@ -59,7 +60,7 @@ pwsh -NoProfile -File scripts/run-backend.ps1 -JavaHome 'C:\path\to\jdk-25' -Wit
 # 별도 터미널: 백엔드 기동/마이그레이션 완료 후 개발용 예제 회차 추가
 pwsh -NoProfile -File infra/seed-demo.ps1
 
-# 별도 터미널: http://localhost:5173/?roundId=demo-round
+# 별도 터미널: http://localhost:5173/ (목록); /?roundId=demo-round (직접 상세)
 Set-Location frontend
 npm ci
 npm run dev

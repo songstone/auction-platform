@@ -2,9 +2,9 @@
 
 책임·의존성의 원본은 [SYSTEM-DESIGN §3~6](../docs/architecture/SYSTEM-DESIGN.md)이다. 이 파일은 승인된 경계를 Java 패키지와 자동 검사에 연결하며 새 제품 정책·경매 알고리즘·모듈 책임표를 만들지 않는다.
 
-루트는 `com.auctionplatform`이다. 기능은 `identity`, `listing`, `auction`, `query`, `realtime`, `bootstrap`으로 구분한다. `bootstrap`은 조립·HTTP·보안·오류/추적을 담당한다. 첫 공개 회차 조회는 `query.application.PublicRoundQuery`와 `PublicRoundReader` 포트, `query.infrastructure.JdbcPublicRoundReader`, `query.publicapi.PublicRoundState`로 구성한다. 나머지 기능의 업무 클래스는 아직 없다.
+루트는 `com.auctionplatform`이다. 기능은 `identity`, `listing`, `auction`, `query`, `realtime`, `bootstrap`으로 구분한다. `bootstrap`은 조립·HTTP·보안·오류/추적을 담당한다. 공개 회차 목록·상세 조회는 `query.application.PublicRoundQuery`와 `PublicRoundReader` 포트, `query.infrastructure.JdbcPublicRoundReader`, `query.publicapi.PublicRoundState`·`PublicRoundPage`로 구성한다. 나머지 기능의 업무 클래스는 아직 없다.
 
-첫 migration의 `auction.rounds`는 auction 소유 저장이며 query adapter는 승인된 읽기 SQL 예외로 SELECT만 수행한다. query가 회차 생성·공개·시각 전이를 수행하지 않는다. JDBC 조회 메서드는 읽기 전용 트랜잭션이며 단일 행의 공개 상태를 반환한다. snapshot·watermark·SSE 커서 의미는 이 API에 추가하지 않는다.
+첫 migration의 `auction.rounds`는 auction 소유 저장이며 query adapter는 승인된 읽기 SQL 예외로 SELECT만 수행한다. query가 회차 생성·공개·시각 전이를 수행하지 않는다. JDBC 조회 메서드는 읽기 전용 트랜잭션이며 단일 상세 또는 정렬된 공개 상태 페이지를 반환한다. 목록 cursor는 목록 전용 keyset이며 stream cursor와 구분한다. snapshot·watermark·SSE 커서 의미는 이 API에 추가하지 않는다.
 
 기능을 구현할 때 내부에 `domain`, `application`, `publicapi`, `infrastructure`를 책임에 맞게 둔다. 작은 기능에도 빈 클래스·저장소·인터페이스를 기계적으로 만들 필요는 없다.
 

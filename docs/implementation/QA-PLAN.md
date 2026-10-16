@@ -4,11 +4,11 @@
 
 | 항목 | 내용 |
 | --- | --- |
-| 작성일 / 문서 버전 | 2026-10-16 / 0.5 |
+| 작성일 / 문서 버전 | 2026-10-16 / 0.6 |
 | 입력 | D-095, SYSTEM-DESIGN 1.0, DOMAIN-MODEL 1.2, 제품 1.6, 공통 계약 0.1.0 |
-| 현재 범위 | 공통 골격과 공개 회차 조회의 DB·HTTP·브라우저·DB 연결 단절/복구 검사. 후속 기능·정합성·복구 인수 사례는 계획으로 유지 |
-| 새 실행 상태 | 공개 회차 조회 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md) 참조. [Boot 전환](BOOT4-MIGRATION-VERIFICATION.md)은 이전 실행 이력이며 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
-| 관련 작업 카드 | [IMPLEMENTATION-PLAN](IMPLEMENTATION-PLAN.md), [M-01 DRAFT 작업지시서](../tasks/README.md), 리드 관리 [STATE](../STATE.md) |
+| 현재 범위 | M-01 목록·상세 탐색의 DB·HTTP·브라우저 및 동일 열린 Page의 DB 연결 단절/재시도 복구 검사. 후속 기능·정합성·복구 인수 사례는 계획으로 유지 |
+| 새 실행 상태 | 공개 회차 조회 실행은 [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md) 참조. [Boot 전환](BOOT4-MIGRATION-VERIFICATION.md)은 이전 실행 이력이며 이 문서의 사례·기대값 자체는 실행 결과가 아님 |
+| 관련 작업 카드 | [IMPLEMENTATION-PLAN](IMPLEMENTATION-PLAN.md), [M-01 작업 기록](../tasks/README.md), 리드 관리 [STATE](../STATE.md) |
 | 초기 골격의 실행 이력 원본 | [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md). 당시 Maven으로 수행한 실제 명령·관측·결과를 보존 |
 | Gradle 전환의 실행 이력 원본 | [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md). Spring Boot 3.5.16에서 수행한 실제 명령·관측·결과를 보존 |
 | Spring Boot 4 전환 이력 원본 | [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md). 당시 조합의 실제 명령·관측·결과를 보존 |
@@ -40,7 +40,7 @@
 
 ## 3. 이번 골격의 초기 검증 범위
 
-다음 `FND-*`는 이 QA 계획의 실행 항목 ID이며 제품 AC를 추가하지 않는다. 현재 공개 회차 상세의 실행·관측·미실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)을 따른다. Spring Boot 4 전환은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 초기 Maven 골격 실행은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md), Spring Boot 3.5.16의 Gradle 전환은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 실제 파일명·명령·산출물은 생성한 모듈의 실행 안내와 통합 스크립트에서 가져온다.
+다음 `FND-*`는 이 QA 계획의 실행 항목 ID이며 제품 AC를 추가하지 않는다. 현재 공개 회차 목록·상세 탐색의 실행·관측·미실행은 [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md)을 따른다. Spring Boot 4 전환은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 초기 Maven 골격 실행은 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md), Spring Boot 3.5.16의 Gradle 전환은 [GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 실제 파일명·명령·산출물은 생성한 모듈의 실행 안내와 통합 스크립트에서 가져온다.
 
 | 항목 | 실행·관측 | 기대값과 증거 | 제외 범위 |
 | --- | --- | --- | --- |
@@ -165,6 +165,8 @@ R-48/49의 목표는 기존 승인 그대로다. 기본 구성은 4레인·동�
 
 일반 구현 작업의 완료 기준은 검증된 변경의 `dev` 통합과 완료 작업 브랜치 정리다. `main` 반영은 사용자가 주기적으로 수행하는 별도 단계이며, 과거 보고서의 `main` 병합 기록은 소급 변경하지 않는다.
 
-현재 공개 회차 상세의 수행 여부·정확 명령·증거·검사 수·미실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)에 기록하며, Boot 전환은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에, 초기 Maven 실행과 Spring Boot 3.5.16의 Gradle 전환은 각각 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)·[GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 여기에는 별도의 현재 상태 표나 결과 숫자를 복제하지 않는다. 골격의 실제 DB 연결 관측은 제품 트랜잭션·인증 세션 검증과 구별하고, 개발 fixture의 브라우저 관측도 실제 경매 연동·재접속·장애·성능 인수와 구별한다. 기존 승인 문서/계약 정적 검사와 SPIKE는 기존 범위의 증거이며 새 제품 QA 통과로 합산하지 않는다.
+현재 공개 회차 목록·상세 탐색의 수행 여부·정확 명령·증거·검사 수·미실행은 [ROUND-DISCOVERY-VERIFICATION](ROUND-DISCOVERY-VERIFICATION.md)에 기록하며, Boot 전환은 [BOOT4-MIGRATION-VERIFICATION](BOOT4-MIGRATION-VERIFICATION.md)에, 초기 Maven 실행과 Spring Boot 3.5.16의 Gradle 전환은 각각 [FOUNDATION-VERIFICATION](FOUNDATION-VERIFICATION.md)·[GRADLE-MIGRATION-VERIFICATION](GRADLE-MIGRATION-VERIFICATION.md)에 이력으로 보존한다. 여기에는 별도의 현재 상태 표나 결과 숫자를 복제하지 않는다. 골격의 실제 DB 연결 관측은 제품 트랜잭션·인증 세션 검증과 구별하고, 개발 fixture의 브라우저 관측도 실제 경매 연동·재접속·장애·성능 인수와 구별한다. 기존 승인 문서/계약 정적 검사와 SPIKE는 기존 범위의 증거이며 새 제품 QA 통과로 합산하지 않는다.
 
-현재 상태와 다음 M-01의 승인·실행 게이트는 리드 관리 [STATE](../STATE.md)와 [작업지시서](../tasks/README.md)를 따른다. 전체 로드맵과 M-01 범위는 승인 완료이며 [실행 리드 컨텍스트](../handoffs/M-01-LEAD-CONTEXT.md)를 인계한다. 카드는 실제 배정·SHA·환경/선행 확인 전 DRAFT, 제품 실행 증거는 NOT_RUN이다. 현재 문서 변경을 새 기능 완료로 기록하지 않는다. 제품 전체 완료는 구현된 기능별 AC·불변식·경합/복구·권한·브라우저·성능 증거와 미정/제외 범위를 별도로 대조해야 한다. 계약 불일치는 구현에서만 보정하지 않고 [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md)의 변경 절차로 인계한다.
+현재 상태와 M-01의 승인·실행 기록은 리드 관리 [STATE](../STATE.md)와 [작업지시서](../tasks/README.md)를 따른다. 전체 로드맵과 M-01 범위는 승인 완료이며 [실행 리드 컨텍스트](../handoffs/M-01-LEAD-CONTEXT.md)를 인계한다. T-001~003은 실제 배정·선행 확인·검증·CI를 거쳐 dev 통합했다. 현재 문서는 실행 증거를 안내하며 문서 수정 자체를 제품 검증으로 세지 않는다. T-004 문서의 최종 통합은 별도 최종 인계 기록을 따른다. 제품 전체 완료는 구현된 기능별 AC·불변식·경합/복구·권한·브라우저·성능 증거와 미정/제외 범위를 별도로 대조해야 한다. 계약 불일치는 구현에서만 보정하지 않고 [ADR-005](../decisions/adr/ADR-005-CONTRACT-BASELINE.md)의 변경 절차로 인계한다.
+
+공개 상세만 수행한 이전 실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)에 그대로 보존한다. 이번 0.6은 M-01 실행 안내 반영이며 제품/설계/계약 기준선·후속 QA 승인 범위를 변경하지 않는다.

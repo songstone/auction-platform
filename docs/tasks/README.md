@@ -1,12 +1,12 @@
 # M-01 — 공개 회차 탐색 작업 운영안
 
-상태 **범위 승인 완료 / 작업 카드 DRAFT·실행 준비 대기**, 작성일 2026-10-16, 책임 Engineering Lead. 공식 작업 상태는 [STATE](../STATE.md)가 관리한다. 전체 로드맵과 첫 M-01 실행 범위에 사용자가 “승인”으로 답했으며 실제 착수 조건은 별도 확인한다.
+상태 **M-01 기능 검증·dev 통합 완료 / T-004 문서 마감**, 작성일 2026-10-16, 책임 Engineering Lead. 공식 작업 상태는 [STATE](../STATE.md)가 관리한다. 전체 로드맵과 첫 M-01 실행 범위에 사용자가 “승인”으로 답했으며 실제 착수 조건과 실행 결과는 각 카드 및 [새 검증 기록](../implementation/ROUND-DISCOVERY-VERIFICATION.md)에 남겼다.
 
-전체 MVP에서의 위치·선행/후속 마일스톤·위험 검증은 승인된 [ROADMAP](../ROADMAP.md), 기능 추적은 [BACKLOG](../BACKLOG.md)를 참조한다. 별도 세션은 [M-01 실행 리드 컨텍스트](../handoffs/M-01-LEAD-CONTEXT.md)에서 시작한다. T-001~004는 담당·실제 SHA·worktree·환경/선행 확인 전이므로 DRAFT이며, 같은 범위 승인을 반복 요청하지 않는다.
+전체 MVP에서의 위치·선행/후속 마일스톤·위험 검증은 승인된 [ROADMAP](../ROADMAP.md), 기능 추적은 [BACKLOG](../BACKLOG.md)를 참조한다. 별도 세션은 [M-01 실행 리드 컨텍스트](../handoffs/M-01-LEAD-CONTEXT.md)에서 시작한다. T-001~003은 MERGED, 제품 구현 활성 0/2다. T-004의 작성 시점 상태와 최종 통합 기록은 해당 카드에서 구별한다.
 
 ## 목표와 범위
 
-비회원이 `/`에서 공개 회차를 보고, 다음 페이지를 탐색하고, 선택한 회차의 기존 상세 화면으로 이동한다. 빈 목록·조회 실패·재시도·돌아오기도 구분한다. 사용자가 ID가 담긴 외부 링크를 먼저 받아야 하는 현재 진입 제약을 해소한다.
+비회원이 `/`에서 공개 회차를 보고, 다음 페이지를 탐색하고, 선택한 회차의 기존 상세 화면으로 이동한다. 빈 목록·조회 실패·재시도·돌아오기도 구분한다. 기존 외부 상세 링크만으로 진입하던 제약을 해소했다.
 
 사용하는 계약은 `GET /api/v1/rounds`의 `listPublicRounds` / `PublicRoundPage`와 기존 `getPublicRound` / `PublicRoundState`다. 목록은 `scheduledStartsAt`, `roundId` 오름차순이며 `nextCursor=null`이 끝이다. 페이지 사이 데이터 변경 중 완전히 고정된 목록을 보장하지 않는다는 계약 경계를 유지한다.
 
@@ -22,7 +22,7 @@
 | 입력 | 버전·역할 |
 | --- | --- |
 | [AGENTS](../../AGENTS.md) | 조사 커밋의 작업/통합 규칙 |
-| [STATE](../STATE.md), [IMPLEMENTATION-PLAN](../implementation/IMPLEMENTATION-PLAN.md), [QA-PLAN](../implementation/QA-PLAN.md) | 리드의 상태, 현재 0.5 계획·증거 분류; 이 작업 세분화와 함께 읽음 |
+| [STATE](../STATE.md), [IMPLEMENTATION-PLAN](../implementation/IMPLEMENTATION-PLAN.md), [QA-PLAN](../implementation/QA-PLAN.md) | 리드의 상태, 입력 0.5 / 실행 반영 0.6 계획·증거 분류; 이 작업 세분화와 함께 읽음 |
 | [MVP-PRD](../product/MVP-PRD.md), [AUCTION-RULES](../product/AUCTION-RULES.md) | 1.6, R-37/AC-R37-01의 공개 접근 일부 및 R-47의 개발 화면 확인 |
 | [DOMAIN-MODEL](../architecture/DOMAIN-MODEL.md) | 1.2, INV-26의 공개 정보 보호 경계. 전체 상품/실시간 AC의 완료를 주장하지 않음 |
 | [SYSTEM-DESIGN](../architecture/SYSTEM-DESIGN.md), [MODULE-BOUNDARIES](../../backend/MODULE-BOUNDARIES.md) | 1.0 및 현재 코드 경계, auction 소유 records/query 읽기 SQL projection |
@@ -31,7 +31,7 @@
 | [승인 manifest](../../contracts/approved-baseline-0.1.0.json) | strict-evidence PASS 필수, 해시 재봉인 금지 |
 | [공개 상세 검증](../implementation/PUBLIC-ROUND-VERIFICATION.md) | 기존 기능 회귀 근거; 새 목록 기능의 PASS 근거로 사용하지 않음 |
 
-조사·설계 기준 커밋은 `e5ebde892395c02bae9f4e604b610a4bf7088ee0`다. **실제 구현 시작 커밋은 아직 없다.** DRAFT 카드의 미배정은 의도적이며 READY 전에 반드시 실제 SHA로 채운다. 승인 후 fetch한 최신 `origin/dev`에서 T-001/T-002를 분기한다. 계획 문서 통합 등으로 tip이 이동했다면 위 조사 SHA를 착수 SHA로 복사하지 않는다.
+조사·설계 기준 커밋은 `e5ebde892395c02bae9f4e604b610a4bf7088ee0`다. 실제 T-001/T-002 시작은 `fa4dac5c106cb114c1919aec2bdc6021f79f1958`, T-003은 `2720ed4a6cfa84608f842f3b709002ccf5204fc2`, T-004는 `89ae78c368a65522f4357616f9eebfaa89dcf084`다. 조사 SHA를 착수 값으로 재사용하지 않았다.
 
 리드는 `git fetch origin --prune`, `git rev-parse origin/dev`, strict-evidence, `git worktree list`, `git merge-base --is-ancestor <dependency-sha> origin/dev`를 확인하고 실제 SHA·계약 0.1.0·담당·worktree를 각 카드에 기록한다. 후속 작업에 `최신`, `완료 예정`, 작업명만 인계하지 않는다.
 
@@ -54,7 +54,7 @@ flowchart TD
 
 | 단계 | 슬롯 A | 슬롯 B | 실제 시작 조건 |
 | --- | --- | --- | --- |
-| 현재 | 구현 미배정 | 구현 미배정 | 범위 승인·인계 작성 완료. 카드 DRAFT, 실제 READY 조건 확인 전 |
+| 현재 | T-004 리드 문서 마감 | 제품 구현 0/2 | T-001~003 검증·CI·dev 포함 확인 완료 |
 | 1 | T-001 / BE A | T-002 / FE B, 계약 mock 개발 | 승인 + 같은 실제 origin/dev SHA + 별도 worktree |
 | 2 | T-001 리뷰·검증/통합 | T-002 최신 dev 반영·실제 API 확인 | T-001 검증·통합 SHA 인계. FE mock 완료 보고로 서버 연동 완료 판단 금지 |
 | 3 | T-003 / QA·통합 C | 신규 구현 배정 없음 | T-001/T-002 tip이 origin/dev에 포함되고 통합 CI 성공 |
@@ -69,7 +69,7 @@ T-003의 독립 기대값 검토는 미리 읽기 전용으로 할 수 있으나
 | `contracts/**`, 승인 제품/설계/결정 파일 | Contract Owner | 읽기 전용. 의미 변경 필요 시 ADR-005, 사용자 승인 후 새 기준선 배정 |
 | `backend/**`의 query·HTTP·security/bootstrap 및 해당 테스트 | T-001 BE A | 기존 상세 controller/보안 조립과 충돌 가능. BE 담당 1명, 익명 목록 GET만 추가, 인증 구현 확대 금지 |
 | `backend/build.gradle.kts`, locks, application 설정, `db/migration/**` | 단계 1~2 BE A가 조정, 기본 변경 잠금 | 이번 목록은 V1 재사용, migration/의존성 추가 예상 없음. 필요 발생 시 리드가 범위를 재배정. V1 수정 금지 |
-| FE App·CSS·rounds·package/lock·기존 E2E | T-002 FE B | FE 담당 1명. 생성 타입 수동 수정 금지. 기존 상세 회귀 E2E 수정도 이 담당만 수행 |
+| FE App·CSS·rounds·package/lock·기존 E2E | T-002 FE B | 단계 1~2 FE 담당 1명. 생성 타입 수동 수정 금지. 단계 3에서 기존 E2E·Playwright 설정의 검증용 변경은 QA C에게 인계했고 제품 FE 소유권은 유지 |
 | `scripts/**`, `.github/**`, `infra/**`, 새 `frontend/e2e/round-discovery.spec.ts` | 단계 3 T-003 QA/통합 C | 단계 1~2 변경 잠금. FE/BE는 요청만 제출. T-002 종료·소유권 인계 후 시험 harness/fixtures 수정 |
 | `docs/STATE.md`, `docs/tasks/**`, 현재 계획/가이드·공식 검증 보고서 | Engineering Lead | 다른 구현자는 제출물만 작성, 상태·승인·공식 결과 직접 수정 금지 |
 
@@ -77,11 +77,11 @@ T-003의 독립 기대값 검토는 미리 읽기 전용으로 할 수 있으나
 
 ## 통합 순서와 마일스톤 인수
 
-통합 예상 순서: **T-001 → T-002 → T-003 → T-004**. 각 코드 작업은 독립 리뷰, 해당 검증, 커밋별 CI를 통과한 뒤에만 dev로 보낸다. T-002를 최신 dev와 합친 후보에서도 검증하며 T-003을 미리 시작해 성공을 가정하지 않는다.
+완료된 통합 순서: **T-001 → T-002 → T-003**. T-004는 이 문서 후보의 리뷰·CI 후 마지막으로 통합한다. 각 코드 작업은 독립 리뷰, 해당 검증, 커밋별 CI를 통과한 뒤에만 dev로 보낸다. T-002를 최신 dev와 합친 후보에서도 검증하며 T-003을 미리 시작해 성공을 가정하지 않는다.
 
 최종 인수에는 공개 목록 필터·정렬·다음 페이지·빈 결과·opaque ID/큰 counter/시각 보존, 선택→기존 상세→목록 복귀, DB 중단 시 503/화면 구분, **동일 오류 화면에서 사용자가 재시도해 복구**하는 실제 관측이 필요하다. 공개 전 데이터와 private 필드가 응답/화면에 없어야 한다. 자동 상태 전이·SSE·세션 복구 주장은 제외한다.
 
-브라우저는 Chromium 1280/390을 개발 검증안으로 제시하며 OPEN-08의 전체 지원 인수와 구별한다. 다른 환경 승인이 없다면 실제 관측 조건만 기록하고 R-47 전체 PASS나 RELEASED로 올리지 않는다.
+브라우저는 Chromium 1280/390에서 개발 관측을 수행했으며 OPEN-08의 전체 지원 인수와 구별한다. 다른 환경 승인이 없다면 실제 관측 조건만 기록하고 R-47 전체 PASS나 RELEASED로 올리지 않는다.
 
 ## 공통 검증·제출·중단 규칙
 
@@ -101,3 +101,5 @@ Docker 없는 DB/통합 검사는 실패/NOT_RUN 사유이며 PASS로 건너뛰�
 검증/CI 통과 후 최신 dev에 FF 또는 일반 merge로 통합·푸시한다. fetch 후 로컬/원격 작업 tip이 모두 `origin/dev`의 조상인지 확인하고 다른 worktree 사용 여부를 검사한 뒤 완료 브랜치만 삭제한다. main/dev와 미병합 커밋은 보존한다. 실패 시 원인·남은 작업을 기록하고 원담당에게 재배정한다.
 
 승인 hash 불일치, 범위 밖 공통 파일 변경, 정책 빈칸의 임의 값 확정, private 정보 노출, 실제 의존 SHA 부재, 미통과 CI, 시험 인프라의 개발/운영 DB 접근 가능성이 발견되면 영향 작업을 중단해 리드에게 보고한다. 보고에는 재현·영향·차단 범위·필요 결정·재개 조건을 포함한다. 관련 없는 독립 작업은 계속할 수 있다.
+
+현재 실행 결과·CI·실패/정리·NOT_RUN은 [ROUND-DISCOVERY-VERIFICATION](../implementation/ROUND-DISCOVERY-VERIFICATION.md)이 원본이다. T-003 시작 때 기존 E2E와 Playwright 공통 설정의 검증용 소유권을 QA C에게 인계했고, 제품 코드 결함 수정 권한과 구분했다.

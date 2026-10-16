@@ -1,64 +1,43 @@
 # 현재 상태와 다음 마일스톤
 
-> 2026-10-16 M-01 실행 착수: fetch한 `origin/dev=fa4dac5c106cb114c1919aec2bdc6021f79f1958`, clean 및 worktree/환경/strict-evidence PASS 확인 후 T-001 BE A(`/root/be`)·T-002 FE B(`/root/fe`)를 별도 worktree에 배정했다. T-001/T-002는 실제 검증·CI 후 dev 통합했고 T-003의 독립 검증 READY를 확인했다. 구현 활성 1/2 예정. QA C(`/root/qa`)는 선행 통합 전 읽기 전용 기대값 검토만 수행한다. 아래 계획 세션의 조사·승인 이력은 당시 기록이며 최신 실행 상태는 이 문단과 작업 표를 따른다.
+2026-10-16, Engineering Lead. **M-01 공개 회차 탐색 기능은 검증 PASS / 원격 dev 통합 완료**다. 목록·페이지 탐색·상세·복귀·빈 목록/오류 구분·동일 열린 오류 화면의 DB 복귀 후 재시도를 확인했다. 정확 실행·실패 이력·CI·원시 증거는 [ROUND-DISCOVERY-VERIFICATION](implementation/ROUND-DISCOVERY-VERIFICATION.md)에 있다. RELEASED 판정은 하지 않았다.
 
-- 관리 책임: Engineering Lead. 구현자는 결과를 제출하고 리드만 상태를 갱신한다.
-- 확인일: 2026-10-16. 이 문서는 실행 현황과 작업 승인 상태를 관리한다. 제품·설계·계약의 원본을 대체하지 않는다.
-- 최초 조사 기준: `e5ebde892395c02bae9f4e604b610a4bf7088ee0` (`dev = origin/dev`, fetch 확인, clean). `main = origin/main = 003a28fb9f2836f80ce21ed4e64f855977632eb8`.
-- 이번 작업 분해 문서의 검토 범위·명령·미실행: [M-01 문서 검토 기록](implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md).
+## 승인·기준선
 
-## 전체 MVP 로드맵 승인 상태 — 2026-10-16
+[ROADMAP](ROADMAP.md)과 [BACKLOG](BACKLOG.md)의 7개 마일스톤 및 첫 M-01 범위는 2026-10-16 사용자 “승인”으로 승인됐다. 승인 대상 제안은 `49bec92cc33e8a61dc5fa5d3f6c7c84432f78d7d`다. 실제 구현 착수 origin/dev는 `fa4dac5c106cb114c1919aec2bdc6021f79f1958`이며 과거 조사 SHA와 구별한다. [당시 인계](handoffs/M-01-LEAD-CONTEXT.md)·[계획 검토](implementation/MILESTONE-PLANNING-REVIEW-2026-10-16.md)·[인계 검토](implementation/M-01-HANDOFF-REVIEW-2026-10-16.md)는 역사로 보존한다.
 
-[ROADMAP](ROADMAP.md)과 [BACKLOG](BACKLOG.md)의 전체 MVP 7개 마일스톤·9개 Epic·26개 Feature 및 첫 실행 M-01 범위는 **USER_APPROVED**다. 사용자가 `49bec92cc33e8a61dc5fa5d3f6c7c84432f78d7d`의 제안에 **“승인”**으로 답했다. 승인 대상의 원래 조사 기준은 `a8d4df69c891f0f55fd017f20a2f427f27367de6`, 인계 작성 시 fetch한 origin/dev는 `49bec92cc33e8a61dc5fa5d3f6c7c84432f78d7d`이며 모두 미래 구현 착수 SHA가 아니다. 이번에는 제품 코드·시험·계약을 변경하거나 구현자를 가동하지 않았다.
+입력은 제품 1.6 / DOMAIN 1.2 / SYSTEM 1.0 / DECISION 1.8 / 계획·QA 0.5 / 계약 0.1.0이다. 보호 파일 20개 strict-evidence PASS, 승인 원본과 manifest 불변. 현재 계획·QA 0.6은 실행 안내를 갱신한 문서이며 새로운 정책 승인이 아니다.
 
-**[별도 M-01 실행 리드 컨텍스트](handoffs/M-01-LEAD-CONTEXT.md)를 작성했다.** 기존 T-001~004는 범위 승인 조건을 충족했지만 실제 담당·착수 SHA·worktree·환경/선행 확인 전이므로 DRAFT를 유지한다. 다음 리드는 같은 범위를 재승인 요청하지 않고 READY 조건을 확인한다. 기존 계획/검증 보고서는 역사로 보존하며 승인·인계 문서 검토는 [M-01-HANDOFF-REVIEW](implementation/M-01-HANDOFF-REVIEW-2026-10-16.md)에 별도로 기록한다.
+## 작업 현황
 
-## 확인된 현재 범위
+제품 구현 활성 **0/2**, T-004 리드 문서 마감 중. T-001~003은 독립 리뷰·명령·각 후보 4개 CI 성공을 확인한 뒤 순서대로 dev에 FF/push했다.
 
-| 대상 | 확인 상태 | 증거와 한계 |
-| --- | --- | --- |
-| 승인 기준선 | BASELINE_INTEGRITY / PASS | 계약 0.1.0, 보호 파일 20개. 이번 조사에서 `python scripts/check-approved-baseline.py --strict-evidence` 실행 |
-| 공개 회차 상세 | 구현·통합 이력 확인 | `/?roundId=<ID>` → 공개 GET → PostgreSQL → React. 구현 커밋 `39fb9e147c6e9b04dc5f763f164b6e2c349c4dca`, [실행 원본](implementation/PUBLIC-ROUND-VERIFICATION.md) |
-| 조사 기준 커밋 CI | SUCCESS, 원격 조회 확인 | [Actions 38840794281](https://github.com/songstone/auction-platform/actions/runs/38840794281), head `e5ebde892395c02bae9f4e604b610a4bf7088ee0`. contracts/backend/frontend/integration 모두 success. 이번 로컬에서 앱 검사를 다시 실행한 것은 아님 |
-| 공개 회차 목록 API | T-001 MERGED | `658a486c1b5bc68e0cc32e92de34f1fe3234061f`, 실제 DB/HTTP 15건 및 CI 성공. FE/최종 M-01 인수는 진행 중 |
-| 인증·출품·입찰·자동 진행·SSE | 미구현 / NOT_RUN | health·조회·개발 fixture·SPIKE 증거를 이 기능의 성공으로 재사용하지 않음 |
-| 배포·운영 인수 | NOT_RUN | 기존 기능의 RELEASED 판정 근거 없음 |
-
-기존 공개 조회의 장애 증거는 DB 중단과 재시작 후 **새 조회**다. 열린 오류 화면의 성공 재시도, 인증 세션·입찰 원기록·SSE 복구를 입증한 것은 아니다. 과거 보고서의 `main` 통합 문구는 당시 이력이며 이후 작업은 [AGENTS.md](../AGENTS.md)의 `dev` 통합 절차를 따른다.
-
-## 승인된 첫 마일스톤 M-01
-
-**비회원이 첫 화면에서 공개 회차 목록을 탐색하고 선택한 회차의 공개 상세를 확인한다.**
-
-상태: **M-01 IN_PROGRESS**. T-001/T-002를 READY 확인 뒤 배정했으며 현재 구현 에이전트 활성 수 **1/2**다. 인계 작성 중 검토자는 읽기 전용 조사·문서 검토만 수행했다. 아래 담당은 역할 배정안이며 실제 구현자 실행·브랜치/worktree 생성 보고가 아니다.
-
-범위·의존성·충돌·인수 기준은 [M-01 작업 운영안](tasks/README.md)에 있다. 기존 [IMPLEMENTATION-PLAN](implementation/IMPLEMENTATION-PLAN.md)의 BE-50/FE-20/QA-10/INT-10 중 공개 회차 탐색 부분을 작은 작업으로 구체화한다. 기존 광범위 카드 전체를 완료 처리하지 않는다.
-
-| 작업 | 책임 역할 | 상태 | 실제 시작 커밋 | 검증 커밋 / 통합 커밋 |
+| 작업 | 담당 | 상태 | 실제 시작 SHA | 검증 / dev 통합 SHA |
 | --- | --- | --- | --- | --- |
-| [T-001](tasks/T-001.md) 공개 회차 목록 API | BE A `/root/be` | MERGED | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | `658a486c1b5bc68e0cc32e92de34f1fe3234061f` / `658a486c1b5bc68e0cc32e92de34f1fe3234061f` |
-| [T-002](tasks/T-002.md) 목록 탐색·상세 이동 화면 | FE B `/root/fe` | MERGED | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | `2720ed4a6cfa84608f842f3b709002ccf5204fc2` / `2720ed4a6cfa84608f842f3b709002ccf5204fc2` |
-| [T-003](tasks/T-003.md) 실제 탐색 흐름의 독립 통합 검증 | QA C `/root/qa` | READY | `2720ed4a6cfa84608f842f3b709002ccf5204fc2` | 신규 독립 검증 대기 / 없음 |
-| [T-004](tasks/T-004.md) 마일스톤 검토·인수·상태 마감 | Engineering Lead | DRAFT | 선행 병합 후 배정 | 없음 / 없음 |
+| [T-001](tasks/T-001.md) 목록 API | BE A `/root/be` | MERGED | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | `658a486c1b5bc68e0cc32e92de34f1fe3234061f` / 동일 |
+| [T-002](tasks/T-002.md) 목록·상세 UI | FE B `/root/fe` | MERGED | `fa4dac5c106cb114c1919aec2bdc6021f79f1958` | `2720ed4a6cfa84608f842f3b709002ccf5204fc2` / 동일 |
+| [T-003](tasks/T-003.md) 독립 통합 검증 | QA C `/root/qa` | MERGED | `2720ed4a6cfa84608f842f3b709002ccf5204fc2` | `89ae78c368a65522f4357616f9eebfaa89dcf084` / 동일 |
+| [T-004](tasks/T-004.md) 인수·문서 | Lead `/root` | IN_REVIEW — 문서 최종 CI/통합 전 | `89ae78c368a65522f4357616f9eebfaa89dcf084` | 아래 최종 인계 기록으로 확정 |
 
-## 상태 전이와 착수 통제
+문서 커밋은 자기 최종 SHA·통합 결과를 선행 사실로 쓸 수 없으므로 T-004 최종 상태는 통합 후 `.artifacts/tasks/m01-lead/final-handoff.json` 및 사용자 최종 응답에 기록한다. 이 문서의 IN_REVIEW는 작성 시점 상태다. 문서가 remote dev에 포함됐는지와 해당 SHA CI를 확인하여 최종 마감을 판정한다.
+
+## 실제 확인된 범위
+
+- 실제 BE PostgreSQL/HTTP 15건, BE fast 13건, FE unit 33건 PASS.
+- 독립 목록 HTTP expectation 39건 + 기존 상세 6건 PASS.
+- Chromium 156.0.8078.4, 1280×844/390×844: 실제 서버 브라우저 15건 + 합성 fault 7건 PASS. 총 22건, skip/flaky 0.
+- 실제 공개 53개·3페이지, 정확 ID/큰 counter/시각, 빈 목록·503 구별, 같은 Page/document를 유지한 DB down/up 재시도 PASS.
+- runtime cleanup·fixture 배포 제외·이번 주입 비밀 scan PASS. 작업 원시 증거는 루트 checkout으로 복사하고 hash 대조했다.
+- T-001~003 로컬/원격 branch 및 Git worktree 등록 제거 완료. T-001 디스크 잔여 폴더는 긴 경로 오류와 자동 삭제 승인 거부로 보존했다. 상세는 보고서와 cleanup JSON 참조.
+
+기존 [공개 상세 보고서](implementation/PUBLIC-ROUND-VERIFICATION.md)의 새 페이지 복구는 당시 관측이다. 현재 동일 화면 복구는 새 M-01 보고서의 별도 증거다. 어느 것도 인증 세션·입찰·SSE·공식 접수·성능·운영 인수를 대신하지 않는다.
+
+main/origin/main은 `003a28fb9f2836f80ce21ed4e64f855977632eb8`로 유지했다. M-01 구현은 dev에만 통합했고 배포하지 않았다. 전체 R-37/R-47/R-49, OPEN-08 지원 환경, 인증·출품·입찰·자동 진행·SSE·성능·운영은 NOT_RUN/후속 범위다.
+
+## 상태 전이와 다음 준비
 
 `DRAFT → READY → IN_PROGRESS → IN_REVIEW → VERIFIED → MERGED → RELEASED`
 
-- READY: 사용자 범위 승인, 파일 소유권, 실제 최신 `origin/dev`의 **40자리 SHA**, 계약 버전/무결성, 작업 브랜치·worktree 예약, 의존 커밋 존재/포함 관계를 리드가 확인했다. 승인 메시지와 SHA를 카드에 기록하기 전에는 실행하지 않는다.
-- IN_PROGRESS: 지정 worktree에서 실제 담당자가 작업을 시작했다. 구현 에이전트는 동시 최대 2명이다.
-- IN_REVIEW: 변경 커밋·실행 명령·결과·NOT_RUN·변경 파일 목록이 제출됐다.
-- VERIFIED: 독립 리뷰와 해당 카드의 검증이 지정 커밋에서 통과했다. mock 증거와 실제 연동 증거를 구별한다.
-- MERGED: VERIFIED 커밋의 필수 CI가 통과했고 최신 원격 `dev`에 포함됨을 확인했다. 충돌 해결 변경은 다시 검증한다.
-- RELEASED: 별도 사용자 릴리스 승인과 실제 배포/확인 근거가 있다. `dev` 통합이나 `main` 승격만으로 기록하지 않는다.
-- BLOCKED: 원래 상태, 막힌 이유, 필요한 결정/증거, 소유자, 재개 조건을 기록한다. 해소 후 리드가 해당 게이트를 다시 확인한다. NOT_RUN은 실행 증거 상태이며 작업 BLOCKED와 다르다.
+READY는 실제 최신 origin/dev 40자리 SHA·계약/guard·담당/worktree·파일 소유권·선행 통합을 리드가 확인한 상태다. VERIFIED는 독립 리뷰와 해당 커밋 검증 완료, MERGED는 필수 CI 후 원격 dev 포함 확인, RELEASED는 별도 승인과 배포 확인이 있는 상태다. BLOCKED에는 원인·소유자·재개 조건을 기록한다. NOT_RUN은 실행 증거 상태이며 승인 여부와 다르다.
 
-선행 구현자의 완료 보고만으로 후속을 READY로 바꾸지 않는다. 후속 카드에는 실제 소비할 통합 커밋과 계약 버전을 직접 기록한다. 미래 커밋 SHA나 미생성 worktree를 존재하는 것처럼 기재하지 않는다.
-
-## 다음 결정
-
-1. M-01 공개 회차 목록 → 기존 상세 범위는 승인 완료다. 다음 실행 리드는 컨텍스트에 따라 실제 착수 조건을 확인하고 T-001/T-002부터 배정한다. 이번 계획 세션은 인계 문서 작성까지 수행했다.
-2. 기존 Chromium desktop 1280px / mobile 390px를 M-01 개발 관측 조건으로 사용하고 정확한 실행 환경을 기록한다. OPEN-08의 전체 PC/모바일 지원 확정과 AC-R47-01 인수는 별도다.
-3. 다음 인증 마일스톤 전에 OPEN-06/CR-10/SEC의 이메일 동일성·세션/토큰·비밀번호/재설정·운영자 준비 정책을 작은 결정 묶음으로 제시한다. M-01을 막는 조건으로 확대하지 않는다.
-
-목록의 정렬·공개 범위·커서 의미는 이미 계약에 있다. 내부 페이지 크기·커서 인코딩·SQL 계획은 BE의 구현 제안과 리뷰 대상으로 처리하며 계약에 없는 제품 제한이나 새 보안 정책을 임의 추가하지 않는다.
+다음 M-02는 **정책 준비만** 인계한다. 이메일 동일성/중복·검증과 운영 계정, 비밀번호·토큰 수명/일회성/동시성/무효화, 세션·메일/시도 제한·계정 유무 비노출을 작은 결정 묶음으로 정리한다. CR-10/SEC 제안 수치는 미승인으로 유지한다. 결정 후 Contract Owner의 ADR-005 변경안과 별도 작업 카드를 마련한다. 이번 세션에서 M-02를 구현하거나 READY로 올리지 않는다.
