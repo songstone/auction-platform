@@ -15,7 +15,7 @@
 
 승인된 설계의 정의된 부분에서 작업을 시작한다. 전체 기능·추가 SPIKE·성능 실험 통과를 골격 작성의 선행조건으로 두지 않는다. 영향 경로에 남은 정책은 그 경로의 구현/인수 전에 결정하고, 기술 위험은 실제 구현과 함께 검증한다. 골격이나 fixture가 그 보장을 제공한다고 보고하지 않는다.
 
-현재 작업 상태는 [STATE](../STATE.md), 다음 최소 흐름의 DRAFT 작업지시서는 [M-01 작업 운영안](../tasks/README.md)을 따른다. 전체 MVP의 순서·마일스톤·시작 조건은 승인 대기 [ROADMAP](../ROADMAP.md), Epic/Feature와 요구사항 전수 추적은 [BACKLOG](../BACKLOG.md)에 제안했다. 두 문서는 이 계획의 승인 기준선이나 기존 실행 증거를 바꾸지 않는다. 초기 구현 활성은 최대 2명이며 각 실제 착수 SHA·계약·worktree와 선행 통합 증거를 고정한다. 이 세분화는 아래 장기 기능 카드의 전체 완료나 구현 착수 승인이 아니다.
+현재 작업 상태는 [STATE](../STATE.md), 다음 최소 흐름의 작업지시서는 [M-01 작업 운영안](../tasks/README.md)을 따른다. 전체 MVP의 순서·마일스톤·시작 조건은 승인된 [ROADMAP](../ROADMAP.md), Epic/Feature와 요구사항 전수 추적은 [BACKLOG](../BACKLOG.md)에 있다. 별도 실행 세션은 [M-01 리드 컨텍스트](../handoffs/M-01-LEAD-CONTEXT.md)를 따른다. 로드맵과 첫 M-01 범위는 승인됐고 카드의 실제 배정/READY 확인은 남아 있다. 제품/계약 기준선과 기존 실행 증거는 그대로이며 초기 구현 활성 최대 2명과 실제 착수 SHA·계약·worktree·선행 통합 증거를 고정한다. 장기 기능 카드 전체 완료나 후속 기능의 일괄 구현 착수로 확대하지 않는다.
 
 ## 2. 공식 원본과 작업의 공통 입력
 
@@ -202,6 +202,6 @@ QA-10의 전체 TS 참조는 이번에 83개를 자동화한다는 범위 선언
 
 ## 10. 이번 실행 결과와 인계
 
-현재 공개 회차 상세의 실행 상태·정확 명령·환경·관측·미실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)이 원본이다. 초기 Maven·Gradle·Boot 전환 기록은 각 과거 검증 보고서에 보존한다. 작업별 현재 상태는 [STATE](../STATE.md)에서 리드가 관리하고, 다음 작업은 [M-01 작업 운영안](../tasks/README.md)의 DRAFT로 제안한다. 기존 후속 기능 묶음의 PLANNED / NOT_RUN은 개별 카드의 승인·실행·검증 상태를 대신하지 않는다.
+현재 공개 회차 상세의 실행 상태·정확 명령·환경·관측·미실행은 [PUBLIC-ROUND-VERIFICATION](PUBLIC-ROUND-VERIFICATION.md)이 원본이다. 초기 Maven·Gradle·Boot 전환 기록은 각 과거 검증 보고서에 보존한다. 작업별 현재 상태는 [STATE](../STATE.md)에서 리드가 관리한다. 다음 [M-01 작업 운영안](../tasks/README.md)은 범위 승인 완료이며 실제 배정 전 카드는 DRAFT다. 기존 후속 기능 묶음의 PLANNED / NOT_RUN은 개별 카드의 승인·실행·검증 상태를 대신하지 않는다.
 
 결과 원본에서는 실행한 대상만 갱신한다. `scripts/check-approved-baseline.py`의 해시 확인, `scripts/verify-contracts.py`의 임시 복사 검사, `scripts/verify.ps1`의 빌드 확인과 실제 앱/브라우저 관측은 각각 판정한다. 로컬 인프라·JDBC 연결·health·개발 미리보기의 관측을 제품 인증 세션·입찰·경합·재접속·장애·성능 인수 통과로 확대하지 않는다. 승인 원본의 과거 NOT_RUN/PASS 기록도 소급 수정하지 않는다.
